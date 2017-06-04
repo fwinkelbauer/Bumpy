@@ -1,0 +1,7 @@
+# Example configuration
+
+# Searches for a version of the format a.b.c.d in all AssemblyInfo.cs files
+AssemblyInfo.cs = (?<version>\d+\.\d+\.\d+\.\d+)
+
+# Searches for a version of the format a.b.c.d in all .nuspec files in the folder NuSpec
+NuSpec\**\*.nuspec = (?<version>\d+\.\d+\.\d+\.\d+)

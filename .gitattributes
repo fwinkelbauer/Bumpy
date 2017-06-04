@@ -1,0 +1,11 @@
+# Text (replace CRLF with LF)
+*.cs         text diff=csharp
+*.config     text
+*.csproj     text
+*.sln        text
+*.md         text
+*.ruleset    text
+*.cake       text
+*.ps1        text
+*.yaml       text
+*.yml        text
