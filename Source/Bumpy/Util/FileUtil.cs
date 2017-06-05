@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
-using Glob;
+using GlobDir;
 
 namespace Bumpy.Util
 {
@@ -15,7 +16,9 @@ namespace Bumpy.Util
             directory.ThrowIfNull(nameof(directory));
             globPattern.ThrowIfNull(nameof(globPattern));
 
-            return directory.GlobFiles(globPattern);
+            var path = Path.Combine(directory.FullName, globPattern);
+
+            return Glob.GetMatches(path.Replace("\\", "/")).Select(s => new FileInfo(s));
         }
 
         public FileContent ReadFile(FileInfo file)

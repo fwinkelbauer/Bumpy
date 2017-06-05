@@ -37,8 +37,9 @@
     <StartupObject>Bumpy.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Glob, Version=0.3.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Glob.0.3.3\lib\net45\Glob.dll</HintPath>
+    <Reference Include="GlobDir, Version=0.1.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\globdir.0.0.1.1\lib\net40\GlobDir.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
