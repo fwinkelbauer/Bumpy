@@ -43,6 +43,14 @@ namespace Bumpy.UnitTests.Version
         }
 
         [TestMethod]
+        public void ReplaceVersionInText_NewVersionWouldMakeRegexUseless()
+        {
+            var version = VersionHelper.ParseVersionFromText("1.2.3");
+
+            Assert.ThrowsException<InvalidOperationException>(() => VersionHelper.ReplaceVersionInText("a0.0.0.0a", @"a(?<version>\d\.\d\.\d\.\d)a", version));
+        }
+
+        [TestMethod]
         public void FindVersion_Found()
         {
             var version = VersionHelper.FindVersion("a1.2a", @"a(?<version>\d\.\d)a");

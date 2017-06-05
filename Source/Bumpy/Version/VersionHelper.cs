@@ -10,20 +10,23 @@ namespace Bumpy.Version
 
         private static readonly Regex _bumpyRegex = new Regex(@"^\d+(\.\d+)*$", RegexOptions.Singleline);
 
-        public static string ReplaceVersionInText(string text, string regexPattern, BumpyVersion version)
+        public static string ReplaceVersionInText(string text, string regexPattern, BumpyVersion newVersion)
         {
             text.ThrowIfNull(nameof(text));
             regexPattern.ThrowIfNull(nameof(regexPattern));
-            version.ThrowIfNull(nameof(version));
+            newVersion.ThrowIfNull(nameof(newVersion));
 
             var newText = text;
-            var regex = new Regex(regexPattern, RegexOptions.Singleline);
-            var group = regex.Match(text).Groups[_versionGroupName];
+            var version = FindVersion(text, regexPattern);
 
-            if (group.Success)
+            if (version != null)
             {
-                ValidateVersionText(group.Value);
-                newText = text.Replace(group.Value, version.ToString());
+                newText = text.Replace(version.ToString(), newVersion.ToString());
+
+                if (FindVersion(newText, regexPattern) == null)
+                {
+                    throw new InvalidOperationException($"Your provided version '{newVersion}' cannot be captured using your current regex configuration. Aborting to prevent issues");
+                }
             }
 
             return newText;
@@ -49,19 +52,14 @@ namespace Bumpy.Version
         {
             versionText.ThrowIfNull(nameof(versionText));
 
-            ValidateVersionText(versionText);
-
-            var parts = versionText.Split('.').Select(p => Convert.ToInt32(p));
-
-            return new BumpyVersion(parts);
-        }
-
-        private static void ValidateVersionText(string versionText)
-        {
             if (!_bumpyRegex.IsMatch(versionText))
             {
                 throw new ArgumentException($"Illegal version string '{versionText}'");
             }
+
+            var parts = versionText.Split('.').Select(p => Convert.ToInt32(p));
+
+            return new BumpyVersion(parts);
         }
     }
 }
