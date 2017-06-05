@@ -31,11 +31,11 @@ namespace Bumpy.Util
             File.WriteAllLines(file.FullName, lines);
         }
 
-        public IDictionary<string, string> ReadConfig(DirectoryInfo directory)
+        public IEnumerable<Tuple<string, string>> ReadConfig(DirectoryInfo directory)
         {
             // TODO validation file contains data, ...
             var configPath = Path.Combine(directory.FullName, ".bumpyconfig");
-            Dictionary<string, string> config = new Dictionary<string, string>();
+            List<Tuple<string, string>> config = new List<Tuple<string, string>>();
             var lines = File.ReadAllLines(configPath);
 
             foreach (var line in lines)
@@ -48,7 +48,7 @@ namespace Bumpy.Util
                 var split = line.Split('=');
                 var glob = split[0].Trim();
                 var regex = string.Join("=", split, 1, split.Length - 1).Trim();
-                config.Add(glob, regex);
+                config.Add(new Tuple<string, string>(glob, regex));
             }
 
             return config;

@@ -34,7 +34,7 @@ namespace Bumpy
             }
         }
 
-        private static void Execute(Commands commands, DirectoryInfo directory, IDictionary<string, string> config, string[] args)
+        private static void Execute(Commands commands, DirectoryInfo directory, IEnumerable<Tuple<string, string>> config, string[] args)
         {
             int position = -1;
             int number = -1;
@@ -61,11 +61,11 @@ namespace Bumpy
             }
         }
 
-        private static void ForEachConfig(IDictionary<string, string> config, Action<string, string> action)
+        private static void ForEachConfig(IEnumerable<Tuple<string, string>> config, Action<string, string> action)
         {
-            foreach (KeyValuePair<string, string> entry in config)
+            foreach (var entry in config)
             {
-                action(entry.Key, entry.Value);
+                action(entry.Item1, entry.Item2);
             }
         }
     }
