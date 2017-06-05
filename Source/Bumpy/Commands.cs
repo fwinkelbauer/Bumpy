@@ -26,7 +26,8 @@ namespace Bumpy
 
             foreach (var file in files)
             {
-                var lines = _fileUtil.ReadLines(file).ToList();
+                var content = _fileUtil.ReadFile(file);
+                var lines = content.Lines.ToList();
                 List<string> newLines = new List<string>();
 
                 for (int i = 0; i < lines.Count(); i++)
@@ -44,7 +45,7 @@ namespace Bumpy
                     newLines.Add(newLine);
                 }
 
-                _fileUtil.WriteLines(file, newLines);
+                _fileUtil.WriteFile(file, new FileContent(newLines, content.Encoding));
             }
         }
 
@@ -54,7 +55,8 @@ namespace Bumpy
 
             foreach (var file in files)
             {
-                var lines = _fileUtil.ReadLines(file).ToList();
+                var content = _fileUtil.ReadFile(file);
+                var lines = content.Lines.ToList();
 
                 for (int i = 0; i < lines.Count(); i++)
                 {
@@ -74,7 +76,8 @@ namespace Bumpy
 
             foreach (var file in files)
             {
-                var lines = _fileUtil.ReadLines(file).ToList();
+                var content = _fileUtil.ReadFile(file);
+                var lines = content.Lines.ToList();
                 List<string> newLines = new List<string>();
 
                 for (int i = 0; i < lines.Count(); i++)
@@ -92,7 +95,7 @@ namespace Bumpy
                     newLines.Add(newLine);
                 }
 
-                _fileUtil.WriteLines(file, newLines);
+                _fileUtil.WriteFile(file, new FileContent(newLines, content.Encoding));
             }
         }
 
@@ -103,7 +106,8 @@ namespace Bumpy
 
             foreach (var file in files)
             {
-                var lines = _fileUtil.ReadLines(file).ToList();
+                var content = _fileUtil.ReadFile(file);
+                var lines = content.Lines.ToList();
                 List<string> newLines = new List<string>();
 
                 for (int i = 0; i < lines.Count(); i++)
@@ -118,7 +122,7 @@ namespace Bumpy
                     }
                 }
 
-                _fileUtil.WriteLines(file, newLines);
+                _fileUtil.WriteFile(file, new FileContent(newLines, content.Encoding));
             }
         }
 

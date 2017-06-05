@@ -10,7 +10,6 @@ namespace Bumpy.Util
     {
         private const string _bumpyConfig = ".bumpyconfig";
 
-        // TODO fw https://stackoverflow.com/questions/4385707/c-sharp-detecting-encoding-in-a-file-write-change-to-file-using-the-found-enc
         public IEnumerable<FileInfo> GetFiles(DirectoryInfo directory, string globPattern)
         {
             directory.ThrowIfNull(nameof(directory));
@@ -19,19 +18,32 @@ namespace Bumpy.Util
             return directory.GlobFiles(globPattern);
         }
 
-        public IEnumerable<string> ReadLines(FileInfo file)
+        public FileContent ReadFile(FileInfo file)
         {
             file.ThrowIfNull(nameof(file));
 
-            return File.ReadLines(file.FullName);
+            var lines = new List<string>();
+            string line = null;
+
+            using (var reader = new StreamReader(file.FullName))
+            {
+                while ((line = reader.ReadLine()) != null)
+                {
+                    lines.Add(line);
+                }
+
+                var encoding = reader.CurrentEncoding;
+
+                return new FileContent(lines, encoding);
+            }
         }
 
-        public void WriteLines(FileInfo file, IEnumerable<string> lines)
+        public void WriteFile(FileInfo file, FileContent content)
         {
             file.ThrowIfNull(nameof(file));
-            lines.ThrowIfNull(nameof(lines));
+            content.ThrowIfNull(nameof(content));
 
-            File.WriteAllLines(file.FullName, lines);
+            File.WriteAllLines(file.FullName, content.Lines, content.Encoding);
         }
 
         public IEnumerable<BumpyConfiguration> ReadConfig(DirectoryInfo directory)
