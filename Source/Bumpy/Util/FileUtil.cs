@@ -80,8 +80,8 @@ namespace Bumpy.Util
             builder.AppendLine("# Usage: <glob pattern> = <regular expression>");
             builder.AppendLine("# Note that the regular expression must contain a named group 'version' which contains the actual version information");
             builder.AppendLine();
-            builder.AppendLine("# Example: Searches for a version of the format a.b.c.d in all .nuspec files in the folder NuSpec");
-            builder.AppendLine(@"# NuSpec\**\*.nuspec = (?<version>\d+\.\d+\.\d+\.\d+)");
+            builder.AppendLine("# Example: Searches for version information of the format a.b.c.d (e.g. 1.8.3.2) in all AssemblyInfo.cs files");
+            builder.AppendLine(@"# AssemblyInfo.cs = (?<version>\d+\.\d+\.\d+\.\d+)");
 
             File.WriteAllText(configPath, builder.ToString());
         }
