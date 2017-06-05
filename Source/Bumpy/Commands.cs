@@ -142,11 +142,11 @@ namespace Bumpy
             builder.AppendLine("    Lists all versions");
             builder.AppendLine("  -c");
             builder.AppendLine("    Creates a .bumpyconfig file if it does not exist");
-            builder.AppendLine("  -i <zero-based index number>");
+            builder.AppendLine("  -i <one-based index number>");
             builder.AppendLine("    Increments the specified component of each version");
             builder.AppendLine("  -w <version string>");
             builder.AppendLine("    Overwrites a version with another version");
-            builder.AppendLine("  -a <zero-based index number> <version number>");
+            builder.AppendLine("  -a <one-based index number> <version number>");
             builder.AppendLine("    Replaces the specified component of a version with a new number");
 
             _writeLine(builder.ToString());

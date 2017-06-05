@@ -24,10 +24,10 @@ namespace Bumpy.UnitTests.Version
         }
 
         [DataTestMethod]
-        [DataRow(0, "3.0.0.0")]
-        [DataRow(1, "2.3.0.0")]
-        [DataRow(2, "2.2.3.0")]
-        [DataRow(3, "2.2.2.3")]
+        [DataRow(1, "3.0.0.0")]
+        [DataRow(2, "2.3.0.0")]
+        [DataRow(3, "2.2.3.0")]
+        [DataRow(4, "2.2.2.3")]
         public void Increment_IncrementDifferentPositions(int position, string expectedVersion)
         {
             var version = CreateVersion(2, 2, 2, 2);
@@ -46,10 +46,10 @@ namespace Bumpy.UnitTests.Version
         }
 
         [DataTestMethod]
-        [DataRow(0, "9.1.1.1")]
-        [DataRow(1, "1.9.1.1")]
-        [DataRow(2, "1.1.9.1")]
-        [DataRow(3, "1.1.1.9")]
+        [DataRow(1, "9.1.1.1")]
+        [DataRow(2, "1.9.1.1")]
+        [DataRow(3, "1.1.9.1")]
+        [DataRow(4, "1.1.1.9")]
         public void Assign_AssignPositions(int position, string expectedVersion)
         {
             var version = CreateVersion(1, 1, 1, 1);

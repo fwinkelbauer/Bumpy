@@ -24,12 +24,12 @@ namespace Bumpy.Version
 
         public BumpyVersion Increment(int position)
         {
-            position.ThrowIfCondition(n => n < 0 || n >= _parts.Count, nameof(position), $"Position must be between 0 and {_parts.Count - 1}");
+            position.ThrowIfCondition(n => n < 1 || n > _parts.Count, nameof(position), $"Position must be between 1 and {_parts.Count}");
 
             var newParts = new List<int>(_parts);
-            newParts[position]++;
+            newParts[checked(position - 1)]++;
 
-            for (int i = checked(position + 1); i < newParts.Count; i++)
+            for (int i = position; i < newParts.Count; i++)
             {
                 newParts[i] = 0;
             }
@@ -39,12 +39,12 @@ namespace Bumpy.Version
 
         public BumpyVersion Assign(int position, int number)
         {
-            position.ThrowIfCondition(n => n < 0 || n >= _parts.Count, nameof(position), $"Position must be between 0 and {_parts.Count - 1}");
-            number.ThrowIfCondition(n => n < 0, nameof(position), "Number cannot be negative");
+            position.ThrowIfCondition(n => n < 1 || n > _parts.Count, nameof(position), $"Position must be between 1 and {_parts.Count}");
+            number.ThrowIfCondition(n => n < 0, nameof(number), "Number cannot be negative");
 
             var newParts = new List<int>(_parts);
 
-            newParts[position] = number;
+            newParts[checked(position - 1)] = number;
 
             return new BumpyVersion(newParts);
         }
