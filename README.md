@@ -21,9 +21,11 @@ Lists all versions.
 **Example:** `bumpy -l`
 
 ```
-\Source\HelloWorldApplication\HelloWorldApplication\Properties\AssemblyInfo.cs (33): 1.0.0.0
-\Source\HelloWorldApplication\HelloWorldApplication\Properties\AssemblyInfo.cs (34): 1.0.0.0
-\NuSpec\HelloWorldApplication\SomeProject.nuspec (4): 1.0.0.0
+\Source\Bumpy\Properties\AssemblyInfo.cs (35): 0.1.0.0
+\Source\Bumpy\Properties\AssemblyInfo.cs (36): 0.1.0.0
+\Source\Bumpy.UnitTests\Properties\AssemblyInfo.cs (34): 0.1.0.0
+\Source\Bumpy.UnitTests\Properties\AssemblyInfo.cs (35): 0.1.0.0
+\NuSpec\Chocolatey\Bumpy.nuspec (5): 0.1.0.0
 ```
 
 ### Create Configuration
@@ -45,9 +47,11 @@ Increments the specified component of each version.
 **Example:** `bumpy -i 1`
 
 ```
-\Source\HelloWorldApplication\HelloWorldApplication\Properties\AssemblyInfo.cs (33): 1.0.0.0 -> 1.1.0.0
-\Source\HelloWorldApplication\HelloWorldApplication\Properties\AssemblyInfo.cs (34): 1.0.0.0 -> 1.1.0.0
-\NuSpec\HelloWorldApplication\SomeProject.nuspec (4): 1.0.0.0 -> 1.1.0.0
+\Source\Bumpy\Properties\AssemblyInfo.cs (35): 0.1.0.0 -> 0.2.0.0
+\Source\Bumpy\Properties\AssemblyInfo.cs (36): 0.1.0.0 -> 0.2.0.0
+\Source\Bumpy.UnitTests\Properties\AssemblyInfo.cs (34): 0.1.0.0 -> 0.2.0.0
+\Source\Bumpy.UnitTests\Properties\AssemblyInfo.cs (35): 0.1.0.0 -> 0.2.0.0
+\NuSpec\Chocolatey\Bumpy.nuspec (5): 0.1.0.0 -> 0.2.0.0
 ```
 
 ### Write
@@ -66,9 +70,11 @@ This command could used to e.g:
 **Example:** `bumpy -w 1.2.0.5`
 
 ```
-\Source\HelloWorldApplication\HelloWorldApplication\Properties\AssemblyInfo.cs (33): 1.0.0.0 -> 1.2.0.5
-\Source\HelloWorldApplication\HelloWorldApplication\Properties\AssemblyInfo.cs (34): 1.0.0.0 -> 1.2.0.5
-\NuSpec\HelloWorldApplication\SomeProject.nuspec (4): 1.0.0.0 -> 1.2.0.5
+\Source\Bumpy\Properties\AssemblyInfo.cs (35): 0.2.0.0 -> 1.2.0.5
+\Source\Bumpy\Properties\AssemblyInfo.cs (36): 0.2.0.0 -> 1.2.0.5
+\Source\Bumpy.UnitTests\Properties\AssemblyInfo.cs (34): 0.2.0.0 -> 1.2.0.5
+\Source\Bumpy.UnitTests\Properties\AssemblyInfo.cs (35): 0.2.0.0 -> 1.2.0.5
+\NuSpec\Chocolatey\Bumpy.nuspec (5): 0.2.0.0 -> 1.2.0.5
 ```
 
 ### Assign
@@ -82,14 +88,12 @@ Replaces the specified component of a version with a new number. This command co
 **Example:** `bumpy -a 2 99`
 
 ```
-\Source\HelloWorldApplication\HelloWorldApplication\Properties\AssemblyInfo.cs (33): 1.0.0.0 -> 1.0.99.0
-\Source\HelloWorldApplication\HelloWorldApplication\Properties\AssemblyInfo.cs (34): 1.0.0.0 -> 1.0.99.0
-\NuSpec\HelloWorldApplication\SomeProject.nuspec (4): 1.0.0.0 -> 1.0.99.0
+\Source\Bumpy\Properties\AssemblyInfo.cs (35): 1.2.0.5 -> 1.2.99.5
+\Source\Bumpy\Properties\AssemblyInfo.cs (36): 1.2.0.5 -> 1.2.99.5
+\Source\Bumpy.UnitTests\Properties\AssemblyInfo.cs (34): 1.2.0.5 -> 1.2.99.5
+\Source\Bumpy.UnitTests\Properties\AssemblyInfo.cs (35): 1.2.0.5 -> 1.2.99.5
+\NuSpec\Chocolatey\Bumpy.nuspec (5): 1.2.0.5 -> 1.2.99.5
 ```
-
-## Example
-
-The `Example` folder contains a C# solution (which contains a `AssemblyInfo.cs` file) and a `HelloWorldApplication.nuspec` file with version `1.0.0.0`. Through the `.bumpyconfig` file we can manipulate all versions with one command line. Try it yourself!
 
 ## Configuration
 
@@ -101,6 +105,10 @@ NuSpec\**\*.nuspec = (?<version>\d+\.\d+\.\d+\.\d+)
 ```
 
 For each line of a specific file (found through the glob pattern) Bumpy uses the provided regular expression to extract the named regex group `?<version>`. Note that the content of the `?<version>` group matches the form`\d+(\.\d+)*` (meaning `1`, `1.0`, `1.0.0`, `1.0.0.0`, ...) as this is the only format that is currently supported by Bumpy.
+
+## Example
+
+Check out the `.bumpyconfig` file to see how I manage Bumpy's version files using Bumpy.
 
 ## Trivia
 
