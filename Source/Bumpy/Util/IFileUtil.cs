@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace Bumpy.Util
@@ -10,5 +11,9 @@ namespace Bumpy.Util
         IEnumerable<string> ReadLines(FileInfo file);
 
         void WriteLines(FileInfo file, IEnumerable<string> lines);
+
+        IEnumerable<BumpyConfiguration> ReadConfig(DirectoryInfo directory);
+
+        void CreateConfig(DirectoryInfo directory);
     }
 }

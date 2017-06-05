@@ -15,8 +15,7 @@ namespace Bumpy
 
             try
             {
-                var config = fileUtil.ReadConfig(directory);
-                Execute(commands, directory, config, args);
+                Execute(commands, directory, args);
             }
             catch (Exception e)
             {
@@ -34,25 +33,33 @@ namespace Bumpy
             }
         }
 
-        private static void Execute(Commands commands, DirectoryInfo directory, IEnumerable<Tuple<string, string>> config, string[] args)
+        private static void Execute(Commands commands, DirectoryInfo directory, string[] args)
         {
             int position = -1;
             int number = -1;
 
             if (args.Length == 1 && args[0].Equals("-l"))
             {
+                var config = commands.ReadConfigFile(directory);
                 ForEachConfig(config, (glob, regex) => { commands.List(directory, glob, regex); });
+            }
+            else if (args.Length == 1 && args[0].Equals("-c"))
+            {
+                commands.CreateConfigFile(directory);
             }
             else if (args.Length == 2 && args[0].Equals("-i") && int.TryParse(args[1], out position))
             {
+                var config = commands.ReadConfigFile(directory);
                 ForEachConfig(config, (glob, regex) => { commands.Increment(directory, glob, regex, position); });
             }
             else if (args.Length == 2 && args[0].Equals("-w"))
             {
+                var config = commands.ReadConfigFile(directory);
                 ForEachConfig(config, (glob, regex) => { commands.Write(directory, glob, regex, args[1]); });
             }
             else if (args.Length == 3 && args[0].Equals("-a") && int.TryParse(args[1], out position) && int.TryParse(args[2], out number))
             {
+                var config = commands.ReadConfigFile(directory);
                 ForEachConfig(config, (glob, regex) => { commands.Assign(directory, glob, regex, position, number); });
             }
             else
@@ -61,11 +68,11 @@ namespace Bumpy
             }
         }
 
-        private static void ForEachConfig(IEnumerable<Tuple<string, string>> config, Action<string, string> action)
+        private static void ForEachConfig(IEnumerable<BumpyConfiguration> config, Action<string, string> action)
         {
             foreach (var entry in config)
             {
-                action(entry.Item1, entry.Item2);
+                action(entry.GlobPattern, entry.RegularExpression);
             }
         }
     }

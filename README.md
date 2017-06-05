@@ -26,6 +26,14 @@ Lists all versions.
 \NuSpec\HelloWorldApplication\SomeProject.nuspec (4): 1.0.0.0
 ```
 
+### Create Configuration
+
+```
+bumpy -c
+```
+
+Creates an empty `.bumpyconfig` file.
+
 ### Increment
 
 ```
