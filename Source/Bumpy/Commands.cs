@@ -37,8 +37,8 @@ namespace Bumpy
                     if (readVersion != null)
                     {
                         var newVersion = readVersion.Increment(position);
-                        _writeLine($"{ToRelativePath(directory, file)} ({i}): {readVersion} -> {newVersion}");
                         newLine = VersionHelper.ReplaceVersionInText(lines[i], regexPattern, newVersion);
+                        _writeLine($"{ToRelativePath(directory, file)} ({i}): {readVersion} -> {newVersion}");
                     }
 
                     newLines.Add(newLine);
@@ -85,8 +85,8 @@ namespace Bumpy
                     if (readVersion != null)
                     {
                         var newVersion = readVersion.Assign(position, number);
-                        _writeLine($"{ToRelativePath(directory, file)} ({i}): {readVersion} -> {newVersion}");
                         newLine = VersionHelper.ReplaceVersionInText(lines[i], regexPattern, newVersion);
+                        _writeLine($"{ToRelativePath(directory, file)} ({i}): {readVersion} -> {newVersion}");
                     }
 
                     newLines.Add(newLine);
@@ -110,12 +110,12 @@ namespace Bumpy
                 {
                     var readVersion = VersionHelper.FindVersion(lines[i], regexPattern);
 
+                    newLines.Add(VersionHelper.ReplaceVersionInText(lines[i], regexPattern, newVersion));
+
                     if (readVersion != null)
                     {
                         _writeLine($"{ToRelativePath(directory, file)} ({i}): {readVersion} -> {newVersion}");
                     }
-
-                    newLines.Add(VersionHelper.ReplaceVersionInText(lines[i], regexPattern, newVersion));
                 }
 
                 _fileUtil.WriteLines(file, newLines);
