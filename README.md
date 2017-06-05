@@ -39,12 +39,12 @@ Creates an empty `.bumpyconfig` file.
 ### Increment
 
 ```
-bumpy -i <zero-based index number>
+bumpy -i <one-based index number>
 ```
 
 Increments the specified component of each version.
 
-**Example:** `bumpy -i 1`
+**Example:** `bumpy -i 2`
 
 ```
 \Source\Bumpy\Properties\AssemblyInfo.cs (35): 0.1.0.0 -> 0.2.0.0
@@ -62,7 +62,7 @@ bumpy -w <version string>
 
 Overwrites a version with another version.
 
-This command could used to e.g:
+This command could be used to e.g:
 
 - Unify the version information of projects and files in a solution
 - Change the version information of a newly created project to be in line with other projects in a solution
@@ -80,12 +80,12 @@ This command could used to e.g:
 ### Assign
 
 ```
-bumpy -a <zero-based index number> <version number>
+bumpy -a <one-based index number> <version number>
 ```
 
 Replaces the specified component of a version with a new number. This command could be used by a CI server to inject a build number.
 
-**Example:** `bumpy -a 2 99`
+**Example:** `bumpy -a 3 99`
 
 ```
 \Source\Bumpy\Properties\AssemblyInfo.cs (35): 1.2.0.5 -> 1.2.99.5
