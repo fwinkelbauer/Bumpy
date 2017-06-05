@@ -2,4 +2,4 @@
 Source\**\AssemblyInfo.cs = (?<version>\d+\.\d+\.\d+\.\d+)
 
 # Captures the version in all .nuspec files
-NuSpec\**\*.nuspec = (?<version>\d+\.\d+\.\d+\.\d+)
+NuSpec\**\*.nuspec = (?<version>\d+\.\d+\.\d+)
