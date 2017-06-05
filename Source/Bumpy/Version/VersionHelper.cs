@@ -11,6 +11,7 @@ namespace Bumpy.Version
         private static readonly Regex _bumpyRegex = new Regex(@"^\d+(\.\d+)*$", RegexOptions.Singleline);
 
         // TODO fw test this class
+        // TODO fw check version with regexPattern to improve stability
         public static string ReplaceVersionInText(string text, string regexPattern, BumpyVersion version)
         {
             text.ThrowIfNull(nameof(text));
