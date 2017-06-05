@@ -10,8 +10,6 @@ namespace Bumpy.Version
 
         private static readonly Regex _bumpyRegex = new Regex(@"^\d+(\.\d+)*$", RegexOptions.Singleline);
 
-        // TODO fw test this class
-        // TODO fw check version with regexPattern to improve stability
         public static string ReplaceVersionInText(string text, string regexPattern, BumpyVersion version)
         {
             text.ThrowIfNull(nameof(text));
@@ -24,6 +22,7 @@ namespace Bumpy.Version
 
             if (group.Success)
             {
+                ValidateVersionText(group.Value);
                 newText = text.Replace(group.Value, version.ToString());
             }
 
@@ -50,14 +49,19 @@ namespace Bumpy.Version
         {
             versionText.ThrowIfNull(nameof(versionText));
 
-            if (!_bumpyRegex.IsMatch(versionText))
-            {
-                throw new ArgumentException($"Illegal version string '{versionText}'");
-            }
+            ValidateVersionText(versionText);
 
             var parts = versionText.Split('.').Select(p => Convert.ToInt32(p));
 
             return new BumpyVersion(parts);
+        }
+
+        private static void ValidateVersionText(string versionText)
+        {
+            if (!_bumpyRegex.IsMatch(versionText))
+            {
+                throw new ArgumentException($"Illegal version string '{versionText}'");
+            }
         }
     }
 }
