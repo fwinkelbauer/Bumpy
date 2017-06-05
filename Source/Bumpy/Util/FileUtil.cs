@@ -22,11 +22,11 @@ namespace Bumpy.Util
         {
             file.ThrowIfNull(nameof(file));
 
-            var lines = new List<string>();
-            string line = null;
-
             using (var reader = new StreamReader(file.FullName))
             {
+                var lines = new List<string>();
+                string line = null;
+
                 while ((line = reader.ReadLine()) != null)
                 {
                     lines.Add(line);

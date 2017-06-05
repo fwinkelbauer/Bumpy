@@ -30,7 +30,7 @@ namespace Bumpy
                 var lines = content.Lines.ToList();
                 List<string> newLines = new List<string>();
 
-                for (int i = 0; i < lines.Count(); i++)
+                for (int i = 0; i < lines.Count; i++)
                 {
                     var readVersion = VersionHelper.FindVersion(lines[i], regexPattern);
                     var newLine = lines[i];
@@ -58,7 +58,7 @@ namespace Bumpy
                 var content = _fileUtil.ReadFile(file);
                 var lines = content.Lines.ToList();
 
-                for (int i = 0; i < lines.Count(); i++)
+                for (int i = 0; i < lines.Count; i++)
                 {
                     var readVersion = VersionHelper.FindVersion(lines[i], regexPattern);
 
@@ -80,7 +80,7 @@ namespace Bumpy
                 var lines = content.Lines.ToList();
                 List<string> newLines = new List<string>();
 
-                for (int i = 0; i < lines.Count(); i++)
+                for (int i = 0; i < lines.Count; i++)
                 {
                     var readVersion = VersionHelper.FindVersion(lines[i], regexPattern);
                     var newLine = lines[i];
@@ -110,7 +110,7 @@ namespace Bumpy
                 var lines = content.Lines.ToList();
                 List<string> newLines = new List<string>();
 
-                for (int i = 0; i < lines.Count(); i++)
+                for (int i = 0; i < lines.Count; i++)
                 {
                     var readVersion = VersionHelper.FindVersion(lines[i], regexPattern);
 
