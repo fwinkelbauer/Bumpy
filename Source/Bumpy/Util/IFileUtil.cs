@@ -1,6 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
+using System.Text;
 
 namespace Bumpy.Util
 {
@@ -8,9 +8,9 @@ namespace Bumpy.Util
     {
         IEnumerable<FileInfo> GetFiles(DirectoryInfo directory, string globPattern);
 
-        IEnumerable<string> ReadLines(FileInfo file);
+        FileContent ReadFile(FileInfo file);
 
-        void WriteLines(FileInfo file, IEnumerable<string> lines);
+        void WriteFile(FileInfo file, FileContent content);
 
         IEnumerable<BumpyConfiguration> ReadConfig(DirectoryInfo directory);
 
