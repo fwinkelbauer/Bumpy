@@ -38,7 +38,6 @@ namespace Bumpy.Util
         {
             directory.ThrowIfNull(nameof(directory));
 
-            // TODO validation file contains data, ...
             var configPath = Path.Combine(directory.FullName, _bumpyConfig);
             List<BumpyConfiguration> config = new List<BumpyConfiguration>();
             var lines = File.ReadAllLines(configPath);
@@ -54,6 +53,11 @@ namespace Bumpy.Util
                 var glob = split[0].Trim();
                 var regex = string.Join("=", split, 1, split.Length - 1).Trim();
                 config.Add(new BumpyConfiguration(glob, regex));
+            }
+
+            if (config.Count == 0)
+            {
+                throw new IOException("The configuration file does not contain any data");
             }
 
             return config;
