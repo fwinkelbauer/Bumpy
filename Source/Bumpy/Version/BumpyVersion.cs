@@ -5,7 +5,7 @@ namespace Bumpy.Version
 {
     public class BumpyVersion
     {
-        private List<int> _parts;
+        private readonly List<int> _parts;
 
         public BumpyVersion(IEnumerable<int> parts)
         {
