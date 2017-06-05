@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using Glob;
 
 namespace Bumpy.Util
 {
     internal class FileUtil : IFileUtil
     {
+        private const string _bumpyConfig = ".bumpyconfig";
+
         // TODO fw https://stackoverflow.com/questions/4385707/c-sharp-detecting-encoding-in-a-file-write-change-to-file-using-the-found-enc
         public IEnumerable<FileInfo> GetFiles(DirectoryInfo directory, string globPattern)
         {
@@ -31,11 +34,13 @@ namespace Bumpy.Util
             File.WriteAllLines(file.FullName, lines);
         }
 
-        public IEnumerable<Tuple<string, string>> ReadConfig(DirectoryInfo directory)
+        public IEnumerable<BumpyConfiguration> ReadConfig(DirectoryInfo directory)
         {
+            directory.ThrowIfNull(nameof(directory));
+
             // TODO validation file contains data, ...
-            var configPath = Path.Combine(directory.FullName, ".bumpyconfig");
-            List<Tuple<string, string>> config = new List<Tuple<string, string>>();
+            var configPath = Path.Combine(directory.FullName, _bumpyConfig);
+            List<BumpyConfiguration> config = new List<BumpyConfiguration>();
             var lines = File.ReadAllLines(configPath);
 
             foreach (var line in lines)
@@ -48,10 +53,33 @@ namespace Bumpy.Util
                 var split = line.Split('=');
                 var glob = split[0].Trim();
                 var regex = string.Join("=", split, 1, split.Length - 1).Trim();
-                config.Add(new Tuple<string, string>(glob, regex));
+                config.Add(new BumpyConfiguration(glob, regex));
             }
 
             return config;
+        }
+
+        public void CreateConfig(DirectoryInfo directory)
+        {
+            directory.ThrowIfNull(nameof(directory));
+
+            var configPath = Path.Combine(directory.FullName, _bumpyConfig);
+
+            if (File.Exists(configPath))
+            {
+                return;
+            }
+
+            var builder = new StringBuilder();
+            builder.AppendLine("# Configuration file for Bumpy");
+            builder.AppendLine();
+            builder.AppendLine("# Usage: <glob pattern> = <regular expression>");
+            builder.AppendLine("# Note that the regular expression must contain a named group 'version' which contains the actual version information");
+            builder.AppendLine();
+            builder.AppendLine("# Example: Searches for a version of the format a.b.c.d in all .nuspec files in the folder NuSpec");
+            builder.AppendLine(@"# NuSpec\**\*.nuspec = (?<version>\d+\.\d+\.\d+\.\d+)");
+
+            File.WriteAllText(configPath, builder.ToString());
         }
     }
 }

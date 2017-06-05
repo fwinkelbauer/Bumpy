@@ -122,14 +122,26 @@ namespace Bumpy
             }
         }
 
+        public void CreateConfigFile(DirectoryInfo directory)
+        {
+            _fileUtil.CreateConfig(directory);
+        }
+
+        public IEnumerable<BumpyConfiguration> ReadConfigFile(DirectoryInfo directory)
+        {
+            return _fileUtil.ReadConfig(directory);
+        }
+
         public void PrintHelp()
         {
-            StringBuilder builder = new StringBuilder();
+            var builder = new StringBuilder();
             builder.AppendLine("Bumpy is a tool to maintain version information accross multiple files found in the current working directory");
             builder.AppendLine();
             builder.AppendLine("Usage:");
             builder.AppendLine("  -l");
             builder.AppendLine("    Lists all versions");
+            builder.AppendLine("  -c");
+            builder.AppendLine("    Creates a .bumpyconfig file if it does not exist");
             builder.AppendLine("  -i <zero-based index number>");
             builder.AppendLine("    Increments the specified component of each version");
             builder.AppendLine("  -w <version string>");
