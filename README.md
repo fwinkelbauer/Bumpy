@@ -100,11 +100,11 @@ Bumpy's configuration is based on the presence of a `.bumpyconfig` file in the c
 NuSpec\**\*.nuspec = (?<version>\d+\.\d+\.\d+\.\d+)
 ```
 
-For each line of a specific file (found through the glob pattern) Bumpy uses the provided regular expression to extract the named regex group `?<version>`. This extracted information is used for all other functions. Note though that internally Bumpy currenlty only supports version text of the format `\d+(\.\d+)*` (meaning `1`, `1.0`, `1.0.0`, `1.0.0.0`, ...).
+For each line of a specific file (found through the glob pattern) Bumpy uses the provided regular expression to extract the named regex group `?<version>`. Note that the content of the `?<version>` group matches the form`\d+(\.\d+)*` (meaning `1`, `1.0`, `1.0.0`, `1.0.0.0`, ...) as this is the only format that is currently supported by Bumpy.
 
 ## Trivia
 
-- The name Bumpy is loosely based on "to bump something up" instead of the original meaning of the word (as in "a bumpy road"
+- The name Bumpy is loosely based on "to bump something up" instead of the original meaning of the word (as in "a bumpy road")
 - Inspiration taken from [Zero29](https://github.com/ploeh/ZeroToNine)
 
 ## License
