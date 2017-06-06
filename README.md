@@ -4,7 +4,7 @@ Bumpy is a tool to maintain version information across multiple files found in t
 
 ## Usage
 
-Bumpy is a command line utility:
+Bumpy is a command line tool:
 
 ```
 bumpy <command> <arguments>
@@ -25,7 +25,7 @@ Lists all versions.
 \Source\Bumpy\Properties\AssemblyInfo.cs (36): 0.1.0.0
 \Source\Bumpy.UnitTests\Properties\AssemblyInfo.cs (34): 0.1.0.0
 \Source\Bumpy.UnitTests\Properties\AssemblyInfo.cs (35): 0.1.0.0
-\NuSpec\Chocolatey\Bumpy.nuspec (5): 0.1.0.0
+\NuSpec\Chocolatey\Bumpy.nuspec (5): 0.1.0
 ```
 
 ### Create Configuration
@@ -51,7 +51,7 @@ Increments the specified component of each version.
 \Source\Bumpy\Properties\AssemblyInfo.cs (36): 0.1.0.0 -> 0.2.0.0
 \Source\Bumpy.UnitTests\Properties\AssemblyInfo.cs (34): 0.1.0.0 -> 0.2.0.0
 \Source\Bumpy.UnitTests\Properties\AssemblyInfo.cs (35): 0.1.0.0 -> 0.2.0.0
-\NuSpec\Chocolatey\Bumpy.nuspec (5): 0.1.0.0 -> 0.2.0.0
+\NuSpec\Chocolatey\Bumpy.nuspec (5): 0.1.0 -> 0.2.0
 ```
 
 ### Write
@@ -74,7 +74,7 @@ This command could be used to e.g:
 \Source\Bumpy\Properties\AssemblyInfo.cs (36): 0.2.0.0 -> 1.2.0.5
 \Source\Bumpy.UnitTests\Properties\AssemblyInfo.cs (34): 0.2.0.0 -> 1.2.0.5
 \Source\Bumpy.UnitTests\Properties\AssemblyInfo.cs (35): 0.2.0.0 -> 1.2.0.5
-\NuSpec\Chocolatey\Bumpy.nuspec (5): 0.2.0.0 -> 1.2.0.5
+\NuSpec\Chocolatey\Bumpy.nuspec (5): 0.2.0 -> 1.2.0.5
 ```
 
 ### Assign
@@ -100,8 +100,8 @@ Replaces the specified component of a version with a new number. This command co
 Bumpy's configuration is based on the presence of a `.bumpyconfig` file in the current working directory. This file dictates the behaviour of Bumpy using a pair of glob patterns and regex expressions, e.g:
 
 ```
-# Searches for a version of the format a.b.c.d in all .nuspec files in the folder NuSpec
-NuSpec\**\*.nuspec = (?<version>\d+\.\d+\.\d+\.\d+)
+# Searches for a version of the format a.b.c in all .nuspec files in the folder NuSpec
+NuSpec\**\*.nuspec = (?<version>\d+\.\d+\.\d+)
 ```
 
 For each line of a specific file (found through the glob pattern) Bumpy uses the provided regular expression to extract the named regex group `?<version>`. Note that the content of the `?<version>` group matches the form`\d+(\.\d+)*` (meaning `1`, `1.0`, `1.0.0`, `1.0.0.0`, ...) as this is the only format that is currently supported by Bumpy.
