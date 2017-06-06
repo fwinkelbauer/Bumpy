@@ -100,11 +100,13 @@ Replaces the specified component of a version with a new number. This command co
 Bumpy's configuration is based on the presence of a `.bumpyconfig` file in the current working directory. This file dictates the behaviour of Bumpy using a pair of glob patterns and regex expressions, e.g:
 
 ```
-# Searches for a version of the format a.b.c in all .nuspec files in the folder NuSpec
-NuSpec\**\*.nuspec = (?<version>\d+\.\d+\.\d+)
+# Captures the version tag in all .nuspec files
+NuSpec\**\*.nuspec = <version>(?<version>\d+(\.\d+)+)
 ```
 
-For each line of a specific file (found through the glob pattern) Bumpy uses the provided regular expression to extract the named regex group `?<version>`. Note that the content of the `?<version>` group matches the form`\d+(\.\d+)*` (meaning `1`, `1.0`, `1.0.0`, `1.0.0.0`, ...) as this is the only format that is currently supported by Bumpy.
+For each line of a specific file (found through the glob pattern) Bumpy uses the provided regular expression to extract the named regex group `?<version>`.
+
+**Note:** The content of the `?<version>` group has to match the form`\d+(\.\d+)*` (meaning `1`, `1.0`, `1.0.0`, `1.0.0.0` and so on) as this is the only format that is currently supported by Bumpy.
 
 ## Example
 
@@ -112,7 +114,7 @@ Check out the `.bumpyconfig` file to see how I manage Bumpy's version files usin
 
 ## Trivia
 
-- The name Bumpy is loosely based on "to bump something up" instead of the original meaning of the word (as in "a bumpy road")
+- The name Bumpy is loosely based on the phrase "to bump something up" instead of the original meaning of the word (e.g. "a bumpy road")
 - Inspiration taken from [Zero29](https://github.com/ploeh/ZeroToNine)
 
 ## License
