@@ -21,6 +21,7 @@ namespace Bumpy.Util
             return Glob.GetMatches(path.Replace("\\", "/")).Select(s => new FileInfo(s));
         }
 
+        // TODO fw lazy load?
         public FileContent ReadFile(FileInfo file)
         {
             file.ThrowIfNull(nameof(file));
@@ -37,25 +38,28 @@ namespace Bumpy.Util
 
                 var encoding = reader.CurrentEncoding;
 
-                return new FileContent(lines, encoding);
+                return new FileContent(file, lines, encoding);
             }
         }
 
-        public void WriteFile(FileInfo file, FileContent content)
+        public void WriteFiles(IEnumerable<FileContent> content)
         {
-            file.ThrowIfNull(nameof(file));
             content.ThrowIfNull(nameof(content));
 
-            File.WriteAllLines(file.FullName, content.Lines, content.Encoding);
+            foreach (var contentEntry in content)
+            {
+                contentEntry.ThrowIfNull(nameof(contentEntry));
+
+                File.WriteAllLines(contentEntry.File.FullName, contentEntry.Lines, contentEntry.Encoding);
+            }
         }
 
-        public IEnumerable<BumpyConfiguration> ReadConfig(DirectoryInfo directory)
+        public IEnumerable<BumpyConfiguration> ReadConfigLazy(DirectoryInfo directory)
         {
             directory.ThrowIfNull(nameof(directory));
 
             var configPath = Path.Combine(directory.FullName, _bumpyConfig);
-            List<BumpyConfiguration> config = new List<BumpyConfiguration>();
-            var lines = File.ReadAllLines(configPath);
+            var lines = File.ReadLines(configPath);
 
             foreach (var line in lines)
             {
@@ -67,15 +71,9 @@ namespace Bumpy.Util
                 var split = line.Split('=');
                 var glob = split[0].Trim();
                 var regex = string.Join("=", split, 1, split.Length - 1).Trim();
-                config.Add(new BumpyConfiguration(glob, regex));
-            }
 
-            if (config.Count == 0)
-            {
-                throw new IOException("The configuration file does not contain any data");
+                yield return new BumpyConfiguration(glob, regex);
             }
-
-            return config;
         }
 
         public void CreateConfig(DirectoryInfo directory)

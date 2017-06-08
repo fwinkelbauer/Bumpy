@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using Bumpy.Util;
 
@@ -10,18 +9,20 @@ namespace Bumpy
         public static void Main(string[] args)
         {
             var fileUtil = new FileUtil();
-            var commands = new Commands(fileUtil, (s) => Console.WriteLine(s));
             var directory = new DirectoryInfo(@".");
+            Commands commands = null;
 
             try
             {
-                Execute(commands, directory, args);
+                var config = fileUtil.ReadConfigLazy(directory);
+                commands = new Commands(config, directory, fileUtil, (s) => Console.WriteLine(s));
+                Execute(commands, args);
             }
             catch (Exception e)
             {
                 Console.WriteLine("Error: " + e.Message);
                 Console.WriteLine();
-                commands.PrintHelp();
+                commands?.CommandPrintHelp();
                 Environment.ExitCode = 1;
             }
 
@@ -33,46 +34,34 @@ namespace Bumpy
             }
         }
 
-        private static void Execute(Commands commands, DirectoryInfo directory, string[] args)
+        private static void Execute(Commands commands, string[] args)
         {
             int position = -1;
             int number = -1;
 
             if (args.Length == 1 && args[0].Equals("-l"))
             {
-                var config = commands.ReadConfigFile(directory);
-                ForEachConfig(config, (glob, regex) => { commands.List(directory, glob, regex); });
+                commands.CommandList();
             }
             else if (args.Length == 1 && args[0].Equals("-c"))
             {
-                commands.CreateConfigFile(directory);
+                commands.CommandCreateConfig();
             }
             else if (args.Length == 2 && args[0].Equals("-i") && int.TryParse(args[1], out position))
             {
-                var config = commands.ReadConfigFile(directory);
-                ForEachConfig(config, (glob, regex) => { commands.Increment(directory, glob, regex, position); });
+                commands.CommandIncrement(position);
             }
             else if (args.Length == 2 && args[0].Equals("-w"))
             {
-                var config = commands.ReadConfigFile(directory);
-                ForEachConfig(config, (glob, regex) => { commands.Write(directory, glob, regex, args[1]); });
+                commands.CommandWrite(args[1]);
             }
             else if (args.Length == 3 && args[0].Equals("-a") && int.TryParse(args[1], out position) && int.TryParse(args[2], out number))
             {
-                var config = commands.ReadConfigFile(directory);
-                ForEachConfig(config, (glob, regex) => { commands.Assign(directory, glob, regex, position, number); });
+                commands.CommandAssign(position, number);
             }
             else
             {
-                commands.PrintHelp();
-            }
-        }
-
-        private static void ForEachConfig(IEnumerable<BumpyConfiguration> config, Action<string, string> action)
-        {
-            foreach (var entry in config)
-            {
-                action(entry.GlobPattern, entry.RegularExpression);
+                commands.CommandPrintHelp();
             }
         }
     }
