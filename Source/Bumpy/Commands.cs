@@ -11,132 +11,56 @@ namespace Bumpy
     public class Commands
     {
         // TODO fw test, refactor and simplify this class
+        private readonly IEnumerable<BumpyConfiguration> _config;
         private readonly IFileUtil _fileUtil;
+        private readonly DirectoryInfo _directory;
         private readonly Action<string> _writeLine;
 
-        public Commands(IFileUtil fileUtil, Action<string> writeLine)
+        public Commands(IEnumerable<BumpyConfiguration> config, DirectoryInfo directory, IFileUtil fileUtil, Action<string> writeLine)
         {
+            _config = config.ThrowIfNull(nameof(config));
+            _directory = directory.ThrowIfNull(nameof(directory));
             _fileUtil = fileUtil.ThrowIfNull(nameof(fileUtil));
             _writeLine = writeLine.ThrowIfNull(nameof(writeLine));
         }
 
-        public void Increment(DirectoryInfo directory, string globPattern, string regexPattern, int position)
+        public void CommandList()
         {
-            var files = _fileUtil.GetFiles(directory, globPattern);
-
-            foreach (var file in files)
+            foreach (var configEntry in _config)
             {
-                var content = _fileUtil.ReadFile(file);
-                var lines = content.Lines.ToList();
-                List<string> newLines = new List<string>();
-
-                for (int i = 0; i < lines.Count; i++)
+                PerformOnContent(configEntry, (content, i, readVersion) =>
                 {
-                    var readVersion = VersionHelper.FindVersion(lines[i], regexPattern);
-                    var newLine = lines[i];
-
                     if (readVersion != null)
                     {
-                        var newVersion = readVersion.Increment(position);
-                        newLine = VersionHelper.ReplaceVersionInText(lines[i], regexPattern, newVersion);
-                        _writeLine($"{ToRelativePath(directory, file)} ({i}): {readVersion} -> {newVersion}");
+                        _writeLine($"{ToRelativePath(content.File)} ({i}): {readVersion}");
                     }
-
-                    newLines.Add(newLine);
-                }
-
-                _fileUtil.WriteFile(file, new FileContent(newLines, content.Encoding));
+                });
             }
         }
 
-        public void List(DirectoryInfo directory, string globPattern, string regexPattern)
+        public void CommandIncrement(int position)
         {
-            var files = _fileUtil.GetFiles(directory, globPattern);
-
-            foreach (var file in files)
-            {
-                var content = _fileUtil.ReadFile(file);
-                var lines = content.Lines.ToList();
-
-                for (int i = 0; i < lines.Count; i++)
-                {
-                    var readVersion = VersionHelper.FindVersion(lines[i], regexPattern);
-
-                    if (readVersion != null)
-                    {
-                        _writeLine($"{ToRelativePath(directory, file)} ({i}): {readVersion}");
-                    }
-                }
-            }
+            WriteContent(_config, version => version.Increment(position));
         }
 
-        public void Assign(DirectoryInfo directory, string globPattern, string regexPattern, int position, int number)
+        public void CommandAssign(int position, int number)
         {
-            var files = _fileUtil.GetFiles(directory, globPattern);
-
-            foreach (var file in files)
-            {
-                var content = _fileUtil.ReadFile(file);
-                var lines = content.Lines.ToList();
-                List<string> newLines = new List<string>();
-
-                for (int i = 0; i < lines.Count; i++)
-                {
-                    var readVersion = VersionHelper.FindVersion(lines[i], regexPattern);
-                    var newLine = lines[i];
-
-                    if (readVersion != null)
-                    {
-                        var newVersion = readVersion.Assign(position, number);
-                        newLine = VersionHelper.ReplaceVersionInText(lines[i], regexPattern, newVersion);
-                        _writeLine($"{ToRelativePath(directory, file)} ({i}): {readVersion} -> {newVersion}");
-                    }
-
-                    newLines.Add(newLine);
-                }
-
-                _fileUtil.WriteFile(file, new FileContent(newLines, content.Encoding));
-            }
+            WriteContent(_config, version => version.Assign(position, number));
         }
 
-        public void Write(DirectoryInfo directory, string globPattern, string regexPattern, string versionText)
+        public void CommandWrite(string versionText)
         {
-            var files = _fileUtil.GetFiles(directory, globPattern);
             var newVersion = VersionHelper.ParseVersionFromText(versionText);
 
-            foreach (var file in files)
-            {
-                var content = _fileUtil.ReadFile(file);
-                var lines = content.Lines.ToList();
-                List<string> newLines = new List<string>();
-
-                for (int i = 0; i < lines.Count; i++)
-                {
-                    var readVersion = VersionHelper.FindVersion(lines[i], regexPattern);
-
-                    newLines.Add(VersionHelper.ReplaceVersionInText(lines[i], regexPattern, newVersion));
-
-                    if (readVersion != null)
-                    {
-                        _writeLine($"{ToRelativePath(directory, file)} ({i}): {readVersion} -> {newVersion}");
-                    }
-                }
-
-                _fileUtil.WriteFile(file, new FileContent(newLines, content.Encoding));
-            }
+            WriteContent(_config, version => newVersion);
         }
 
-        public void CreateConfigFile(DirectoryInfo directory)
+        public void CommandCreateConfig()
         {
-            _fileUtil.CreateConfig(directory);
+            _fileUtil.CreateConfig(_directory);
         }
 
-        public IEnumerable<BumpyConfiguration> ReadConfigFile(DirectoryInfo directory)
-        {
-            return _fileUtil.ReadConfig(directory);
-        }
-
-        public void PrintHelp()
+        public void CommandPrintHelp()
         {
             var builder = new StringBuilder();
             builder.AppendLine("Bumpy is a tool to maintain version information accross multiple files found in the current working directory");
@@ -156,9 +80,62 @@ namespace Bumpy
             _writeLine(builder.ToString());
         }
 
-        private string ToRelativePath(DirectoryInfo directory, FileInfo file)
+        private void WriteContent(IEnumerable<BumpyConfiguration> config, Func<BumpyVersion, BumpyVersion> transformFunction)
         {
-            return file.FullName.Substring(directory.FullName.Length);
+            List<FileContent> newContent = new List<FileContent>();
+
+            foreach (var configEntry in config)
+            {
+                newContent.AddRange(TransformContent(configEntry, transformFunction));
+            }
+
+            _fileUtil.WriteFiles(newContent);
+        }
+
+        private IEnumerable<FileContent> TransformContent(BumpyConfiguration config, Func<BumpyVersion, BumpyVersion> transformFunction)
+        {
+            var newLinesPerFile = new Dictionary<FileContent, List<string>>();
+
+            PerformOnContent(config, (content, i, readVersion) =>
+            {
+                var newLine = content.Lines[i];
+
+                if (readVersion != null)
+                {
+                    var newVersion = transformFunction(readVersion);
+                    newLine = VersionHelper.ReplaceVersionInText(content.Lines[i], config.RegularExpression, newVersion);
+                    _writeLine($"{ToRelativePath(content.File)} ({i}): {readVersion} -> {newVersion}");
+                }
+
+                if (!newLinesPerFile.ContainsKey(content))
+                {
+                    newLinesPerFile.Add(content, new List<string>());
+                }
+
+                newLinesPerFile[content].Add(newLine);
+            });
+
+            return newLinesPerFile.Select(dict => new FileContent(dict.Key.File, dict.Value, dict.Key.Encoding));
+        }
+
+        private void PerformOnContent(BumpyConfiguration config, Action<FileContent, int, BumpyVersion> versionInLineAction)
+        {
+            var files = _fileUtil.GetFiles(_directory, config.GlobPattern);
+            var contents = files.Select(file => _fileUtil.ReadFile(file));
+
+            foreach (var content in contents)
+            {
+                for (int i = 0; i < content.Lines.Count; i++)
+                {
+                    var readVersion = VersionHelper.FindVersion(content.Lines[i], config.RegularExpression);
+                    versionInLineAction(content, i, readVersion);
+                }
+            }
+        }
+
+        private string ToRelativePath(FileInfo file)
+        {
+            return file.FullName.Substring(_directory.FullName.Length);
         }
     }
 }

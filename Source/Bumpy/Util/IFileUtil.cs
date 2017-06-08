@@ -9,9 +9,9 @@ namespace Bumpy.Util
 
         FileContent ReadFile(FileInfo file);
 
-        void WriteFile(FileInfo file, FileContent content);
+        void WriteFiles(IEnumerable<FileContent> content);
 
-        IEnumerable<BumpyConfiguration> ReadConfig(DirectoryInfo directory);
+        IEnumerable<BumpyConfiguration> ReadConfigLazy(DirectoryInfo directory);
 
         void CreateConfig(DirectoryInfo directory);
     }
