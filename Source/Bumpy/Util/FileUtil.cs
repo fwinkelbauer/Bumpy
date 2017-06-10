@@ -21,7 +21,6 @@ namespace Bumpy.Util
             return Glob.GetMatches(path.Replace("\\", "/")).Select(s => new FileInfo(s));
         }
 
-        // TODO fw lazy load?
         public FileContent ReadFile(FileInfo file)
         {
             file.ThrowIfNull(nameof(file));
