@@ -10,7 +10,6 @@ namespace Bumpy
 {
     public class Commands
     {
-        // TODO fw test, refactor and simplify this class
         private readonly IEnumerable<BumpyConfiguration> _config;
         private readonly IFileUtil _fileUtil;
         private readonly DirectoryInfo _directory;
