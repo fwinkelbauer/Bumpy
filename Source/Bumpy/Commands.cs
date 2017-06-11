@@ -27,7 +27,7 @@ namespace Bumpy
         {
             foreach (var configEntry in _config)
             {
-                PerformOnContent(configEntry, (content, i, readVersion) =>
+                PerformOnContent(configEntry, (content, line, i, readVersion) =>
                 {
                     if (readVersion != null)
                     {
@@ -95,14 +95,14 @@ namespace Bumpy
         {
             var newLinesPerFile = new Dictionary<FileContent, List<string>>();
 
-            PerformOnContent(config, (content, i, readVersion) =>
+            PerformOnContent(config, (content, line, i, readVersion) =>
             {
-                var newLine = content.Lines[i];
+                var newLine = line;
 
                 if (readVersion != null)
                 {
                     var newVersion = transformFunction(readVersion);
-                    newLine = VersionHelper.ReplaceVersionInText(content.Lines[i], config.RegularExpression, newVersion);
+                    newLine = VersionHelper.ReplaceVersionInText(line, config.RegularExpression, newVersion);
                     _writeLine($"{ToRelativePath(content.File)} ({i}): {readVersion} -> {newVersion}");
                 }
 
@@ -117,17 +117,20 @@ namespace Bumpy
             return newLinesPerFile.Select(dict => new FileContent(dict.Key.File, dict.Value));
         }
 
-        private void PerformOnContent(BumpyConfiguration config, Action<FileContent, int, BumpyVersion> versionInLineAction)
+        private void PerformOnContent(BumpyConfiguration config, Action<FileContent, string, int, BumpyVersion> versionInLineAction)
         {
             var files = _fileUtil.GetFiles(_directory, config.SearchPattern);
             var contents = files.Select(file => _fileUtil.ReadFile(file));
 
             foreach (var content in contents)
             {
-                for (int i = 0; i < content.Lines.Count; i++)
+                int i = 0;
+
+                foreach (var line in content.Lines)
                 {
-                    var readVersion = VersionHelper.FindVersion(content.Lines[i], config.RegularExpression);
-                    versionInLineAction(content, i, readVersion);
+                    var readVersion = VersionHelper.FindVersion(line, config.RegularExpression);
+                    versionInLineAction(content, line, i, readVersion);
+                    i++;
                 }
             }
         }

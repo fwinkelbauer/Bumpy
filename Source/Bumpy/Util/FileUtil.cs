@@ -21,7 +21,7 @@ namespace Bumpy.Util
         {
             file.ThrowIfNull(nameof(file));
 
-            return new FileContent(file, File.ReadAllLines(file.FullName));
+            return new FileContent(file, File.ReadLines(file.FullName));
         }
 
         public void WriteFiles(IEnumerable<FileContent> content)

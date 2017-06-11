@@ -5,7 +5,7 @@ namespace Bumpy.Util
 {
     public class FileContent
     {
-        public FileContent(FileInfo file, IList<string> lines)
+        public FileContent(FileInfo file, IEnumerable<string> lines)
         {
             File = file;
             Lines = lines;
@@ -13,6 +13,6 @@ namespace Bumpy.Util
 
         public FileInfo File { get; }
 
-        public IList<string> Lines { get; }
+        public IEnumerable<string> Lines { get; }
     }
 }
