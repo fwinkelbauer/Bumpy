@@ -2,6 +2,8 @@
 
 Bumpy is a tool to maintain version information across multiple files found in the current working directory using a configuration file which consists of glob patterns and regular expressions.
 
+**Note:** As Bumpy's behaviour is heavily influenced by your configuration (see below), make sure that your files are kept under version control so that you can easily verify that everything works as expected.
+
 ## Usage
 
 Bumpy is a command line tool:
@@ -9,6 +11,8 @@ Bumpy is a command line tool:
 ```
 bumpy <command> <arguments>
 ```
+
+Check out the `.bumpyconfig` file to see how the following examples were created.
 
 ### List
 
@@ -107,10 +111,6 @@ NuSpec\**\*.nuspec = <version>(?<version>\d+(\.\d+)+)
 For each line of a specific file (found through the glob pattern) Bumpy uses the provided regular expression to extract the named regex group `?<version>`.
 
 **Note:** The content of the `?<version>` group has to match the form`\d+(\.\d+)*` (meaning `1`, `1.0`, `1.0.0`, `1.0.0.0` and so on) as this is the only format that is currently supported by Bumpy.
-
-## Example
-
-Check out the `.bumpyconfig` file to see how I manage Bumpy's version files using Bumpy.
 
 ## Trivia
 
