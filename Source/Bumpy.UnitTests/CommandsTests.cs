@@ -155,7 +155,7 @@ namespace Bumpy.UnitTests
             var file = new FileInfo("file");
 
             fileUtil.GetFiles(Arg.Any<DirectoryInfo>(), Arg.Any<string>()).Returns(new[] { file });
-            fileUtil.ReadFile(Arg.Any<FileInfo>()).Returns(new FileContent(file, lines, Encoding.UTF8));
+            fileUtil.ReadFile(Arg.Any<FileInfo>()).Returns(new FileContent(file, lines));
 
             return fileUtil;
         }
