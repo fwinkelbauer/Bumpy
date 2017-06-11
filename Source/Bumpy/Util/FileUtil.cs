@@ -21,20 +21,7 @@ namespace Bumpy.Util
         {
             file.ThrowIfNull(nameof(file));
 
-            using (var reader = new StreamReader(file.FullName))
-            {
-                var lines = new List<string>();
-                string line = null;
-
-                while ((line = reader.ReadLine()) != null)
-                {
-                    lines.Add(line);
-                }
-
-                var encoding = reader.CurrentEncoding;
-
-                return new FileContent(file, lines, encoding);
-            }
+            return new FileContent(file, File.ReadAllLines(file.FullName));
         }
 
         public void WriteFiles(IEnumerable<FileContent> content)
@@ -45,7 +32,7 @@ namespace Bumpy.Util
             {
                 contentEntry.ThrowIfNull(nameof(contentEntry));
 
-                File.WriteAllLines(contentEntry.File.FullName, contentEntry.Lines, contentEntry.Encoding);
+                File.WriteAllLines(contentEntry.File.FullName, contentEntry.Lines, Encoding.UTF8);
             }
         }
 

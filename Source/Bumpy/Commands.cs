@@ -114,7 +114,7 @@ namespace Bumpy
                 newLinesPerFile[content].Add(newLine);
             });
 
-            return newLinesPerFile.Select(dict => new FileContent(dict.Key.File, dict.Value, dict.Key.Encoding));
+            return newLinesPerFile.Select(dict => new FileContent(dict.Key.File, dict.Value));
         }
 
         private void PerformOnContent(BumpyConfiguration config, Action<FileContent, int, BumpyVersion> versionInLineAction)
