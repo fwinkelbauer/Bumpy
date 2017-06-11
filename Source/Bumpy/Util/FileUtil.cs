@@ -14,7 +14,7 @@ namespace Bumpy.Util
             directory.ThrowIfNull(nameof(directory));
             searchPattern.ThrowIfNull(nameof(searchPattern));
 
-            return directory.GetFiles(searchPattern, SearchOption.AllDirectories);
+            return directory.EnumerateFiles(searchPattern, SearchOption.AllDirectories);
         }
 
         public FileContent ReadFile(FileInfo file)
