@@ -1,6 +1,6 @@
 # Bumpy
 
-Bumpy is a tool to maintain version information across multiple files found in the current working directory using a configuration file which consists of glob patterns and regular expressions.
+Bumpy is a tool to maintain version information across multiple files found in the current working directory using a configuration file which consists of file search patterns and regular expressions.
 
 **Note:** As Bumpy's behaviour is heavily influenced by your configuration (see below), make sure that your files are kept under version control so that you can easily verify that everything works as expected.
 
@@ -101,14 +101,14 @@ Replaces the specified component of a version with a new number. This command co
 
 ## Configuration
 
-Bumpy's configuration is based on the presence of a `.bumpyconfig` file in the current working directory. This file dictates the behaviour of Bumpy using a pair of glob patterns and regex expressions, e.g:
+Bumpy's configuration is based on the presence of a `.bumpyconfig` file in the current working directory. This file dictates the behaviour of Bumpy using a pair of file [search patterns](https://msdn.microsoft.com/en-us/library/8he88b63(v=vs.110).aspx) and regular expressions, e.g:
 
 ```
 # Captures the version tag in all .nuspec files
-NuSpec\**\*.nuspec = <version>(?<version>\d+(\.\d+)+)
+*.nuspec = <version>(?<version>\d+(\.\d+)+)
 ```
 
-For each line of a specific file (found through the glob pattern) Bumpy uses the provided regular expression to extract the named regex group `?<version>`.
+For each line of a specific file (found through the file search pattern) Bumpy uses the provided regular expression to extract the named regex group `?<version>`.
 
 **Note:** The content of the `?<version>` group has to match the form`\d+(\.\d+)*` (meaning `1`, `1.0`, `1.0.0`, `1.0.0.0` and so on) as this is the only format that is currently supported by Bumpy.
 

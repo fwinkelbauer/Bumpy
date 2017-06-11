@@ -119,7 +119,7 @@ namespace Bumpy
 
         private void PerformOnContent(BumpyConfiguration config, Action<FileContent, int, BumpyVersion> versionInLineAction)
         {
-            var files = _fileUtil.GetFiles(_directory, config.GlobPattern);
+            var files = _fileUtil.GetFiles(_directory, config.SearchPattern);
             var contents = files.Select(file => _fileUtil.ReadFile(file));
 
             foreach (var content in contents)

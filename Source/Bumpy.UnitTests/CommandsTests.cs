@@ -174,7 +174,7 @@ namespace Bumpy.UnitTests
         {
             config = config ?? new List<BumpyConfiguration>()
             {
-                new BumpyConfiguration("glob", @"(?<version>\d+\.\d+\.\d+)")
+                new BumpyConfiguration("search", @"(?<version>\d+\.\d+\.\d+)")
             };
 
             directory = directory ?? new DirectoryInfo(".");

@@ -1,5 +1,5 @@
 # Captures AssemblyVersion and AssemblyFileVersion in all AssemblyInfo.cs files
-Source\**\AssemblyInfo.cs = (?<version>\d+\.\d+\.\d+\.\d+)
+Source\AssemblyInfo.cs = (?<version>\d+\.\d+\.\d+\.\d+)
 
 # Captures the version tag in all .nuspec files
-NuSpec\**\*.nuspec = <version>(?<version>\d+(\.\d+)+)
+NuSpec\*.nuspec = <version>(?<version>\d+(\.\d+)+)

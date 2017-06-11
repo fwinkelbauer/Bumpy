@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using GlobDir;
 
 namespace Bumpy.Util
 {
@@ -11,14 +9,12 @@ namespace Bumpy.Util
     {
         private const string _bumpyConfig = ".bumpyconfig";
 
-        public IEnumerable<FileInfo> GetFiles(DirectoryInfo directory, string globPattern)
+        public IEnumerable<FileInfo> GetFiles(DirectoryInfo directory, string searchPattern)
         {
             directory.ThrowIfNull(nameof(directory));
-            globPattern.ThrowIfNull(nameof(globPattern));
+            searchPattern.ThrowIfNull(nameof(searchPattern));
 
-            var path = Path.Combine(directory.FullName, globPattern);
-
-            return Glob.GetMatches(path.Replace("\\", "/")).Select(s => new FileInfo(s));
+            return directory.GetFiles(searchPattern, SearchOption.AllDirectories);
         }
 
         public FileContent ReadFile(FileInfo file)
@@ -68,10 +64,10 @@ namespace Bumpy.Util
                 }
 
                 var split = line.Split('=');
-                var glob = split[0].Trim();
-                var regex = string.Join("=", split, 1, split.Length - 1).Trim();
+                var searchPattern = split[0].Trim();
+                var regularExpression = string.Join("=", split, 1, split.Length - 1).Trim();
 
-                yield return new BumpyConfiguration(glob, regex);
+                yield return new BumpyConfiguration(searchPattern, regularExpression);
             }
         }
 
@@ -89,7 +85,7 @@ namespace Bumpy.Util
             var builder = new StringBuilder();
             builder.AppendLine("# Configuration file for Bumpy");
             builder.AppendLine();
-            builder.AppendLine("# Usage: <glob pattern> = <regular expression>");
+            builder.AppendLine("# Usage: <search pattern> = <regular expression>");
             builder.AppendLine("# Note that the regular expression must contain a named group 'version' which contains the actual version information");
             builder.AppendLine();
             builder.AppendLine("# Example: Searches for version information of the format a.b.c.d (e.g. 1.22.7.50) in all AssemblyInfo.cs files");
