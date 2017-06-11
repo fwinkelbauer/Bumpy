@@ -2,13 +2,13 @@
 {
     public class BumpyConfiguration
     {
-        public BumpyConfiguration(string glob, string regex)
+        public BumpyConfiguration(string searchPattern, string regularExpression)
         {
-            GlobPattern = glob;
-            RegularExpression = regex;
+            SearchPattern = searchPattern;
+            RegularExpression = regularExpression;
         }
 
-        public string GlobPattern { get; }
+        public string SearchPattern { get; }
 
         public string RegularExpression { get; }
     }

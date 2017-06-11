@@ -12,10 +12,9 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <tags>Versioning Build</tags>
     <summary>A tool to maintain version information across multiple files.</summary>
-    <description>Bumpy is a tool to maintain version information across multiple files found in the current working directory using a configuration file which consists of glob patterns and regular expressions.</description>
+    <description>Bumpy is a tool to maintain version information across multiple files found in the current working directory using a configuration file which consists of file search patterns and regular expressions.</description>
   </metadata>
   <files>
     <file src=".\..\..\Source\Bumpy\bin\Release\Bumpy.exe" target="tools" />
-    <file src=".\..\..\Source\Bumpy\bin\Release\GlobDir.dll" target="tools" />
   </files>
 </package>

@@ -5,7 +5,7 @@ namespace Bumpy.Util
 {
     public interface IFileUtil
     {
-        IEnumerable<FileInfo> GetFiles(DirectoryInfo directory, string globPattern);
+        IEnumerable<FileInfo> GetFiles(DirectoryInfo directory, string searchPattern);
 
         FileContent ReadFile(FileInfo file);
 
