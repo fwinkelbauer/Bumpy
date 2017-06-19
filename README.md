@@ -27,8 +27,6 @@ Lists all versions.
 ```
 \Source\Bumpy\Properties\AssemblyInfo.cs (35): 0.1.0.0
 \Source\Bumpy\Properties\AssemblyInfo.cs (36): 0.1.0.0
-\Source\Bumpy.UnitTests\Properties\AssemblyInfo.cs (34): 0.1.0.0
-\Source\Bumpy.UnitTests\Properties\AssemblyInfo.cs (35): 0.1.0.0
 \NuSpec\Chocolatey\Bumpy.nuspec (5): 0.1.0
 ```
 
@@ -53,8 +51,6 @@ Increments the specified component of each version.
 ```
 \Source\Bumpy\Properties\AssemblyInfo.cs (35): 0.1.0.0 -> 0.2.0.0
 \Source\Bumpy\Properties\AssemblyInfo.cs (36): 0.1.0.0 -> 0.2.0.0
-\Source\Bumpy.UnitTests\Properties\AssemblyInfo.cs (34): 0.1.0.0 -> 0.2.0.0
-\Source\Bumpy.UnitTests\Properties\AssemblyInfo.cs (35): 0.1.0.0 -> 0.2.0.0
 \NuSpec\Chocolatey\Bumpy.nuspec (5): 0.1.0 -> 0.2.0
 ```
 
@@ -76,8 +72,6 @@ This command could be used to e.g:
 ```
 \Source\Bumpy\Properties\AssemblyInfo.cs (35): 0.2.0.0 -> 1.2.0.5
 \Source\Bumpy\Properties\AssemblyInfo.cs (36): 0.2.0.0 -> 1.2.0.5
-\Source\Bumpy.UnitTests\Properties\AssemblyInfo.cs (34): 0.2.0.0 -> 1.2.0.5
-\Source\Bumpy.UnitTests\Properties\AssemblyInfo.cs (35): 0.2.0.0 -> 1.2.0.5
 \NuSpec\Chocolatey\Bumpy.nuspec (5): 0.2.0 -> 1.2.0.5
 ```
 
@@ -94,8 +88,6 @@ Replaces the specified component of a version with a new number. This command co
 ```
 \Source\Bumpy\Properties\AssemblyInfo.cs (35): 1.2.0.5 -> 1.2.99.5
 \Source\Bumpy\Properties\AssemblyInfo.cs (36): 1.2.0.5 -> 1.2.99.5
-\Source\Bumpy.UnitTests\Properties\AssemblyInfo.cs (34): 1.2.0.5 -> 1.2.99.5
-\Source\Bumpy.UnitTests\Properties\AssemblyInfo.cs (35): 1.2.0.5 -> 1.2.99.5
 \NuSpec\Chocolatey\Bumpy.nuspec (5): 1.2.0.5 -> 1.2.99.5
 ```
 
