@@ -1,8 +1,8 @@
 # Bumpy
 
-Bumpy is a tool to maintain version information across multiple files found in the current working directory using a configuration file which consists of file search patterns and regular expressions.
+Bumpy is a tool to manipulate version information across multiple files found in the current working directory using a configuration file which consists of file [search patterns](https://msdn.microsoft.com/en-us/library/8he88b63(v=vs.110).aspx) and regular expressions.
 
-**Note:** As Bumpy's behaviour is heavily influenced by your configuration (see below), make sure that your files are kept under version control so that you can easily verify that everything works as expected.
+**Note:** As Bumpy's behaviour is heavily influenced by the provided configuration (see below), make sure that your files are kept under version control so that you can easily verify Bumpy's results.
 
 ## Usage
 
@@ -12,7 +12,7 @@ Bumpy is a command line tool:
 bumpy <command> <arguments>
 ```
 
-Check out the `.bumpyconfig` file to see how the following examples were created.
+Check out the `.bumpyconfig` file to see how the following examples were created:
 
 ### List
 

@@ -8,11 +8,11 @@
     <projectUrl>https://github.com/fwinkelbauer/Bumpy</projectUrl>
     <licenseUrl>https://github.com/fwinkelbauer/Bumpy/blob/master/LICENSE</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <tags>Versioning Build</tags>
-    <summary>A tool to maintain version information across multiple files.</summary>
-    <description>Bumpy is a tool to maintain version information across multiple files found in the current working directory using a configuration file which consists of file search patterns and regular expressions.</description>
+    <tags>Versioning Build AssemblyInfo NuSpec</tags>
+    <summary>A tool to manipulate version information across multiple files.</summary>
+    <description>Bumpy is a tool to manipulate version information across multiple files found in the current working directory using a configuration file which consists of file search patterns and regular expressions.</description>
   </metadata>
   <files>
-    <file src=".\..\..\Source\Bumpy\bin\Release\Bumpy.exe" target="tools" />
+    <file src=".\..\..\BuildArtifacts\Output\Bumpy\Bumpy.exe" target="tools" />
   </files>
 </package>
