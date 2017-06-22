@@ -26,9 +26,7 @@ namespace Bumpy.Util
 
         public void WriteFiles(IEnumerable<FileContent> content)
         {
-            content.ThrowIfNull(nameof(content));
-
-            foreach (var contentEntry in content)
+            foreach (var contentEntry in content.ThrowIfNull(nameof(content)))
             {
                 contentEntry.ThrowIfNull(nameof(contentEntry));
 
