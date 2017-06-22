@@ -4,7 +4,12 @@ Bumpy is a tool to manipulate version information across multiple files found in
 
 **Note:** As Bumpy's behaviour is heavily influenced by the provided configuration (see below), make sure that your files are kept under version control so that you can easily verify Bumpy's results.
 
-## Usage
+## Why?
+
+Most of the build systems that I have seen in the past create a workflow in which they utilize a single source (e.g. a file called `version.txt`) to inject version information into a set of files (`AssemblyInfo.cs`, `*.csproj`, `*.nuspec`, `*.xml`, `*.yaml`, ...).
+This would also mean that some files would contain a "blank version" (such as 0.0.0.0) which would remind developers that they should not touch that file manually. Even though this is a valid solution, it just wasn't for me. That's why Bumpy was born.
+
+## Usage & Examples
 
 Bumpy is a command line tool:
 
@@ -12,7 +17,7 @@ Bumpy is a command line tool:
 bumpy <command> <arguments>
 ```
 
-Check out the `.bumpyconfig` file to see how the following examples were created:
+Check out the `.bumpyconfig` file [here](https://github.com/fwinkelbauer/Bumpy/blob/master/.bumpyconfig) to see how the following examples were created directly using this repository:
 
 ### List
 
