@@ -16,5 +16,7 @@
   </metadata>
   <files>
     <file src=".\..\..\BuildArtifacts\Output\Bumpy\Bumpy.exe" target="tools" />
+    <file src=".\..\..\LICENSE.txt" target="tools" />
+    <file src=".\..\..\VERIFICATION.txt" target="tools" />
   </files>
 </package>
