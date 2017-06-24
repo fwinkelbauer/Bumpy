@@ -69,7 +69,7 @@ namespace Bumpy.UnitTests.Version
         [TestMethod]
         public void FindVersion_InvalidRegexWithNamedGroup()
         {
-            Assert.ThrowsException<ArgumentException>(() => VersionHelper.FindVersion("1a", @"(?<version>1a)"));
+            Assert.ThrowsException<ArgumentException>(() => VersionHelper.FindVersion("1.0//", @"(?<version>1.0//)"));
         }
 
         [TestMethod]
@@ -85,6 +85,11 @@ namespace Bumpy.UnitTests.Version
         [DataRow("100.5")]
         [DataRow("2020.100.143")]
         [DataRow("1.0.0.9")]
+        [DataRow("1.0.0.9-foo")]
+        [DataRow("1.100a")]
+        [DataRow("18.5.3-beta03")]
+        [DataRow("8.25.3-beta03+master0004")]
+        [DataRow("8.5.43+bar")]
         public void ParseVersionFromText_ValidText(string versionText)
         {
             var version = VersionHelper.ParseVersionFromText(versionText);
