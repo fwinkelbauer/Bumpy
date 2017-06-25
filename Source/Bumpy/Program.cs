@@ -53,6 +53,10 @@ namespace Bumpy
             {
                 commands.CommandCreateConfig();
             }
+            else if (args.Length == 1 && args[0].Equals("-p"))
+            {
+                commands.CommandPrintProfiles(config);
+            }
             else if (args.Length == 2 && args[0].Equals("-i") && int.TryParse(args[1], out position))
             {
                 commands.CommandIncrement(config, position);
