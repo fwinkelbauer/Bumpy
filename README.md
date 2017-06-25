@@ -109,6 +109,8 @@ For each line of a specific file (found through the file search pattern) Bumpy u
 
 **Note:** The content of the `?<version>` group has to match the form`\d+(\.\d+)*` (meaning `1`, `1.0`, `1.0.0`, `1.0.0.0` and so on) as this is the only format that is currently supported by Bumpy.
 
+Type `bumpy -c` to create a new configuration file. This file contains additional information about configuration possibilities (e.g. how to change the read/write encoding).
+
 ## Trivia
 
 - The name Bumpy is loosely based on the phrase "to bump something up" instead of the original meaning of the word (e.g. "a bumpy road")

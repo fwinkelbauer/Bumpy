@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using Bumpy.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
@@ -154,7 +155,7 @@ namespace Bumpy.UnitTests
             var file = new FileInfo("file");
 
             fileUtil.GetFiles(Arg.Any<DirectoryInfo>(), Arg.Any<string>()).Returns(new[] { file });
-            fileUtil.ReadFile(Arg.Any<FileInfo>()).Returns(new FileContent(file, lines));
+            fileUtil.ReadFile(Arg.Any<FileInfo>(), Arg.Any<Encoding>()).Returns(new FileContent(file, lines, new UTF8Encoding(false)));
 
             return fileUtil;
         }
@@ -173,7 +174,7 @@ namespace Bumpy.UnitTests
         {
             config = config ?? new List<BumpyConfiguration>()
             {
-                new BumpyConfiguration("search", @"(?<version>\d+\.\d+\.\d+)")
+                new BumpyConfiguration("search", @"(?<version>\d+\.\d+\.\d+)", new UTF8Encoding(false))
             };
 
             directory = directory ?? new DirectoryInfo(".");
