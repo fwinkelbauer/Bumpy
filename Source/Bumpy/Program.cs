@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Bumpy.Util;
 
 namespace Bumpy
@@ -44,6 +45,10 @@ namespace Bumpy
             {
                 commands.CommandList(config);
             }
+            else if (args.Length == 2 && args[1].Equals("-l"))
+            {
+                commands.CommandList(config.Where(c => c.Profile == args[0]));
+            }
             else if (args.Length == 1 && args[0].Equals("-c"))
             {
                 commands.CommandCreateConfig();
@@ -52,13 +57,25 @@ namespace Bumpy
             {
                 commands.CommandIncrement(config, position);
             }
+            else if (args.Length == 3 && args[1].Equals("-i") && int.TryParse(args[2], out position))
+            {
+                commands.CommandIncrement(config.Where(c => c.Profile == args[0]), position);
+            }
             else if (args.Length == 2 && args[0].Equals("-w"))
             {
                 commands.CommandWrite(config, args[1]);
             }
+            else if (args.Length == 3 && args[1].Equals("-w"))
+            {
+                commands.CommandWrite(config.Where(c => c.Profile == args[0]), args[2]);
+            }
             else if (args.Length == 3 && args[0].Equals("-a") && int.TryParse(args[1], out position) && int.TryParse(args[2], out number))
             {
                 commands.CommandAssign(config, position, number);
+            }
+            else if (args.Length == 4 && args[1].Equals("-a") && int.TryParse(args[2], out position) && int.TryParse(args[3], out number))
+            {
+                commands.CommandAssign(config.Where(c => c.Profile == args[0]), position, number);
             }
             else
             {
