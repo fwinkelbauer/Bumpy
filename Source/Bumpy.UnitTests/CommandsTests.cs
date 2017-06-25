@@ -174,7 +174,7 @@ namespace Bumpy.UnitTests
         {
             config = config ?? new List<BumpyConfiguration>()
             {
-                new BumpyConfiguration("search", @"(?<version>\d+\.\d+\.\d+)", new UTF8Encoding(false))
+                new BumpyConfiguration(BumpyConfiguration.DefaultProfile, "search", @"(?<version>\d+\.\d+\.\d+)", new UTF8Encoding(false))
             };
 
             directory = directory ?? new DirectoryInfo(".");
