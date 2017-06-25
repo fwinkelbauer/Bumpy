@@ -43,7 +43,7 @@ namespace Bumpy.UnitTests
             var writeAction = Substitute.For<Action<string>>();
             var commands = CreateCommands(fileUtil: fileUtil, writeAction: writeAction);
 
-            commands.CommandList();
+            commands.CommandList(CreateConfiguration());
 
             writeAction.DidNotReceive().Invoke(Arg.Any<string>());
         }
@@ -56,7 +56,7 @@ namespace Bumpy.UnitTests
             var writeAction = Substitute.For<Action<string>>();
             var commands = CreateCommands(fileUtil: fileUtil, writeAction: writeAction);
 
-            commands.CommandList();
+            commands.CommandList(CreateConfiguration());
 
             writeAction.Received().Invoke(@"\file (1): 1.2.3");
             writeAction.Received().Invoke(@"\file (3): 1.22.333");
@@ -70,7 +70,7 @@ namespace Bumpy.UnitTests
             var writeAction = Substitute.For<Action<string>>();
             var commands = CreateCommands(fileUtil: fileUtil, writeAction: writeAction);
 
-            commands.CommandIncrement(1);
+            commands.CommandIncrement(CreateConfiguration(), 1);
 
             fileUtil.Received().WriteFiles(Arg.Is<IEnumerable<FileContent>>(f => VerifyFileContents(lines, f)));
             writeAction.DidNotReceive().Invoke(Arg.Any<string>());
@@ -84,7 +84,7 @@ namespace Bumpy.UnitTests
             var writeAction = Substitute.For<Action<string>>();
             var commands = CreateCommands(fileUtil: fileUtil, writeAction: writeAction);
 
-            commands.CommandIncrement(1);
+            commands.CommandIncrement(CreateConfiguration(), 1);
 
             fileUtil.Received().WriteFiles(Arg.Is<IEnumerable<FileContent>>(f => VerifyFileContents(new List<string>() { "aaaaa", "2.0.0", "1.2.a", "2.0.0", "3.2a" }, f)));
             writeAction.Received().Invoke(@"\file (1): 1.2.3 -> 2.0.0");
@@ -99,7 +99,7 @@ namespace Bumpy.UnitTests
             var writeAction = Substitute.For<Action<string>>();
             var commands = CreateCommands(fileUtil: fileUtil, writeAction: writeAction);
 
-            commands.CommandAssign(3, 42);
+            commands.CommandAssign(CreateConfiguration(), 3, 42);
 
             fileUtil.Received().WriteFiles(Arg.Is<IEnumerable<FileContent>>(f => VerifyFileContents(lines, f)));
             writeAction.DidNotReceive().Invoke(Arg.Any<string>());
@@ -113,7 +113,7 @@ namespace Bumpy.UnitTests
             var writeAction = Substitute.For<Action<string>>();
             var commands = CreateCommands(fileUtil: fileUtil, writeAction: writeAction);
 
-            commands.CommandAssign(3, 42);
+            commands.CommandAssign(CreateConfiguration(), 3, 42);
 
             fileUtil.Received().WriteFiles(Arg.Is<IEnumerable<FileContent>>(f => VerifyFileContents(new List<string>() { "aaaaa", "1.2.42", "1.2.a", "1.22.42", "3.2a" }, f)));
             writeAction.Received().Invoke(@"\file (1): 1.2.3 -> 1.2.42");
@@ -128,7 +128,7 @@ namespace Bumpy.UnitTests
             var writeAction = Substitute.For<Action<string>>();
             var commands = CreateCommands(fileUtil: fileUtil, writeAction: writeAction);
 
-            commands.CommandWrite("4.2.4");
+            commands.CommandWrite(CreateConfiguration(), "4.2.4");
 
             fileUtil.Received().WriteFiles(Arg.Is<IEnumerable<FileContent>>(f => VerifyFileContents(lines, f)));
             writeAction.DidNotReceive().Invoke(Arg.Any<string>());
@@ -142,7 +142,7 @@ namespace Bumpy.UnitTests
             var writeAction = Substitute.For<Action<string>>();
             var commands = CreateCommands(fileUtil: fileUtil, writeAction: writeAction);
 
-            commands.CommandWrite("4.2.4");
+            commands.CommandWrite(CreateConfiguration(), "4.2.4");
 
             fileUtil.Received().WriteFiles(Arg.Is<IEnumerable<FileContent>>(f => VerifyFileContents(new List<string>() { "aaaaa", "4.2.4", "1.2.a", "4.2.4", "3.2a" }, f)));
             writeAction.Received().Invoke(@"\file (1): 1.2.3 -> 4.2.4");
@@ -170,18 +170,21 @@ namespace Bumpy.UnitTests
             return true;
         }
 
-        private static Commands CreateCommands(List<BumpyConfiguration> config = null, DirectoryInfo directory = null, IFileUtil fileUtil = null, Action<string> writeAction = null)
+        private static IEnumerable<BumpyConfiguration> CreateConfiguration()
         {
-            config = config ?? new List<BumpyConfiguration>()
+            return new List<BumpyConfiguration>()
             {
                 new BumpyConfiguration(BumpyConfiguration.DefaultProfile, "search", @"(?<version>\d+\.\d+\.\d+)", new UTF8Encoding(false))
             };
+        }
 
+        private static Commands CreateCommands(DirectoryInfo directory = null, IFileUtil fileUtil = null, Action<string> writeAction = null)
+        {
             directory = directory ?? new DirectoryInfo(".");
             fileUtil = fileUtil ?? Substitute.For<IFileUtil>();
             writeAction = writeAction ?? (s => { });
 
-            return new Commands(config, directory, fileUtil, writeAction);
+            return new Commands(directory, fileUtil, writeAction);
         }
     }
 }

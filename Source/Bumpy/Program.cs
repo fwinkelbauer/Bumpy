@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using Bumpy.Util;
 
@@ -14,9 +15,9 @@ namespace Bumpy
 
             try
             {
+                commands = new Commands(directory, fileUtil, (s) => Console.WriteLine(s));
                 var config = fileUtil.ReadConfigLazy(directory);
-                commands = new Commands(config, directory, fileUtil, (s) => Console.WriteLine(s));
-                Execute(commands, args);
+                Execute(config, commands, args);
             }
             catch (Exception e)
             {
@@ -34,14 +35,14 @@ namespace Bumpy
             }
         }
 
-        private static void Execute(Commands commands, string[] args)
+        private static void Execute(IEnumerable<BumpyConfiguration> config, Commands commands, string[] args)
         {
             int position = -1;
             int number = -1;
 
             if (args.Length == 1 && args[0].Equals("-l"))
             {
-                commands.CommandList();
+                commands.CommandList(config);
             }
             else if (args.Length == 1 && args[0].Equals("-c"))
             {
@@ -49,15 +50,15 @@ namespace Bumpy
             }
             else if (args.Length == 2 && args[0].Equals("-i") && int.TryParse(args[1], out position))
             {
-                commands.CommandIncrement(position);
+                commands.CommandIncrement(config, position);
             }
             else if (args.Length == 2 && args[0].Equals("-w"))
             {
-                commands.CommandWrite(args[1]);
+                commands.CommandWrite(config, args[1]);
             }
             else if (args.Length == 3 && args[0].Equals("-a") && int.TryParse(args[1], out position) && int.TryParse(args[2], out number))
             {
-                commands.CommandAssign(position, number);
+                commands.CommandAssign(config, position, number);
             }
             else
             {
