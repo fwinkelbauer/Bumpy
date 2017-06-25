@@ -77,6 +77,16 @@ namespace Bumpy
             _writeLine(builder.ToString());
         }
 
+        public void CommandPrintProfiles(IEnumerable<BumpyConfiguration> config)
+        {
+            var profiles = config.Select(c => c.Profile).Distinct();
+
+            foreach (var profile in profiles)
+            {
+                _writeLine(profile);
+            }
+        }
+
         private void WriteContent(IEnumerable<BumpyConfiguration> config, Func<BumpyVersion, BumpyVersion> transformFunction)
         {
             List<FileContent> newContent = new List<FileContent>();
