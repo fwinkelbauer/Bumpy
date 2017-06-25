@@ -30,7 +30,7 @@ namespace Bumpy.Util
             {
                 contentEntry.ThrowIfNull(nameof(contentEntry));
 
-                File.WriteAllLines(contentEntry.File.FullName, contentEntry.Lines, Encoding.UTF8);
+                File.WriteAllLines(contentEntry.File.FullName, contentEntry.Lines);
             }
         }
 
