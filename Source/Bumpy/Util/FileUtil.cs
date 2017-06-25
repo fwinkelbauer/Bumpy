@@ -17,11 +17,11 @@ namespace Bumpy.Util
             return directory.EnumerateFiles(searchPattern, SearchOption.AllDirectories);
         }
 
-        public FileContent ReadFile(FileInfo file)
+        public FileContent ReadFile(FileInfo file, Encoding encoding)
         {
             file.ThrowIfNull(nameof(file));
 
-            return new FileContent(file, File.ReadLines(file.FullName));
+            return new FileContent(file, File.ReadLines(file.FullName, encoding), encoding);
         }
 
         public void WriteFiles(IEnumerable<FileContent> content)
@@ -29,8 +29,7 @@ namespace Bumpy.Util
             foreach (var contentEntry in content.ThrowIfNull(nameof(content)))
             {
                 contentEntry.ThrowIfNull(nameof(contentEntry));
-
-                File.WriteAllLines(contentEntry.File.FullName, contentEntry.Lines);
+                File.WriteAllLines(contentEntry.File.FullName, contentEntry.Lines, contentEntry.Encoding);
             }
         }
 
@@ -49,10 +48,18 @@ namespace Bumpy.Util
                 }
 
                 var split = line.Split('=');
-                var searchPattern = split[0].Trim();
-                var regularExpression = string.Join("=", split, 1, split.Length - 1).Trim();
+                var leftSplit = split[0].Split('|');
+                Encoding encoding = new UTF8Encoding(false);
 
-                yield return new BumpyConfiguration(searchPattern, regularExpression);
+                if (leftSplit.Length == 2)
+                {
+                    encoding = Encoding.GetEncoding(leftSplit[1].Trim());
+                }
+
+                var searchPattern = leftSplit[0].Trim();
+                var regularExpression = string.Join(string.Empty, split, 1, split.Length - 1).Trim();
+
+                yield return new BumpyConfiguration(searchPattern, regularExpression, encoding);
             }
         }
 
@@ -75,6 +82,9 @@ namespace Bumpy.Util
             builder.AppendLine();
             builder.AppendLine("# Example: Searches for version information of the format a.b.c.d (e.g. 1.22.7.50) in all AssemblyInfo.cs files");
             builder.AppendLine(@"# AssemblyInfo.cs = (?<version>\d+\.\d+\.\d+\.\d+)");
+            builder.AppendLine();
+            builder.AppendLine("# Example: The default read/write encoding is UTF-8 without BOM, but you can change this behaviour (e.g. UTF-8 with BOM)");
+            builder.AppendLine(@"# AssemblyInfo.cs | UTF-8 = (?<version>\d+\.\d+\.\d+\.\d+)");
 
             File.WriteAllText(configPath, builder.ToString());
         }

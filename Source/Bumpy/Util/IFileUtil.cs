@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Text;
 
 namespace Bumpy.Util
 {
@@ -7,7 +8,7 @@ namespace Bumpy.Util
     {
         IEnumerable<FileInfo> GetFiles(DirectoryInfo directory, string searchPattern);
 
-        FileContent ReadFile(FileInfo file);
+        FileContent ReadFile(FileInfo file, Encoding encoding);
 
         void WriteFiles(IEnumerable<FileContent> content);
 

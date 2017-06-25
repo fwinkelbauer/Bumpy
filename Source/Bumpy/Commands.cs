@@ -114,13 +114,13 @@ namespace Bumpy
                 newLinesPerFile[content].Add(newLine);
             });
 
-            return newLinesPerFile.Select(dict => new FileContent(dict.Key.File, dict.Value));
+            return newLinesPerFile.Select(dict => new FileContent(dict.Key.File, dict.Value, dict.Key.Encoding));
         }
 
         private void PerformOnContent(BumpyConfiguration config, Action<FileContent, string, int, BumpyVersion> versionInLineAction)
         {
             var files = _fileUtil.GetFiles(_directory, config.SearchPattern);
-            var contents = files.Select(file => _fileUtil.ReadFile(file));
+            var contents = files.Select(file => _fileUtil.ReadFile(file, config.Encoding));
 
             foreach (var content in contents)
             {
