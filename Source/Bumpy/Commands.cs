@@ -94,9 +94,8 @@ namespace Bumpy
             foreach (var configEntry in config.ThrowIfNull(nameof(config)))
             {
                 newContent.AddRange(TransformContent(configEntry, transformFunction));
+                _fileUtil.WriteFiles(newContent);
             }
-
-            _fileUtil.WriteFiles(newContent);
         }
 
         private IEnumerable<FileContent> TransformContent(BumpyConfiguration config, Func<BumpyVersion, BumpyVersion> transformFunction)
