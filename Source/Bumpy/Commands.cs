@@ -77,9 +77,13 @@ namespace Bumpy
             _writeLine(builder.ToString());
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+            "Microsoft.Performance",
+            "CA1820:TestForEmptyStringsUsingStringLength",
+            Justification = "The default profile might change")]
         public void CommandPrintProfiles(IEnumerable<BumpyConfiguration> config)
         {
-            var profiles = config.Select(c => c.Profile).Distinct();
+            var profiles = config.Select(c => c.Profile).Distinct().Where(p => p != BumpyConfiguration.DefaultProfile);
 
             foreach (var profile in profiles)
             {
