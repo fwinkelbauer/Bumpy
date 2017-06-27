@@ -42,7 +42,7 @@ namespace Bumpy.UnitTests
             var commands = CreateCommands(writeAction: writeAction);
             var config = new List<BumpyConfiguration>()
             {
-                new BumpyConfiguration("profile1", string.Empty, string.Empty, Encoding.UTF8),
+                new BumpyConfiguration(string.Empty, string.Empty, string.Empty, Encoding.UTF8),
                 new BumpyConfiguration("profile1", string.Empty, string.Empty, Encoding.UTF8),
                 new BumpyConfiguration("profile1", string.Empty, string.Empty, Encoding.UTF8),
                 new BumpyConfiguration("profile2", string.Empty, string.Empty, Encoding.UTF8),
@@ -51,6 +51,7 @@ namespace Bumpy.UnitTests
 
             commands.CommandPrintProfiles(config);
 
+            writeAction.DidNotReceive().Invoke(string.Empty);
             writeAction.Received().Invoke("profile1");
             writeAction.Received().Invoke("profile2");
             writeAction.Received().Invoke("profile3");

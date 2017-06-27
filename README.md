@@ -46,7 +46,6 @@ Shows all profiles defined in the configuration (see below to learn more about p
 **Example:** `bumpy -p`
 
 ```
-default
 nuspec
 ```
 
