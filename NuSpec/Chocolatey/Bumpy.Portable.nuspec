@@ -7,6 +7,10 @@
     <authors>fwinkelbauer</authors>
     <owners>fwinkelbauer</owners>
     <projectUrl>https://github.com/fwinkelbauer/Bumpy</projectUrl>
+    <projectSourceUrl>https://github.com/fwinkelbauer/Bumpy</projectSourceUrl>
+    <packageSourceUrl>https://github.com/fwinkelbauer/Bumpy</packageSourceUrl>
+    <releaseNotes>https://github.com/fwinkelbauer/Bumpy/releases</releaseNotes>
+    <bugTrackerUrl>https://github.com/fwinkelbauer/Bumpy/issues</bugTrackerUrl>
     <licenseUrl>https://github.com/fwinkelbauer/Bumpy/blob/master/LICENSE</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <summary>A tool to manipulate version information across multiple files.</summary>
