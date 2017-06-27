@@ -39,11 +39,17 @@ namespace Bumpy.Util
 
             var configPath = Path.Combine(directory.FullName, _bumpyConfig);
             var lines = File.ReadLines(configPath);
+            var profile = BumpyConfiguration.DefaultProfile;
 
             foreach (var line in lines)
             {
                 if (line.StartsWith("#", StringComparison.Ordinal) || string.IsNullOrWhiteSpace(line))
                 {
+                    continue;
+                }
+                else if (line.StartsWith("[", StringComparison.Ordinal) && line.EndsWith("]", StringComparison.Ordinal))
+                {
+                    profile = line.Replace("[", string.Empty).Replace("]", string.Empty).Trim();
                     continue;
                 }
 
@@ -59,7 +65,7 @@ namespace Bumpy.Util
                 var searchPattern = leftSplit[0].Trim();
                 var regularExpression = string.Join(string.Empty, split, 1, split.Length - 1).Trim();
 
-                yield return new BumpyConfiguration(searchPattern, regularExpression, encoding);
+                yield return new BumpyConfiguration(profile, searchPattern, regularExpression, encoding);
             }
         }
 

@@ -7,8 +7,10 @@ namespace Bumpy.Version
     public static class VersionHelper
     {
         private const string _versionGroupName = "version";
+        private const string _numbersGroupName = "numbers";
+        private const string _labelGroupName = "label";
 
-        private static readonly Regex _bumpyRegex = new Regex(@"^\d+(\.\d+)*$", RegexOptions.Singleline);
+        private static readonly Regex _bumpyRegex = new Regex(@"^(?<numbers>\d+(\.\d+)*)(?<label>[\-\+\.0-9a-zA-Z]*)$", RegexOptions.Singleline);
 
         public static string ReplaceVersionInText(string text, string regexPattern, BumpyVersion newVersion)
         {
@@ -51,15 +53,19 @@ namespace Bumpy.Version
         public static BumpyVersion ParseVersionFromText(string versionText)
         {
             versionText.ThrowIfNull(nameof(versionText));
+            var match = _bumpyRegex.Match(versionText);
+            var numbersGroup = match.Groups[_numbersGroupName];
+            var labelGroup = match.Groups[_labelGroupName];
 
-            if (!_bumpyRegex.IsMatch(versionText))
+            if (!numbersGroup.Success || !labelGroup.Success)
             {
                 throw new ArgumentException($"Illegal version string '{versionText}'");
             }
 
-            var parts = versionText.Split('.').Select(p => Convert.ToInt32(p));
+            var numbers = numbersGroup.Value.Split('.').Select(p => Convert.ToInt32(p));
+            var label = labelGroup.Value;
 
-            return new BumpyVersion(parts);
+            return new BumpyVersion(numbers, label);
         }
     }
 }

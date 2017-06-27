@@ -4,12 +4,17 @@ namespace Bumpy.Util
 {
     public class BumpyConfiguration
     {
-        public BumpyConfiguration(string searchPattern, string regularExpression, Encoding encoding)
+        public const string DefaultProfile = "";
+
+        public BumpyConfiguration(string profile, string searchPattern, string regularExpression, Encoding encoding)
         {
+            Profile = profile;
             SearchPattern = searchPattern;
             RegularExpression = regularExpression;
             Encoding = encoding;
         }
+
+        public string Profile { get; }
 
         public string SearchPattern { get; }
 

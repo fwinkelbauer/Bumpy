@@ -10,22 +10,20 @@ namespace Bumpy
 {
     public class Commands
     {
-        private readonly IEnumerable<BumpyConfiguration> _config;
         private readonly IFileUtil _fileUtil;
         private readonly DirectoryInfo _directory;
         private readonly Action<string> _writeLine;
 
-        public Commands(IEnumerable<BumpyConfiguration> config, DirectoryInfo directory, IFileUtil fileUtil, Action<string> writeLine)
+        public Commands(DirectoryInfo directory, IFileUtil fileUtil, Action<string> writeLine)
         {
-            _config = config.ThrowIfNull(nameof(config));
             _directory = directory.ThrowIfNull(nameof(directory));
             _fileUtil = fileUtil.ThrowIfNull(nameof(fileUtil));
             _writeLine = writeLine.ThrowIfNull(nameof(writeLine));
         }
 
-        public void CommandList()
+        public void CommandList(IEnumerable<BumpyConfiguration> config)
         {
-            foreach (var configEntry in _config)
+            foreach (var configEntry in config.ThrowIfNull(nameof(config)))
             {
                 PerformOnContent(configEntry, (content, line, i, readVersion) =>
                 {
@@ -37,21 +35,21 @@ namespace Bumpy
             }
         }
 
-        public void CommandIncrement(int position)
+        public void CommandIncrement(IEnumerable<BumpyConfiguration> config, int position)
         {
-            WriteContent(_config, version => version.Increment(position));
+            WriteContent(config, version => version.Increment(position));
         }
 
-        public void CommandAssign(int position, int number)
+        public void CommandAssign(IEnumerable<BumpyConfiguration> config, int position, int number)
         {
-            WriteContent(_config, version => version.Assign(position, number));
+            WriteContent(config, version => version.Assign(position, number));
         }
 
-        public void CommandWrite(string versionText)
+        public void CommandWrite(IEnumerable<BumpyConfiguration> config, string versionText)
         {
             var newVersion = VersionHelper.ParseVersionFromText(versionText);
 
-            WriteContent(_config, version => newVersion);
+            WriteContent(config, version => newVersion);
         }
 
         public void CommandCreateConfig()
@@ -79,16 +77,29 @@ namespace Bumpy
             _writeLine(builder.ToString());
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+            "Microsoft.Performance",
+            "CA1820:TestForEmptyStringsUsingStringLength",
+            Justification = "The default profile might change")]
+        public void CommandPrintProfiles(IEnumerable<BumpyConfiguration> config)
+        {
+            var profiles = config.Select(c => c.Profile).Distinct().Where(p => p != BumpyConfiguration.DefaultProfile);
+
+            foreach (var profile in profiles)
+            {
+                _writeLine(profile);
+            }
+        }
+
         private void WriteContent(IEnumerable<BumpyConfiguration> config, Func<BumpyVersion, BumpyVersion> transformFunction)
         {
             List<FileContent> newContent = new List<FileContent>();
 
-            foreach (var configEntry in config)
+            foreach (var configEntry in config.ThrowIfNull(nameof(config)))
             {
                 newContent.AddRange(TransformContent(configEntry, transformFunction));
+                _fileUtil.WriteFiles(newContent);
             }
-
-            _fileUtil.WriteFiles(newContent);
         }
 
         private IEnumerable<FileContent> TransformContent(BumpyConfiguration config, Func<BumpyVersion, BumpyVersion> transformFunction)

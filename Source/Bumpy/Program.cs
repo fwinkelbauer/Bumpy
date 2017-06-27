@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Bumpy.Util;
 
 namespace Bumpy
@@ -14,9 +16,9 @@ namespace Bumpy
 
             try
             {
+                commands = new Commands(directory, fileUtil, (s) => Console.WriteLine(s));
                 var config = fileUtil.ReadConfigLazy(directory);
-                commands = new Commands(config, directory, fileUtil, (s) => Console.WriteLine(s));
-                Execute(commands, args);
+                Execute(config, commands, args);
             }
             catch (Exception e)
             {
@@ -34,30 +36,50 @@ namespace Bumpy
             }
         }
 
-        private static void Execute(Commands commands, string[] args)
+        private static void Execute(IEnumerable<BumpyConfiguration> config, Commands commands, string[] args)
         {
             int position = -1;
             int number = -1;
 
             if (args.Length == 1 && args[0].Equals("-l"))
             {
-                commands.CommandList();
+                commands.CommandList(config);
+            }
+            else if (args.Length == 2 && args[1].Equals("-l"))
+            {
+                commands.CommandList(config.Where(c => c.Profile == args[0]));
             }
             else if (args.Length == 1 && args[0].Equals("-c"))
             {
                 commands.CommandCreateConfig();
             }
+            else if (args.Length == 1 && args[0].Equals("-p"))
+            {
+                commands.CommandPrintProfiles(config);
+            }
             else if (args.Length == 2 && args[0].Equals("-i") && int.TryParse(args[1], out position))
             {
-                commands.CommandIncrement(position);
+                commands.CommandIncrement(config, position);
+            }
+            else if (args.Length == 3 && args[1].Equals("-i") && int.TryParse(args[2], out position))
+            {
+                commands.CommandIncrement(config.Where(c => c.Profile == args[0]), position);
             }
             else if (args.Length == 2 && args[0].Equals("-w"))
             {
-                commands.CommandWrite(args[1]);
+                commands.CommandWrite(config, args[1]);
+            }
+            else if (args.Length == 3 && args[1].Equals("-w"))
+            {
+                commands.CommandWrite(config.Where(c => c.Profile == args[0]), args[2]);
             }
             else if (args.Length == 3 && args[0].Equals("-a") && int.TryParse(args[1], out position) && int.TryParse(args[2], out number))
             {
-                commands.CommandAssign(position, number);
+                commands.CommandAssign(config, position, number);
+            }
+            else if (args.Length == 4 && args[1].Equals("-a") && int.TryParse(args[2], out position) && int.TryParse(args[3], out number))
+            {
+                commands.CommandAssign(config.Where(c => c.Profile == args[0]), position, number);
             }
             else
             {

@@ -5,53 +5,55 @@ namespace Bumpy.Version
 {
     public class BumpyVersion
     {
-        private readonly List<int> _parts;
+        private readonly List<int> _numbers;
+        private readonly string _label;
 
-        public BumpyVersion(IEnumerable<int> parts)
+        public BumpyVersion(IEnumerable<int> numbers, string label)
         {
-            _parts = new List<int>(parts.ThrowIfNull(nameof(parts)));
+            _numbers = new List<int>(numbers.ThrowIfNull(nameof(numbers)));
+            _label = label.ThrowIfNull(nameof(label));
 
-            if (_parts.Count == 0)
+            if (_numbers.Count == 0)
             {
-                throw new ArgumentException("Parameter must at least contain one element", nameof(parts));
+                throw new ArgumentException("Parameter must at least contain one element", nameof(numbers));
             }
 
-            foreach (var part in _parts)
+            foreach (var number in _numbers)
             {
-                part.ThrowIfCondition(n => n < 0, nameof(parts), "Elements cannot be negative");
+                number.ThrowIfCondition(n => n < 0, nameof(numbers), "Elements cannot be negative");
             }
         }
 
         public BumpyVersion Increment(int position)
         {
-            position.ThrowIfCondition(n => n < 1 || n > _parts.Count, nameof(position), $"Position must be between 1 and {_parts.Count}");
+            position.ThrowIfCondition(n => n < 1 || n > _numbers.Count, nameof(position), $"Position must be between 1 and {_numbers.Count}");
 
-            var newParts = new List<int>(_parts);
-            newParts[checked(position - 1)]++;
+            var newNumbers = new List<int>(_numbers);
+            newNumbers[checked(position - 1)]++;
 
-            for (int i = position; i < newParts.Count; i++)
+            for (int i = position; i < newNumbers.Count; i++)
             {
-                newParts[i] = 0;
+                newNumbers[i] = 0;
             }
 
-            return new BumpyVersion(newParts);
+            return new BumpyVersion(newNumbers, _label);
         }
 
         public BumpyVersion Assign(int position, int number)
         {
-            position.ThrowIfCondition(n => n < 1 || n > _parts.Count, nameof(position), $"Position must be between 1 and {_parts.Count}");
+            position.ThrowIfCondition(n => n < 1 || n > _numbers.Count, nameof(position), $"Position must be between 1 and {_numbers.Count}");
             number.ThrowIfCondition(n => n < 0, nameof(number), "Number cannot be negative");
 
-            var newParts = new List<int>(_parts);
+            var newNumbers = new List<int>(_numbers);
 
-            newParts[checked(position - 1)] = number;
+            newNumbers[checked(position - 1)] = number;
 
-            return new BumpyVersion(newParts);
+            return new BumpyVersion(newNumbers, _label);
         }
 
         public override string ToString()
         {
-            return string.Join(".", _parts);
+            return string.Join(".", _numbers) + _label;
         }
 
         public override bool Equals(object obj)
