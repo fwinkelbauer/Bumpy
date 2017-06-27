@@ -10,7 +10,7 @@ namespace Bumpy.Version
         private const string _numbersGroupName = "numbers";
         private const string _labelGroupName = "label";
 
-        private static readonly Regex _bumpyRegex = new Regex(@"^(?<numbers>\d+(\.\d+)*)(?<label>[\-\+\.a0-9a-zA-Z]*)$", RegexOptions.Singleline);
+        private static readonly Regex _bumpyRegex = new Regex(@"^(?<numbers>\d+(\.\d+)*)(?<label>[\-\+\.0-9a-zA-Z]*)$", RegexOptions.Singleline);
 
         public static string ReplaceVersionInText(string text, string regexPattern, BumpyVersion newVersion)
         {
