@@ -35,6 +35,21 @@ Lists all versions.
 \NuSpec\Chocolatey\Bumpy.nuspec (5): 0.1.0
 ```
 
+### Profiles
+
+```
+bumpy -p
+```
+
+Shows all profiles defined in the configuration (see below to learn more about profiles).
+
+**Example:** `bumpy -p`
+
+```
+default
+nuspec
+```
+
 ### Create Configuration
 
 ```
@@ -110,6 +125,17 @@ For each line of a specific file (found through the file search pattern) Bumpy u
 **Note:** The content of the `?<version>` group has to match the form`\d+(\.\d+)*` (meaning `1`, `1.0`, `1.0.0`, `1.0.0.0` and so on) as this is the only format that is currently supported by Bumpy.
 
 Type `bumpy -c` to create a new configuration file. This file contains additional information about configuration possibilities (e.g. how to change the read/write encoding).
+
+### Profiles
+
+The lines in a `.bumpyconfig` file can be organized using profiles ("groups"):
+
+```
+[my_profile]
+*.txt = ...
+```
+
+Most of Bumpy's commands can be applied to a certain profile by specifing the profile name, e.g. `bumpy my_profile -l`.
 
 ## Trivia
 
