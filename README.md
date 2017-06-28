@@ -2,6 +2,8 @@
 
 Bumpy is a tool to manipulate version information across multiple files found in the current working directory using a configuration file which consists of file [search patterns](https://msdn.microsoft.com/en-us/library/8he88b63(v=vs.110).aspx) and regular expressions.
 
+NuGet and Chocolatey packages can be found [here](https://www.nuget.org/packages/Bumpy/) and [here](https://chocolatey.org/packages/bumpy.portable).
+
 **Note:** As Bumpy's behaviour is heavily influenced by the provided configuration (see below), make sure that your files are kept under version control so that you can easily verify Bumpy's results.
 
 ## Why?
