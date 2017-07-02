@@ -32,9 +32,10 @@ Lists all versions.
 **Example:** `bumpy -l`
 
 ```
-\Source\Bumpy\Properties\AssemblyInfo.cs (35): 0.1.0.0
-\Source\Bumpy\Properties\AssemblyInfo.cs (36): 0.1.0.0
-\NuSpec\Chocolatey\Bumpy.nuspec (5): 0.1.0
+\Source\Bumpy\Properties\AssemblyInfo.cs (35): 0.2.1.0
+\Source\Bumpy\Properties\AssemblyInfo.cs (36): 0.2.1.0
+\NuSpec\Chocolatey\Bumpy.Portable.nuspec (5): 0.2.1
+\NuSpec\NuGet\Bumpy.nuspec (5): 0.2.1
 ```
 
 ### Profiles
@@ -48,6 +49,7 @@ Shows all profiles defined in the configuration (see below to learn more about p
 **Example:** `bumpy -p`
 
 ```
+assembly
 nuspec
 ```
 
@@ -70,9 +72,10 @@ Increments the specified component of each version.
 **Example:** `bumpy -i 2`
 
 ```
-\Source\Bumpy\Properties\AssemblyInfo.cs (35): 0.1.0.0 -> 0.2.0.0
-\Source\Bumpy\Properties\AssemblyInfo.cs (36): 0.1.0.0 -> 0.2.0.0
-\NuSpec\Chocolatey\Bumpy.nuspec (5): 0.1.0 -> 0.2.0
+\Source\Bumpy\Properties\AssemblyInfo.cs (35): 0.2.1.0 -> 0.3.0.0
+\Source\Bumpy\Properties\AssemblyInfo.cs (36): 0.2.1.0 -> 0.3.0.0
+\NuSpec\Chocolatey\Bumpy.Portable.nuspec (5): 0.2.1 -> 0.3.0
+\NuSpec\NuGet\Bumpy.nuspec (5): 0.2.1 -> 0.3.0
 ```
 
 ### Write
@@ -88,12 +91,20 @@ This command could be used to e.g:
 - Unify the version information of projects and files in a solution
 - Change the version information of a newly created project to be in line with other projects in a solution
 
-**Example:** `bumpy -w 1.2.0.5`
+**Example:** `bumpy -w 1.2.5.0`
 
 ```
-\Source\Bumpy\Properties\AssemblyInfo.cs (35): 0.2.0.0 -> 1.2.0.5
-\Source\Bumpy\Properties\AssemblyInfo.cs (36): 0.2.0.0 -> 1.2.0.5
-\NuSpec\Chocolatey\Bumpy.nuspec (5): 0.2.0 -> 1.2.0.5
+\Source\Bumpy\Properties\AssemblyInfo.cs (35): 0.3.0.0 -> 1.2.5.0
+\Source\Bumpy\Properties\AssemblyInfo.cs (36): 0.3.0.0 -> 1.2.5.0
+\NuSpec\Chocolatey\Bumpy.Portable.nuspec (5): 0.3.0 -> 1.2.5.0
+\NuSpec\NuGet\Bumpy.nuspec (5): 0.3.0 -> 1.2.5.0
+```
+
+**Example:** `bumpy nuspec -w 1.2.5`
+
+```
+\NuSpec\Chocolatey\Bumpy.Portable.nuspec (5): 1.2.5.0 -> 1.2.5
+\NuSpec\NuGet\Bumpy.nuspec (5): 1.2.5.0 -> 1.2.5
 ```
 
 ### Assign
@@ -107,9 +118,10 @@ Replaces the specified component of a version with a new number. This command co
 **Example:** `bumpy -a 3 99`
 
 ```
-\Source\Bumpy\Properties\AssemblyInfo.cs (35): 1.2.0.5 -> 1.2.99.5
-\Source\Bumpy\Properties\AssemblyInfo.cs (36): 1.2.0.5 -> 1.2.99.5
-\NuSpec\Chocolatey\Bumpy.nuspec (5): 1.2.0.5 -> 1.2.99.5
+\Source\Bumpy\Properties\AssemblyInfo.cs (35): 1.2.5.0 -> 1.2.99.0
+\Source\Bumpy\Properties\AssemblyInfo.cs (36): 1.2.5.0 -> 1.2.99.0
+\NuSpec\Chocolatey\Bumpy.Portable.nuspec (5): 1.2.5.0 -> 1.2.99.0
+\NuSpec\NuGet\Bumpy.nuspec (5): 1.2.5 -> 1.2.99
 ```
 
 ## Configuration
@@ -122,8 +134,10 @@ Bumpy's configuration is based on the presence of a `.bumpyconfig` file in the c
 ```
 
 For each line of a specific file (found through the file search pattern) Bumpy uses the provided regular expression to extract the named regex group `?<version>`.
+These regex groups can contain versions in different formats. Bumpy can currently handle formats such as:
 
-**Note:** The content of the `?<version>` group has to match the form`\d+(\.\d+)*` (meaning `1`, `1.0`, `1.0.0`, `1.0.0.0` and so on) as this is the only format that is currently supported by Bumpy.
+- `\d+(\.\d+)*` (meaning versions such as 1, 1.0, 1.0.0, 1.0.0.0, ...)
+- [SemVer](http://semver.org/) (1.8.0-beta01, 1.0.0-alpha+001, ...)
 
 Type `bumpy -c` to create a new configuration file. This file contains additional information about configuration possibilities (e.g. how to change the read/write encoding).
 
@@ -136,7 +150,7 @@ The lines in a `.bumpyconfig` file can be organized using profiles ("groups"):
 *.txt = ...
 ```
 
-Most of Bumpy's commands can be applied to a certain profile by specifing the profile name, e.g. `bumpy my_profile -l`.
+Most of Bumpy's commands can be applied to a certain profile by specifing the profile name, e.g. `bumpy my_profile -l`. This feature can be useful if you need to target a specific set of files in isolation (e.g. a `AssemblyInfo.cs` file in C# can only deal with versions of the format `1.0.0.0`, while a `.nuspec` file could contain textual elements such as `1.0.0-beta`).
 
 ## Trivia
 

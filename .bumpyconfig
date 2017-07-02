@@ -1,4 +1,5 @@
 # Captures AssemblyVersion and AssemblyFileVersion in all AssemblyInfo.cs files
+[assembly]
 Source\Bumpy\AssemblyInfo.cs | UTF-8 = (?<version>\d+\.\d+\.\d+\.\d+)
 
 # Captures the version tag in all .nuspec files
