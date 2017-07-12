@@ -80,8 +80,8 @@ namespace Bumpy.UnitTests
 
             commands.CommandList(CreateConfiguration());
 
-            writeAction.Received().Invoke(@"\file (1): 1.2.3");
-            writeAction.Received().Invoke(@"\file (3): 1.22.333");
+            writeAction.Received().Invoke(@".\file (1): 1.2.3");
+            writeAction.Received().Invoke(@".\file (3): 1.22.333");
         }
 
         [TestMethod]
@@ -109,8 +109,8 @@ namespace Bumpy.UnitTests
             commands.CommandIncrement(CreateConfiguration(), 1);
 
             fileUtil.Received().WriteFiles(Arg.Is<IEnumerable<FileContent>>(f => VerifyFileContents(new List<string>() { "aaaaa", "2.0.0", "1.2.a", "2.0.0", "3.2a" }, f)));
-            writeAction.Received().Invoke(@"\file (1): 1.2.3 -> 2.0.0");
-            writeAction.Received().Invoke(@"\file (3): 1.22.333 -> 2.0.0");
+            writeAction.Received().Invoke(@".\file (1): 1.2.3 -> 2.0.0");
+            writeAction.Received().Invoke(@".\file (3): 1.22.333 -> 2.0.0");
         }
 
         [TestMethod]
@@ -138,8 +138,8 @@ namespace Bumpy.UnitTests
             commands.CommandAssign(CreateConfiguration(), 3, 42);
 
             fileUtil.Received().WriteFiles(Arg.Is<IEnumerable<FileContent>>(f => VerifyFileContents(new List<string>() { "aaaaa", "1.2.42", "1.2.a", "1.22.42", "3.2a" }, f)));
-            writeAction.Received().Invoke(@"\file (1): 1.2.3 -> 1.2.42");
-            writeAction.Received().Invoke(@"\file (3): 1.22.333 -> 1.22.42");
+            writeAction.Received().Invoke(@".\file (1): 1.2.3 -> 1.2.42");
+            writeAction.Received().Invoke(@".\file (3): 1.22.333 -> 1.22.42");
         }
 
         [TestMethod]
@@ -167,8 +167,8 @@ namespace Bumpy.UnitTests
             commands.CommandWrite(CreateConfiguration(), "4.2.4");
 
             fileUtil.Received().WriteFiles(Arg.Is<IEnumerable<FileContent>>(f => VerifyFileContents(new List<string>() { "aaaaa", "4.2.4", "1.2.a", "4.2.4", "3.2a" }, f)));
-            writeAction.Received().Invoke(@"\file (1): 1.2.3 -> 4.2.4");
-            writeAction.Received().Invoke(@"\file (3): 1.22.333 -> 4.2.4");
+            writeAction.Received().Invoke(@".\file (1): 1.2.3 -> 4.2.4");
+            writeAction.Received().Invoke(@".\file (3): 1.22.333 -> 4.2.4");
         }
 
         private static IFileUtil CreateFileUtil(List<string> lines)

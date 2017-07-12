@@ -60,7 +60,7 @@ namespace Bumpy
         public void CommandPrintHelp()
         {
             var builder = new StringBuilder();
-            builder.AppendLine("Bumpy is a tool to maintain version information accross multiple files found in the current working directory");
+            builder.AppendLine("A tool to maintain version information accross multiple files found in the current working directory");
             builder.AppendLine();
             builder.AppendLine("Usage:");
             builder.AppendLine("  -l");
@@ -150,7 +150,8 @@ namespace Bumpy
 
         private string ToRelativePath(FileInfo file)
         {
-            return file.FullName.Substring(_directory.FullName.Length);
+            var path = file.FullName.Substring(_directory.FullName.Length);
+            return $".{path}";
         }
     }
 }

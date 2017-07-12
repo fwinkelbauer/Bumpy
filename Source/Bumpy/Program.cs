@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Bumpy.Util;
@@ -18,6 +19,7 @@ namespace Bumpy
             {
                 commands = new Commands(directory, fileUtil, (s) => Console.WriteLine(s));
                 var config = fileUtil.ReadConfigLazy(directory);
+                PrintBumpy();
                 Execute(config, commands, args);
             }
             catch (Exception e)
@@ -34,6 +36,16 @@ namespace Bumpy
                 Console.WriteLine("Press ENTER to exit...");
                 Console.ReadLine();
             }
+        }
+
+        private static void PrintBumpy()
+        {
+            var assembly = System.Reflection.Assembly.GetExecutingAssembly();
+            var versionInfo = FileVersionInfo.GetVersionInfo(assembly.Location);
+
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine($"Bumpy v{versionInfo.FileVersion}");
+            Console.ResetColor();
         }
 
         private static void Execute(IEnumerable<BumpyConfiguration> config, Commands commands, string[] args)
