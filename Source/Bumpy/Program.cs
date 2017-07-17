@@ -31,7 +31,7 @@ namespace Bumpy
             }
 
             // This is only used for convenience when working in Visual Studio
-            if (System.Diagnostics.Debugger.IsAttached)
+            if (Debugger.IsAttached)
             {
                 Console.WriteLine("Press ENTER to exit...");
                 Console.ReadLine();

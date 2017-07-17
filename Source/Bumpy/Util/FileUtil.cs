@@ -63,7 +63,7 @@ namespace Bumpy.Util
                 }
 
                 var searchPattern = leftSplit[0].Trim();
-                var regularExpression = string.Join(string.Empty, split, 1, split.Length - 1).Trim();
+                var regularExpression = string.Join("=", split, 1, split.Length - 1).Trim();
 
                 yield return new BumpyConfiguration(profile, searchPattern, regularExpression, encoding);
             }
