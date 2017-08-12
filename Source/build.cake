@@ -33,6 +33,8 @@ Task("CreateGitHubReleaseDraft")
         Milestone = milestone,
         Name = milestone
     });
+
+	GitReleaseManagerExport(user, password, owner, repository, "../CHANGELOG.md");
 });
 
 Task("PublishGitHubRelease")
