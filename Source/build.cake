@@ -57,6 +57,9 @@ Task("PublishGitHubRelease")
         }
     }
 
+	GitReleaseManagerAddAssets(user, password, owner, repository, milestone, BuildArtifactParameters.OutputDir + "/Bumpy/Bumpy.exe");
+	GitReleaseManagerAddAssets(user, password, owner, repository, milestone, BuildArtifactParameters.OutputDir + "/Bumpy/Bumpy.pdb");
+
     GitReleaseManagerPublish(user, password, owner, repository, milestone);
     GitReleaseManagerClose(user, password, owner, repository, milestone);
 });
