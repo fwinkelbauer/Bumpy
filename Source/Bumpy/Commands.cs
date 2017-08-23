@@ -150,8 +150,7 @@ namespace Bumpy
 
         private string ToRelativePath(FileInfo file)
         {
-            var path = file.FullName.Substring(_directory.FullName.Length);
-            return $".{path}";
+            return $".{file.ToRelativePath(_directory)}";
         }
     }
 }

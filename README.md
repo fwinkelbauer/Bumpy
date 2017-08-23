@@ -1,6 +1,6 @@
 # Bumpy
 
-Bumpy is a tool to manipulate version information across multiple files found in the current working directory using a configuration file which consists of file [search patterns](https://msdn.microsoft.com/en-us/library/8he88b63(v=vs.110).aspx) and regular expressions.
+Bumpy is a tool to manipulate version information across multiple files found in the current working directory using a configuration file which consists of [glob patterns](https://github.com/kthompson/glob/) and regular expressions.
 
 NuGet and Chocolatey packages can be found [here](https://www.nuget.org/packages/Bumpy/) and [here](https://chocolatey.org/packages/bumpy.portable).
 
@@ -50,7 +50,7 @@ Shows all profiles defined in the configuration (see below to learn more about p
 
 ```
 assembly
-nuspec
+semver
 ```
 
 ### Create Configuration
@@ -126,14 +126,19 @@ Replaces the specified component of a version with a new number. This command co
 
 ## Configuration
 
-Bumpy's configuration is based on the presence of a `.bumpyconfig` file in the current working directory. This file dictates the behaviour of Bumpy using a pair of file [search patterns](https://msdn.microsoft.com/en-us/library/8he88b63(v=vs.110).aspx) and regular expressions, e.g:
+Bumpy's configuration is based on the presence of a `.bumpyconfig` file in the current working directory. This file dictates the behaviour of Bumpy using a pair of [glob patterns](https://github.com/kthompson/glob/) and regular expressions, e.g:
 
 ```
-# Captures the version tag in all .nuspec files
-*.nuspec = <version>(?<version>\d+(\.\d+)+)
+# Usage: <file glob pattern> = <regular expression>
+
+# Example: Search for all .nuspec files in the NuSpec directory
+NuSpec\**\*.nuspec = <version>(?<version>\d+(\.\d+)+)
+
+# Example: The default read/write encoding is UTF-8 without BOM, but you can change this behaviour (e.g. UTF-8 with BOM)
+AssemblyInfo.cs | UTF-8 = (?<version>\d+\.\d+\.\d+\.\d+)
 ```
 
-For each line of a specific file (found through the file search pattern) Bumpy uses the provided regular expression to extract the named regex group `?<version>`.
+For each line of a specific file (found through the glob pattern) Bumpy uses the provided regular expression to extract the named regex group `?<version>`.
 These regex groups can contain versions in different formats. Bumpy can currently handle formats such as:
 
 - `\d+(\.\d+)*` (meaning versions such as 1, 1.0, 1.0.0, 1.0.0.0, ...)

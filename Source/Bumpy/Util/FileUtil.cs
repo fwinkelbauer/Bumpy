@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace Bumpy.Util
@@ -14,7 +15,10 @@ namespace Bumpy.Util
             directory.ThrowIfNull(nameof(directory));
             searchPattern.ThrowIfNull(nameof(searchPattern));
 
-            return directory.EnumerateFiles(searchPattern, SearchOption.AllDirectories);
+            var glob = new Glob.Glob(searchPattern);
+
+            return directory.EnumerateFiles("*", SearchOption.AllDirectories)
+                .Where(f => glob.IsMatch(f.ToRelativePath(directory)));
         }
 
         public FileContent ReadFile(FileInfo file, Encoding encoding)
@@ -83,7 +87,7 @@ namespace Bumpy.Util
             var builder = new StringBuilder();
             builder.AppendLine("# Configuration file for Bumpy");
             builder.AppendLine();
-            builder.AppendLine("# Usage: <search pattern> = <regular expression>");
+            builder.AppendLine("# Usage: <file glob pattern> = <regular expression>");
             builder.AppendLine("# Note that the regular expression must contain a named group 'version' which contains the actual version information");
             builder.AppendLine();
             builder.AppendLine("# Example: Searches for version information of the format a.b.c.d (e.g. 1.22.7.50) in all AssemblyInfo.cs files");
@@ -91,6 +95,9 @@ namespace Bumpy.Util
             builder.AppendLine();
             builder.AppendLine("# Example: The default read/write encoding is UTF-8 without BOM, but you can change this behaviour (e.g. UTF-8 with BOM)");
             builder.AppendLine(@"# AssemblyInfo.cs | UTF-8 = (?<version>\d+\.\d+\.\d+\.\d+)");
+            builder.AppendLine();
+            builder.AppendLine("# Example: Search for all .nuspec files in the NuSpec directory");
+            builder.AppendLine(@"# NuSpec\**\*.nuspec = <version>(?<version>\d+(\.\d+)+)");
 
             File.WriteAllText(configPath, builder.ToString());
         }
