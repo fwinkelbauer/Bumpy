@@ -7,7 +7,7 @@ var user = EnvironmentVariable("GITHUB_USERNAME");
 var password = EnvironmentVariable("GITHUB_PASSWORD");
 var owner = "fwinkelbauer";
 var repository = "Bumpy";
-var milestone = "0.3.0";
+var milestone = "0.4.1";
 
 var target = Argument("target", "Default");
 BuildParameters.Configuration = Argument("configuration", "Release");
@@ -56,9 +56,6 @@ Task("PublishGitHubRelease")
             GitReleaseManagerAddAssets(user, password, owner, repository, milestone, package.ToString());
         }
     }
-
-	GitReleaseManagerAddAssets(user, password, owner, repository, milestone, BuildArtifactParameters.OutputDir + "/Bumpy/Bumpy.exe");
-	GitReleaseManagerAddAssets(user, password, owner, repository, milestone, BuildArtifactParameters.OutputDir + "/Bumpy/Bumpy.pdb");
 
     GitReleaseManagerPublish(user, password, owner, repository, milestone);
     GitReleaseManagerClose(user, password, owner, repository, milestone);

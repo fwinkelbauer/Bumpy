@@ -48,6 +48,10 @@ namespace Bumpy
             Console.ResetColor();
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage(
+            "Microsoft.Maintainability",
+            "CA1502:AvoidExcessiveComplexity",
+            Justification = "This is currently sufficient")]
         private static void Execute(IEnumerable<BumpyConfiguration> config, Commands commands, string[] args)
         {
             int position = -1;

@@ -3,7 +3,7 @@
   <metadata>
     <id>Bumpy</id>
     <title>Bumpy</title>
-    <version>0.3.0</version>
+    <version>0.4.1</version>
     <authors>fwinkelbauer</authors>
     <owners>fwinkelbauer</owners>
     <projectUrl>https://github.com/fwinkelbauer/Bumpy</projectUrl>
@@ -16,6 +16,6 @@
     <tags>Versioning Build AssemblyInfo NuSpec</tags>
   </metadata>
   <files>
-    <file src=".\..\..\BuildArtifacts\Output\Bumpy\Bumpy.exe" target="tools" />
+    <file src=".\..\..\BuildArtifacts\Output\Bumpy\*" target="tools" />
   </files>
 </package>
