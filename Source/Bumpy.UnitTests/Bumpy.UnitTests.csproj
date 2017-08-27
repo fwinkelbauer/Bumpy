@@ -57,6 +57,7 @@
   <ItemGroup>
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="CommandsTests.cs" />
+    <Compile Include="Util\GlobUtilTests.cs" />
     <Compile Include="Version\BumpyVersionTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Version\VersionHelperTests.cs" />

@@ -15,7 +15,7 @@ namespace Bumpy.Util
             directory.ThrowIfNull(nameof(directory));
             searchPattern.ThrowIfNull(nameof(searchPattern));
 
-            var glob = new Glob.Glob(searchPattern);
+            var glob = new GlobUtil(searchPattern);
 
             return directory.EnumerateFiles("*", SearchOption.AllDirectories)
                 .Where(f => glob.IsMatch(f.ToRelativePath(directory)));

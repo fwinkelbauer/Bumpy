@@ -56,6 +56,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Util\BumpyConfiguration.cs" />
     <Compile Include="Util\FileUtil.cs" />
+    <Compile Include="Util\GlobUtil.cs" />
     <Compile Include="Util\IFileUtil.cs" />
     <Compile Include="Util\FileContent.cs" />
     <Compile Include="ValidatedNotNullAttribute.cs" />
