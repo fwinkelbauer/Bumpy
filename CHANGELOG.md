@@ -1,55 +1,47 @@
-## 0.4.1 (2017-08-24)
+# Changelog
 
+All notable changes to this project will be documented in this file.
 
-As part of this release we had [2 issues](https://github.com/fwinkelbauer/Bumpy/issues?milestone=3&state=closed) closed.
+The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
 
-__Feature__
+- Removed GitReleaseManager from the build script
+- Adopted keepachangelog.com
 
-- [__#19__](https://github.com/fwinkelbauer/Bumpy/issues/19) Glob Pattern
-  - **Breaking Change:** The re-introduction of glob patterns might break existing `.bumpyconfig` files. Please read the updated documentation!
+## [0.4.1] - 2017-08-24
 
-__Improvement__
+### Changed
 
-- [__#17__](https://github.com/fwinkelbauer/Bumpy/issues/17) Automate Chocolatey verification
+- [#19](https://github.com/fwinkelbauer/Bumpy/issues/19) **Breaking Change** Glob pattern: The re-introduction of glob patterns might break existing `.bumpyconfig` files. Please read the updated documentation!
+- [#17](https://github.com/fwinkelbauer/Bumpy/issues/17) Automate Chocolatey verification
 
+## [0.3.0] - 2017-07-17
 
-## 0.3.0 (2017-07-17)
+### Fixed
 
+- [#18](https://github.com/fwinkelbauer/Bumpy/issues/18) Bug when parsing configuration files with the '=' character in a regular expression
 
-As part of this release we had [2 issues](https://github.com/fwinkelbauer/Bumpy/issues?milestone=1&state=closed) closed.
+### Added
 
+- [#14](https://github.com/fwinkelbauer/Bumpy/issues/14) Automate GitHub releases
 
-__Bug__
+## [0.2.1] - 2017-06-28
 
-- [__#18__](https://github.com/fwinkelbauer/Bumpy/issues/18) Bug when parsing configuration
+### Added
 
-__Improvement__
+- [#10](https://github.com/fwinkelbauer/Bumpy/issues/10) Add missing information to the help command
+- [#12](https://github.com/fwinkelbauer/Bumpy/issues/12) Add automation steps to publish packages
 
-- [__#14__](https://github.com/fwinkelbauer/Bumpy/issues/14) Automate GitHub releases
+## [0.2.0] - 2017-06-27
 
+### Added
 
-## 0.2.1 (2017-06-28)
+- [#12](https://github.com/fwinkelbauer/Bumpy/issues/2) Support other version formats
+- [#16](https://github.com/fwinkelbauer/Bumpy/issues/6) Add encoding configuration 
 
+## [0.1.0] - 2017-06-19
 
-- #10 Add missing information to the help command
-- #12 Add automation steps to publish packages
-## 0.2.0 (2017-06-27)
+### Added
 
-
-- #2 Support other version formats
-- #6 Add encoding configuration 
-## 0.1.0 (2017-06-19)
-
-
-Initial release
-
-## 0.2.0 (2017-06-27)
-
-
-- #2 Support other version formats
-- #6 Add encoding configuration 
-## 0.1.0 (2017-06-19)
-
-
-Initial release
+- Initial release

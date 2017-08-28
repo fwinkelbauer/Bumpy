@@ -1,3 +1,0 @@
-export:
-  include-created-date-in-title: true
-  created-date-string-format: yyyy-MM-dd

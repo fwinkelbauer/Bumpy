@@ -5,6 +5,3 @@ Source\Bumpy\Properties\AssemblyInfo.cs | UTF-8 = (?<version>\d+\.\d+\.\d+\.\d+)
 # Captures the version tag in all .nuspec files (Chocolatey, NuGet)
 [semver]
 NuSpec\**\*.nuspec = <version>(?<version>\d+\.\d+\.\d+)
-
-# Captures the variable "milestone" in the build.cake file
-Source\build.cake = "(?<version>\d+\.\d+\.\d+)"
