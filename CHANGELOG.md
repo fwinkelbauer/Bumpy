@@ -11,6 +11,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [0.4.1] - 2017-08-24
 
+### Fixed
+
+- The 0.4.0 packages were unlisted because they were missing a library
+
 ### Changed
 
 - [#19](https://github.com/fwinkelbauer/Bumpy/issues/19) **Breaking Change** Glob pattern: The re-introduction of glob patterns might break existing `.bumpyconfig` files. Please read the updated documentation!
