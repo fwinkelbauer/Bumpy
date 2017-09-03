@@ -7,7 +7,7 @@
     <authors>fwinkelbauer</authors>
     <owners>fwinkelbauer</owners>
     <projectUrl>https://github.com/fwinkelbauer/Bumpy</projectUrl>
-    <licenseUrl>https://github.com/fwinkelbauer/Bumpy/blob/master/LICENSE</licenseUrl>
+    <licenseUrl>https://github.com/fwinkelbauer/Bumpy/blob/master/LICENSE.txt</licenseUrl>
     <releaseNotes>https://github.com/fwinkelbauer/Bumpy/blob/master/CHANGELOG.md</releaseNotes>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <summary>A tool to manipulate version information across multiple files.</summary>

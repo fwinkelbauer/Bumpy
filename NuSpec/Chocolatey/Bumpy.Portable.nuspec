@@ -11,7 +11,7 @@
     <packageSourceUrl>https://github.com/fwinkelbauer/Bumpy</packageSourceUrl>
     <releaseNotes>https://github.com/fwinkelbauer/Bumpy/blob/master/CHANGELOG.md</releaseNotes>
     <bugTrackerUrl>https://github.com/fwinkelbauer/Bumpy/issues</bugTrackerUrl>
-    <licenseUrl>https://github.com/fwinkelbauer/Bumpy/blob/master/LICENSE</licenseUrl>
+    <licenseUrl>https://github.com/fwinkelbauer/Bumpy/blob/master/LICENSE.txt</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <summary>A tool to manipulate version information across multiple files.</summary>
     <description>Bumpy is a tool to manipulate version information across multiple files found in the current working directory using a configuration file which consists of glob patterns and regular expressions.</description>
