@@ -65,7 +65,7 @@ namespace Bumpy
             builder.AppendLine("Usage:");
             builder.AppendLine("  -l");
             builder.AppendLine("    Lists all versions");
-            builder.AppendLine("   -p");
+            builder.AppendLine("  -p");
             builder.AppendLine("    Lists all defined profiles");
             builder.AppendLine("  -c");
             builder.AppendLine("    Creates a .bumpyconfig file if it does not exist");
