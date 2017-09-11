@@ -11,13 +11,13 @@ namespace Bumpy
     {
         public static void Main(string[] args)
         {
-            var fileUtil = new FileUtil();
+            IFileUtil fileUtil = new FileUtil();
             var directory = new DirectoryInfo(@".");
             Commands commands = null;
 
             try
             {
-                commands = new Commands(directory, fileUtil, (s) => Console.WriteLine(s));
+                commands = new Commands(directory, fileUtil, Console.WriteLine);
                 var config = fileUtil.ReadConfigLazy(directory);
                 PrintBumpy();
                 Execute(config, commands, args);

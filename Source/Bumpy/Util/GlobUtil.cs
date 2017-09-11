@@ -1,17 +1,26 @@
-﻿namespace Bumpy.Util
+﻿using System.Text.RegularExpressions;
+
+namespace Bumpy.Util
 {
     public class GlobUtil
     {
-        private readonly Glob.Glob _glob;
+        private readonly Regex _regex;
 
         public GlobUtil(string searchPattern)
         {
-            _glob = new Glob.Glob(searchPattern);
+            var unifiedPattern = searchPattern.ThrowIfNull(nameof(searchPattern))
+                .Replace("\\", "/");
+            var escapedPattern = Regex.Escape(unifiedPattern)
+                .Replace(@"\*", ".*")
+                .Replace(@"\?", ".")
+                .Replace("/", @"[\\\/]");
+
+            _regex = new Regex($"{escapedPattern}$");
         }
 
         public bool IsMatch(string input)
         {
-            return _glob.IsMatch(input);
+            return _regex.IsMatch(input);
         }
     }
 }

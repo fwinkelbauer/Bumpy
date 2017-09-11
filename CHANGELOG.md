@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 - Removed GitReleaseManager from the build script
 - Adopted keepachangelog.com
+- The glob pattern implementation now relies on pure regex instead of relying on external NuGet packages
 
 ## [0.4.1] - 2017-08-24
 
