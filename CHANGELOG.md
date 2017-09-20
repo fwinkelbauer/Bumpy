@@ -6,9 +6,19 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+## [0.5.0] - 2017-09-20
+
+### Removed
+
 - Removed GitReleaseManager from the build script
+
+### Changed
+
 - Adopted keepachangelog.com
 - The glob pattern implementation now relies on pure regex instead of relying on external NuGet packages
+- The pattern "\*\*\Foo.txt" will:
+  - match files named "Foo.txt"
+  - not match other files such as "SomeFoo.txt"
 
 ## [0.4.1] - 2017-08-24
 
