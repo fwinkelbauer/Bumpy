@@ -8,7 +8,7 @@ NuGet and Chocolatey packages can be found [here](https://www.nuget.org/packages
 
 ## Why?
 
-Most of the build systems that I have seen in the past create a workflow in which they utilize a single source (e.g. a file called `version.txt`) to inject version information into a set of files (`AssemblyInfo.cs`, `*.csproj`, `*.nuspec`, `*.xml`, `*.yaml`, ...).
+Most of the build systems that I have seen in the past create a workflow in which they utilize a single source (e.g. a file called `version.txt`) to inject version information into a set of files (`AssemblyInfo.cs`, `*.csproj`, `*.nuspec`, `*.xml`, ...).
 This would also mean that some files would contain a "blank version" (such as 0.0.0.0) which would remind developers that they should not touch that file manually. Even though this is a valid solution, it just wasn't for me. That's why Bumpy was born.
 
 ## Usage & Examples
@@ -16,7 +16,7 @@ This would also mean that some files would contain a "blank version" (such as 0.
 Bumpy is a command line tool:
 
 ```
-bumpy <command> <arguments>
+bumpy <command> <arguments> <options>
 ```
 
 Check out the `.bumpyconfig` file [here](https://github.com/fwinkelbauer/Bumpy/blob/master/.bumpyconfig) to see how the following examples were created directly using this repository:
@@ -24,39 +24,26 @@ Check out the `.bumpyconfig` file [here](https://github.com/fwinkelbauer/Bumpy/b
 ### List
 
 ```
-bumpy -l
+bumpy list
 ```
 
-Lists all versions.
+Lists all versions and their profiles (see below to learn more about profiles).
 
-**Example:** `bumpy -l`
+**Example:** `bumpy list`
 
 ```
+[assembly]
 \Source\Bumpy\Properties\AssemblyInfo.cs (35): 0.2.1.0
 \Source\Bumpy\Properties\AssemblyInfo.cs (36): 0.2.1.0
+[semver]
 \NuSpec\Chocolatey\Bumpy.Portable.nuspec (5): 0.2.1
 \NuSpec\NuGet\Bumpy.nuspec (5): 0.2.1
 ```
 
-### Profiles
+### Create New Configuration
 
 ```
-bumpy -p
-```
-
-Shows all profiles defined in the configuration (see below to learn more about profiles).
-
-**Example:** `bumpy -p`
-
-```
-assembly
-semver
-```
-
-### Create Configuration
-
-```
-bumpy -c
+bumpy new
 ```
 
 Creates an empty `.bumpyconfig` file.
@@ -64,12 +51,12 @@ Creates an empty `.bumpyconfig` file.
 ### Increment
 
 ```
-bumpy -i <one-based index number>
+bumpy increment <one-based index number>
 ```
 
 Increments the specified component of each version.
 
-**Example:** `bumpy -i 2`
+**Example:** `bumpy increment 2`
 
 ```
 \Source\Bumpy\Properties\AssemblyInfo.cs (35): 0.2.1.0 -> 0.3.0.0
@@ -81,7 +68,7 @@ Increments the specified component of each version.
 ### Write
 
 ```
-bumpy -w <version string>
+bumpy write <version string>
 ```
 
 Overwrites a version with another version.
@@ -91,7 +78,7 @@ This command could be used to e.g:
 - Unify the version information of projects and files in a solution
 - Change the version information of a newly created project to be in line with other projects in a solution
 
-**Example:** `bumpy -w 1.2.5.0`
+**Example:** `bumpy write 1.2.5.0`
 
 ```
 \Source\Bumpy\Properties\AssemblyInfo.cs (35): 0.3.0.0 -> 1.2.5.0
@@ -100,7 +87,7 @@ This command could be used to e.g:
 \NuSpec\NuGet\Bumpy.nuspec (5): 0.3.0 -> 1.2.5.0
 ```
 
-**Example:** `bumpy nuspec -w 1.2.5`
+**Example:** `bumpy write 1.2.5 -p semver`
 
 ```
 \NuSpec\Chocolatey\Bumpy.Portable.nuspec (5): 1.2.5.0 -> 1.2.5
@@ -110,18 +97,46 @@ This command could be used to e.g:
 ### Assign
 
 ```
-bumpy -a <one-based index number> <version number>
+bumpy assign <one-based index number> <version number>
 ```
 
 Replaces the specified component of a version with a new number. This command could be used by a CI server to inject a build number.
 
-**Example:** `bumpy -a 3 99`
+**Example:** `bumpy assign 3 99`
 
 ```
 \Source\Bumpy\Properties\AssemblyInfo.cs (35): 1.2.5.0 -> 1.2.99.0
 \Source\Bumpy\Properties\AssemblyInfo.cs (36): 1.2.5.0 -> 1.2.99.0
 \NuSpec\Chocolatey\Bumpy.Portable.nuspec (5): 1.2.5.0 -> 1.2.99.0
 \NuSpec\NuGet\Bumpy.nuspec (5): 1.2.5 -> 1.2.99
+```
+
+### Help
+
+```
+bumpy help
+```
+
+Shows all available commands and options.
+
+### Options
+
+The following options are available for the commands `list`, `increment`, `write` and `assign`:
+
+- `-p <profile name>`
+- `-d <directory in which Bumpy should operate>`
+- `-c <path to a configuration file Bumpy should use>`
+
+**Examples:**
+
+```
+bumpy write 1.15.0-beta -p semver
+
+# In this example Bumpy will still expect a configuration file to be present in the current working directory
+bumpy list -d ..\some_other_project
+
+# Using this command Bumpy will only run in the specified folder (configuration loading + execution)
+bumpy list -d D:\my_project -c D:\my_project\.bumpyconfig
 ```
 
 ## Configuration
@@ -144,18 +159,18 @@ These regex groups can contain versions in different formats. Bumpy can currentl
 - `\d+(\.\d+)*` (meaning versions such as 1, 1.0, 1.0.0, 1.0.0.0, ...)
 - [SemVer](http://semver.org/) (1.8.0-beta01, 1.0.0-alpha+001, ...)
 
-Type `bumpy -c` to create a new configuration file. This file contains additional information about configuration possibilities (e.g. how to change the read/write encoding).
+Type `bumpy new` to create a new configuration file. This file contains additional information about configuration possibilities (e.g. how to change the read/write encoding).
 
 ### Profiles
 
-The lines in a `.bumpyconfig` file can be organized using profiles ("groups"):
+Lines in a `.bumpyconfig` file can be organized using profiles ("groups"):
 
 ```
 [my_profile]
 *.txt = ...
 ```
 
-Most of Bumpy's commands can be applied to a certain profile by specifing the profile name, e.g. `bumpy my_profile -l`. This feature can be useful if you need to target a specific set of files in isolation (e.g. a `AssemblyInfo.cs` file in C# can only deal with versions of the format `1.0.0.0`, while a `.nuspec` file could contain textual elements such as `1.0.0-beta`).
+Most of Bumpy's commands can be applied to a certain profile by specifing the profile name, e.g. `bumpy list -p my_profile`. This feature can be useful if you need to target a specific set of files in isolation (e.g. a `AssemblyInfo.cs` file in C# can only deal with versions of the format `1.0.0.0`, while a `.nuspec` file could contain textual elements such as `1.0.0-beta`).
 
 ## Trivia
 

@@ -12,8 +12,8 @@ namespace Bumpy.Util
 
         void WriteFiles(IEnumerable<FileContent> content);
 
-        IEnumerable<BumpyConfiguration> ReadConfigLazy(DirectoryInfo directory);
+        IEnumerable<BumpyConfiguration> ReadConfigLazy(FileInfo configFile);
 
-        void CreateConfig(DirectoryInfo directory);
+        bool CreateConfig(FileInfo configFile);
     }
 }

@@ -8,8 +8,6 @@ namespace Bumpy.Util
 {
     internal class FileUtil : IFileUtil
     {
-        private const string _bumpyConfig = ".bumpyconfig";
-
         public IEnumerable<FileInfo> GetFiles(DirectoryInfo directory, string searchPattern)
         {
             directory.ThrowIfNull(nameof(directory));
@@ -37,12 +35,11 @@ namespace Bumpy.Util
             }
         }
 
-        public IEnumerable<BumpyConfiguration> ReadConfigLazy(DirectoryInfo directory)
+        public IEnumerable<BumpyConfiguration> ReadConfigLazy(FileInfo configFile)
         {
-            directory.ThrowIfNull(nameof(directory));
+            configFile.ThrowIfNull(nameof(configFile));
 
-            var configPath = Path.Combine(directory.FullName, _bumpyConfig);
-            var lines = File.ReadLines(configPath);
+            var lines = File.ReadLines(configFile.FullName);
             var profile = BumpyConfiguration.DefaultProfile;
 
             foreach (var line in lines)
@@ -73,15 +70,13 @@ namespace Bumpy.Util
             }
         }
 
-        public void CreateConfig(DirectoryInfo directory)
+        public bool CreateConfig(FileInfo configPath)
         {
-            directory.ThrowIfNull(nameof(directory));
+            configPath.ThrowIfNull(nameof(configPath));
 
-            var configPath = Path.Combine(directory.FullName, _bumpyConfig);
-
-            if (File.Exists(configPath))
+            if (configPath.Exists)
             {
-                return;
+                return false;
             }
 
             var builder = new StringBuilder();
@@ -99,7 +94,9 @@ namespace Bumpy.Util
             builder.AppendLine("# Example: Search for all .nuspec files in the NuSpec directory");
             builder.AppendLine(@"# NuSpec\**\*.nuspec = <version>(?<version>\d+(\.\d+)+)");
 
-            File.WriteAllText(configPath, builder.ToString());
+            File.WriteAllText(configPath.FullName, builder.ToString());
+
+            return true;
         }
     }
 }

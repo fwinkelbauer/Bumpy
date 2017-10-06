@@ -47,8 +47,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Commands.cs" />
+    <Compile Include="Command\Commands.cs" />
+    <Compile Include="Command\CommandsParser.cs" />
     <Compile Include="FileInfoExtensions.cs" />
+    <Compile Include="Command\ParserException.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Util\BumpyConfiguration.cs" />

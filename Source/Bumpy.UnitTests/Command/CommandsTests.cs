@@ -3,58 +3,37 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Bumpy.Command;
 using Bumpy.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 
-namespace Bumpy.UnitTests
+namespace Bumpy.UnitTests.Command
 {
     [TestClass]
     public class CommandsTests
     {
         [TestMethod]
-        public void CommandCreateConfig_CreatesFile()
+        public void CommandNew_CreatesFile()
         {
             var directory = new DirectoryInfo(".");
             var fileUtil = Substitute.For<IFileUtil>();
             var commands = CreateCommands(fileUtil: fileUtil, directory: directory);
 
-            commands.CommandCreateConfig();
+            commands.CommandNew();
 
-            fileUtil.Received().CreateConfig(directory);
+            fileUtil.Received().CreateConfig(Arg.Any<FileInfo>());
         }
 
         [TestMethod]
-        public void CommandPrintHelp_WritesOutput()
+        public void CommandHelp_WritesOutput()
         {
             var writeAction = Substitute.For<Action<string>>();
             var commands = CreateCommands(writeAction: writeAction);
 
-            commands.CommandPrintHelp();
+            commands.CommandHelp();
 
             writeAction.Received().Invoke(Arg.Any<string>());
-        }
-
-        [TestMethod]
-        public void CommandPrintProfiles_WritesOutput()
-        {
-            var writeAction = Substitute.For<Action<string>>();
-            var commands = CreateCommands(writeAction: writeAction);
-            var config = new List<BumpyConfiguration>()
-            {
-                new BumpyConfiguration(string.Empty, string.Empty, string.Empty, Encoding.UTF8),
-                new BumpyConfiguration("profile1", string.Empty, string.Empty, Encoding.UTF8),
-                new BumpyConfiguration("profile1", string.Empty, string.Empty, Encoding.UTF8),
-                new BumpyConfiguration("profile2", string.Empty, string.Empty, Encoding.UTF8),
-                new BumpyConfiguration("profile3", string.Empty, string.Empty, Encoding.UTF8)
-            };
-
-            commands.CommandPrintProfiles(config);
-
-            writeAction.DidNotReceive().Invoke(string.Empty);
-            writeAction.Received().Invoke("profile1");
-            writeAction.Received().Invoke("profile2");
-            writeAction.Received().Invoke("profile3");
         }
 
         [TestMethod]

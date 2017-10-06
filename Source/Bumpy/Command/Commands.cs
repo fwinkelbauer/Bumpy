@@ -6,7 +6,7 @@ using System.Text;
 using Bumpy.Util;
 using Bumpy.Version;
 
-namespace Bumpy
+namespace Bumpy.Command
 {
     public class Commands
     {
@@ -23,8 +23,16 @@ namespace Bumpy
 
         public void CommandList(IEnumerable<BumpyConfiguration> config)
         {
+            var profile = BumpyConfiguration.DefaultProfile;
+
             foreach (var configEntry in config.ThrowIfNull(nameof(config)))
             {
+                if (!profile.Equals(configEntry.Profile))
+                {
+                    profile = configEntry.Profile;
+                    _writeLine($"[{profile}]");
+                }
+
                 PerformOnContent(configEntry, (content, line, i, readVersion) =>
                 {
                     if (readVersion != null)
@@ -52,45 +60,49 @@ namespace Bumpy
             WriteContent(config, version => newVersion);
         }
 
-        public void CommandCreateConfig()
+        public void CommandNew()
         {
-            _fileUtil.CreateConfig(_directory);
+            var configFile = new FileInfo(Path.Combine(_directory.FullName, BumpyConfiguration.ConfigFile));
+            var created = _fileUtil.CreateConfig(configFile);
+
+            if (created)
+            {
+                _writeLine($"Created file '{configFile}'");
+            }
+            else
+            {
+                _writeLine($"File '{configFile}' already exists");
+            }
         }
 
-        public void CommandPrintHelp()
+        public void CommandHelp()
         {
             var builder = new StringBuilder();
             builder.AppendLine("A tool to maintain version information accross multiple files found in the current working directory");
             builder.AppendLine();
-            builder.AppendLine("Usage:");
-            builder.AppendLine("  -l");
+            builder.AppendLine("Commands:");
+            builder.AppendLine("  help");
+            builder.AppendLine("    View all commands and options");
+            builder.AppendLine("  list");
             builder.AppendLine("    Lists all versions");
-            builder.AppendLine("  -p");
-            builder.AppendLine("    Lists all defined profiles");
-            builder.AppendLine("  -c");
-            builder.AppendLine("    Creates a .bumpyconfig file if it does not exist");
-            builder.AppendLine("  -i <one-based index number>");
+            builder.AppendLine("  new");
+            builder.AppendLine($"    Creates a '{BumpyConfiguration.ConfigFile}' file if it does not exist");
+            builder.AppendLine("  increment <one-based index number> (e.g. 'bumpy increment 3')");
             builder.AppendLine("    Increments the specified component of each version");
-            builder.AppendLine("  -w <version string>");
-            builder.AppendLine("    Overwrites a version with another version");
-            builder.AppendLine("  -a <one-based index number> <version number>");
+            builder.AppendLine("  write <version string>");
+            builder.AppendLine("    Overwrites a version with another version (e.g. 'bumpy write 1.0.0.0')");
+            builder.AppendLine("  assign <one-based index number> <version number> (e.g. 'bumpy assign 3 99')");
             builder.AppendLine("    Replaces the specified component of a version with a new number");
+            builder.AppendLine();
+            builder.AppendLine("Options: (only available for 'list', 'increment', 'write' and 'assign')");
+            builder.AppendLine("  -p <profile name>");
+            builder.AppendLine("    Limit a command to a profile");
+            builder.AppendLine("  -d <directory>");
+            builder.AppendLine("    Run a command in a specific folder (the working directory is used by default)");
+            builder.AppendLine("  -c <config file path>");
+            builder.AppendLine("    Alternative name/path of a configuration file (default: './.bumpyconfig')");
 
             _writeLine(builder.ToString());
-        }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage(
-            "Microsoft.Performance",
-            "CA1820:TestForEmptyStringsUsingStringLength",
-            Justification = "The default profile might change")]
-        public void CommandPrintProfiles(IEnumerable<BumpyConfiguration> config)
-        {
-            var profiles = config.Select(c => c.Profile).Distinct().Where(p => p != BumpyConfiguration.DefaultProfile);
-
-            foreach (var profile in profiles)
-            {
-                _writeLine(profile);
-            }
         }
 
         private void WriteContent(IEnumerable<BumpyConfiguration> config, Func<BumpyVersion, BumpyVersion> transformFunction)

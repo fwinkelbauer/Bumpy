@@ -6,6 +6,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+- Removed the command `bumpy -p` and integrated displaying profiles into `bumpy -l`
+- Aligned the command line interface to be similar to tools such as git or chocolatey
+
 ## [0.5.0] - 2017-09-20
 
 ### Removed
