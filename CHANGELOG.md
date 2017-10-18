@@ -6,8 +6,15 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
-- Removed the command `bumpy -p` and integrated displaying profiles into `bumpy -l`
-- Aligned the command line interface to be similar to tools such as git or chocolatey
+## [0.6.0] - 2017-10-18
+
+### Changed
+
+- **Breaking Change:** Redesigned the command line interface to be similar to tools such as git or chocolatey. This change also introduces new options. See the updated `README` file for more information
+
+### Removed
+
+- **Breaking Change:** Removed the command to list profiles. Profiles are now shown when calling `bumpy list`
 
 ## [0.5.0] - 2017-09-20
 
