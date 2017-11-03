@@ -24,8 +24,9 @@ namespace Bumpy.Version
             if (version != null)
             {
                 newText = text.Replace(version.ToString(), newVersion.ToString());
+                var tmp = FindVersion(newText, regexPattern);
 
-                if (FindVersion(newText, regexPattern) == null)
+                if (tmp == null || !tmp.Equals(newVersion))
                 {
                     throw new InvalidOperationException($"Your provided version '{newVersion}' cannot be captured using your current regex configuration. Aborting to prevent issues");
                 }
