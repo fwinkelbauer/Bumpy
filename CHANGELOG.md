@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 ## [Unreleased]
 
 - [#22](https://github.com/fwinkelbauer/Bumpy/issues/22) Fixed a case in which `bumpy write` would perform in an inconsistent manner
+- [#23](https://github.com/fwinkelbauer/Bumpy/issues/23) Added support for code pages in `.bumpyconfig`
 
 ## [0.6.0] - 2017-10-18
 

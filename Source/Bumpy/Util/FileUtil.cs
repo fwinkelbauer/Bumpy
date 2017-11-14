@@ -60,7 +60,18 @@ namespace Bumpy.Util
 
                 if (leftSplit.Length == 2)
                 {
-                    encoding = Encoding.GetEncoding(leftSplit[1].Trim());
+                    var possibleEncoding = leftSplit[1].Trim();
+                    int codePage = 0;
+                    bool isCodingPage = int.TryParse(possibleEncoding, out codePage);
+
+                    if (isCodingPage)
+                    {
+                        encoding = Encoding.GetEncoding(codePage);
+                    }
+                    else
+                    {
+                        encoding = Encoding.GetEncoding(possibleEncoding);
+                    }
                 }
 
                 var searchPattern = leftSplit[0].Trim();
