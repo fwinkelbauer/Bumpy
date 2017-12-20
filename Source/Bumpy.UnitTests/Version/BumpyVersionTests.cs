@@ -33,6 +33,7 @@ namespace Bumpy.UnitTests.Version
         [DataRow(3, "2.2.2.2", "2.2.3.0")]
         [DataRow(4, "2.2.2.2", "2.2.2.3")]
         [DataRow(4, "2.2.2.2+bar", "2.2.2.3+bar")]
+        [DataRow(3, "2.2.2.2+bar", "2.2.3.0+bar")]
         public void Increment_IncrementDifferentPositions(int position, string originalVersionText, string expectedVersionText)
         {
             var version = VersionHelper.ParseVersionFromText(originalVersionText);
@@ -48,6 +49,22 @@ namespace Bumpy.UnitTests.Version
             var version = VersionHelper.ParseVersionFromText("2.2.2.2");
 
             Assert.ThrowsException<ArgumentOutOfRangeException>(() => version.Increment(-1));
+        }
+
+        [DataTestMethod]
+        [DataRow(1, "2.2.2.2", "3.2.2.2")]
+        [DataRow(2, "2.2.2.2", "2.3.2.2")]
+        [DataRow(3, "2.2.2.2", "2.2.3.2")]
+        [DataRow(4, "2.2.2.2", "2.2.2.3")]
+        [DataRow(4, "2.2.2.2+bar", "2.2.2.3+bar")]
+        [DataRow(3, "2.2.2.2+bar", "2.2.3.2+bar")]
+        public void IncrementOnly_IncrementDifferentPositions(int position, string originalVersionText, string expectedVersionText)
+        {
+            var version = VersionHelper.ParseVersionFromText(originalVersionText);
+
+            var inc = version.Increment(position, false);
+
+            Assert.AreEqual(expectedVersionText, inc.ToString());
         }
 
         [DataTestMethod]

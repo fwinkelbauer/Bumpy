@@ -24,16 +24,20 @@ namespace Bumpy.Version
             }
         }
 
-        public BumpyVersion Increment(int position)
+        public BumpyVersion Increment(int position, bool cascade = true)
         {
             position.ThrowIfCondition(n => n < 1 || n > _numbers.Count, nameof(position), $"Position must be between 1 and {_numbers.Count}");
 
             var newNumbers = new List<int>(_numbers);
             newNumbers[checked(position - 1)]++;
 
-            for (int i = position; i < newNumbers.Count; i++)
+            // cascade will set the components following the selected position to 0. e.g. 2.3.1.1 increment(2) => 2.4.0.0
+            if (cascade)
             {
-                newNumbers[i] = 0;
+                for (int i = position; i < newNumbers.Count; i++)
+                {
+                    newNumbers[i] = 0;
+                }
             }
 
             return new BumpyVersion(newNumbers, _label);
