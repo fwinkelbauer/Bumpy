@@ -93,6 +93,21 @@ namespace Bumpy.UnitTests.Command
         }
 
         [TestMethod]
+        public void CommandIncrementOnly_Change()
+        {
+            var lines = new List<string>() { "aaaaa", "1.2.3", "1.2.a", "1.22.333", "3.2a" };
+            var fileUtil = CreateFileUtil(lines);
+            var writeAction = Substitute.For<Action<string>>();
+            var commands = CreateCommands(fileUtil: fileUtil, writeAction: writeAction);
+
+            commands.CommandIncrementOnly(CreateConfiguration(), 1);
+
+            fileUtil.Received().WriteFiles(Arg.Is<IEnumerable<FileContent>>(f => VerifyFileContents(new List<string>() { "aaaaa", "2.2.3", "1.2.a", "2.22.333", "3.2a" }, f)));
+            writeAction.Received().Invoke(@".\file (1): 1.2.3 -> 2.2.3");
+            writeAction.Received().Invoke(@".\file (3): 1.22.333 -> 2.22.333");
+        }
+
+        [TestMethod]
         public void CommandAssign_NoChange()
         {
             var lines = new List<string>() { "some", "text" };

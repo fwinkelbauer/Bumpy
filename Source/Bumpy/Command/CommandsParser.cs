@@ -34,6 +34,7 @@ namespace Bumpy.Command
             List,
             New,
             Increment,
+            IncrementOnly,
             Write,
             Assign
         }
@@ -72,10 +73,11 @@ namespace Bumpy.Command
 
             var shouldParseOptions = _commandType == CommandType.List
                 || _commandType == CommandType.Increment
+                || _commandType == CommandType.IncrementOnly
                 || _commandType == CommandType.Write
                 || _commandType == CommandType.Assign;
 
-            if (_commandType == CommandType.Increment)
+            if (_commandType == CommandType.Increment || _commandType == CommandType.IncrementOnly)
             {
                 _position = Convert.ToInt32(args.Dequeue());
             }
@@ -138,6 +140,10 @@ namespace Bumpy.Command
             else if (_commandType == CommandType.Increment)
             {
                 commands.CommandIncrement(LoadConfiguration(fileUtil), _position);
+            }
+            else if (_commandType == CommandType.IncrementOnly)
+            {
+                commands.CommandIncrementOnly(LoadConfiguration(fileUtil), _position);
             }
             else if (_commandType == CommandType.Write)
             {
