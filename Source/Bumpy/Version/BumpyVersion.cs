@@ -24,7 +24,12 @@ namespace Bumpy.Version
             }
         }
 
-        public BumpyVersion Increment(int position, bool cascade = true)
+        public BumpyVersion Increment(int position)
+        {
+            return Increment(position, true);
+        }
+
+        public BumpyVersion Increment(int position, bool cascade)
         {
             position.ThrowIfCondition(n => n < 1 || n > _numbers.Count, nameof(position), $"Position must be between 1 and {_numbers.Count}");
 

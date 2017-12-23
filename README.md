@@ -67,6 +67,23 @@ Increments the specified component of each version.
 \NuSpec\NuGet\Bumpy.nuspec (5): 0.2.1 -> 0.3.0
 ```
 
+### Incrementonly
+
+```
+bumpy incrementonly <one-based index number>
+```
+
+Increments the specified component of each version, without updating following components.
+
+**Example:** `bumpy incrementonly 2`
+
+```
+\Source\Bumpy\Properties\AssemblyInfo.cs (35): 0.2.1.0 -> 0.3.1.0
+\Source\Bumpy\Properties\AssemblyInfo.cs (36): 0.2.1.0 -> 0.3.1.0
+\NuSpec\Chocolatey\Bumpy.Portable.nuspec (5): 0.2.1 -> 0.3.1
+\NuSpec\NuGet\Bumpy.nuspec (5): 0.2.1 -> 0.3.1
+```
+
 ### Write
 
 ```
@@ -123,7 +140,7 @@ Shows all available commands and options.
 
 ### Options
 
-The following options are available for the commands `list`, `increment`, `write` and `assign`:
+The following options are available for the commands `list`, `increment`, `incrementonly`, `write` and `assign`:
 
 - `-p <profile name>`
 - `-d <directory in which Bumpy should operate>`
