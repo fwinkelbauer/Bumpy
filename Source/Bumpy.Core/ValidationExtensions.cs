@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 
-namespace Bumpy
+namespace Bumpy.Core
 {
     [DebuggerStepThrough]
     public static class ValidationExtensions
@@ -22,7 +22,7 @@ namespace Bumpy
             return t;
         }
 
-        public static int ThrowIfCondition(this int value, Func<int, bool> condition, string paramName, string message)
+        public static int ThrowIfOutOfRange(this int value, Func<int, bool> condition, string paramName, string message)
         {
             condition.ThrowIfNull(nameof(condition));
             paramName.ThrowIfNull(nameof(paramName));

@@ -1,0 +1,111 @@
+﻿using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+namespace Bumpy.Core.Tests
+{
+    [TestClass]
+    public class VersionFunctionsTests
+    {
+        [DataTestMethod]
+        [DataRow(1, "2.2.2.2", "3.0.0.0")]
+        [DataRow(2, "2.2.2.2", "2.3.0.0")]
+        [DataRow(3, "2.2.2.2", "2.2.3.0")]
+        [DataRow(4, "2.2.2.2", "2.2.2.3")]
+        [DataRow(4, "2.2.2.2+bar", "2.2.2.3+bar")]
+        public void Increment_IncrementDifferentPositions(int position, string originalVersionText, string expectedVersionText)
+        {
+            var version = VersionFunctions.ParseVersion(originalVersionText);
+
+            var inc = VersionFunctions.Increment(version, position);
+
+            Assert.AreEqual(expectedVersionText, inc.ToString());
+        }
+
+        [TestMethod]
+        public void Increment_InvalidArgument()
+        {
+            var version = VersionFunctions.ParseVersion("2.2.2.2");
+
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => VersionFunctions.Increment(version, - 1));
+        }
+
+        [DataTestMethod]
+        [DataRow(1, "1.1.1", "9.1.1", 9)]
+        [DataRow(2, "1.1.1", "1.9.1", 9)]
+        [DataRow(3, "1.1.1", "1.1.9", 9)]
+        [DataRow(1, "1.1.1-foo", "9.1.1-foo", 9)]
+        public void Assign_AssignPositions(int position, string originalVersionText, string expectedVersionText, int number)
+        {
+            var version = VersionFunctions.ParseVersion(originalVersionText);
+
+            var inc = VersionFunctions.Assign(version, position, number);
+
+            Assert.AreEqual(expectedVersionText, inc.ToString());
+        }
+
+        [TestMethod]
+        public void Assign_InvalidArgument()
+        {
+            var version = VersionFunctions.ParseVersion("2.2.2");
+
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => VersionFunctions.Assign(version, 0, -1));
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => VersionFunctions.Assign(version, -1, 0));
+        }
+
+        [DataTestMethod]
+        [DataRow("8")]
+        [DataRow("100.5")]
+        [DataRow("2020.100.143")]
+        [DataRow("1.0.0.9")]
+        [DataRow("1.0.0.9-foo")]
+        [DataRow("1.100aBc")]
+        [DataRow("18.5.3-beta03")]
+        [DataRow("8.25.3-beta03+master0004")]
+        [DataRow("8.5.43+bar")]
+        public void ParseVersionFromText_ValidText(string versionText)
+        {
+            var version = VersionFunctions.ParseVersion(versionText);
+
+            Assert.AreEqual(versionText, version.ToString());
+        }
+
+        [TestMethod]
+        public void ParseVersionFromText_InvalidText()
+        {
+            Assert.ThrowsException<ArgumentException>(() => VersionFunctions.ParseVersion("a.b"));
+        }
+
+        [TestMethod]
+        public void TryParseVersionInText_Found()
+        {
+            var success = VersionFunctions.TryParseVersionInText("a1.2a", @"a(?<version>\d\.\d)a", out var version);
+
+            Assert.IsTrue(success);
+            Assert.AreEqual("1.2", version.ToString());
+        }
+
+        [TestMethod]
+        public void TryParseVersionInText_RegexWithoutNamedGroup()
+        {
+            var success = VersionFunctions.TryParseVersionInText("100", @"\d", out var version);
+
+            Assert.IsFalse(success);
+            Assert.IsNull(version);
+        }
+
+        [TestMethod]
+        public void TryParseVersionInText_InvalidRegexWithNamedGroup()
+        {
+            Assert.ThrowsException<ArgumentException>(() => VersionFunctions.TryParseVersionInText("1.0//", @"(?<version>1.0//)", out var version));
+        }
+
+        [TestMethod]
+        public void TryParseVersionInText_ValidRegexButNoData()
+        {
+            var success = VersionFunctions.TryParseVersionInText("something", @"a(?<version>\d\.\d)a", out var version);
+
+            Assert.IsFalse(success);
+            Assert.IsNull(version);
+        }
+    }
+}

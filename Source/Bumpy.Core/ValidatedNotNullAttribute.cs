@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Bumpy
+namespace Bumpy.Core
 {
     internal sealed class ValidatedNotNullAttribute : Attribute
     {
