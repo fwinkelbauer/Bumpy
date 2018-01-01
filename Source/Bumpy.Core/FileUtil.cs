@@ -1,12 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace Bumpy.Core
 {
-    class ConfigUtil
+    internal class FileUtil
     {
+        private const string AllFilesPattern = "*";
+        private const string CommentPattern = "#";
+        private const string ProfileStartPattern = "[";
+        private const string ProfileEndPattern = "]";
+        private const string EqualsPattern = "=";
+
+        private const char MainSplit = '=';
+        private const char EncodingSplit = '|';
+
+        public IEnumerable<FileInfo> GetFiles(DirectoryInfo directory, GlobUtil glob)
+        {
+            return directory.EnumerateFiles(AllFilesPattern, SearchOption.AllDirectories)
+                .Where(f => glob.IsMatch(f.ToRelativePath()));
+        }
+
         public IEnumerable<BumpyConfiguration> ReadConfigFile(FileInfo configFile)
         {
             configFile.ThrowIfNull(nameof(configFile));
@@ -16,8 +32,8 @@ namespace Bumpy.Core
 
             foreach (var line in lines)
             {
-                var isComment = line.StartsWith("#", StringComparison.Ordinal) || string.IsNullOrWhiteSpace(line);
-                var isProfile = line.StartsWith("[", StringComparison.Ordinal) && line.EndsWith("]", StringComparison.Ordinal);
+                var isComment = line.StartsWith(CommentPattern, StringComparison.Ordinal) || string.IsNullOrWhiteSpace(line);
+                var isProfile = line.StartsWith(ProfileStartPattern, StringComparison.Ordinal) && line.EndsWith(ProfileEndPattern, StringComparison.Ordinal);
 
                 if (isComment)
                 {
@@ -25,7 +41,7 @@ namespace Bumpy.Core
                 }
                 else if (isProfile)
                 {
-                    profile = line.Replace("[", string.Empty).Replace("]", string.Empty).Trim();
+                    profile = line.Replace(ProfileStartPattern, string.Empty).Replace(ProfileEndPattern, string.Empty).Trim();
 
                     if (profile.Length == 0)
                     {
@@ -39,8 +55,8 @@ namespace Bumpy.Core
                 //   <search pattern> | <code page> = <regex>
                 //   <search pattern> | <encoding name> = <regex>
                 //   <search pattern> = <regex>
-                var mainSplit = line.Split('=');
-                var leftSplit = mainSplit[0].Split('|');
+                var mainSplit = line.Split(MainSplit);
+                var leftSplit = mainSplit[0].Split(EncodingSplit);
 
                 Encoding encoding = new UTF8Encoding(false);
 
@@ -60,7 +76,7 @@ namespace Bumpy.Core
                 }
 
                 var searchPattern = leftSplit[0].Trim();
-                var regularExpression = string.Join("=", mainSplit, 1, mainSplit.Length - 1).Trim();
+                var regularExpression = string.Join(EqualsPattern, mainSplit, 1, mainSplit.Length - 1).Trim();
 
                 yield return new BumpyConfiguration(profile, searchPattern, regularExpression, encoding);
             }
