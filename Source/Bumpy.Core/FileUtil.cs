@@ -17,10 +17,10 @@ namespace Bumpy.Core
         private const char MainSplit = '=';
         private const char EncodingSplit = '|';
 
-        public IEnumerable<FileInfo> GetFiles(DirectoryInfo directory, GlobUtil glob)
+        public IEnumerable<FileInfo> GetFiles(DirectoryInfo directory, Glob glob)
         {
             return directory.EnumerateFiles(AllFilesPattern, SearchOption.AllDirectories)
-                .Where(f => glob.IsMatch(f.ToRelativePath()));
+                .Where(f => glob.IsMatch(f.ToRelativePath(directory)));
         }
 
         public IEnumerable<BumpyConfiguration> ReadConfigFile(FileInfo configFile)

@@ -2,11 +2,11 @@
 
 namespace Bumpy.Core
 {
-    class GlobUtil
+    internal class Glob
     {
         private readonly Regex _regex;
 
-        public GlobUtil(string searchPattern)
+        public Glob(string searchPattern)
         {
             var unifiedPattern = searchPattern.ThrowIfNull(nameof(searchPattern))
                 .Replace("\\", "/");
