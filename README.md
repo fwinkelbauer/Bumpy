@@ -11,7 +11,7 @@ NuGet and Chocolatey packages can be found [here](https://www.nuget.org/packages
 Most of the build systems that I have seen or worked with in the past create a workflow in which they utilize a single source
 (e.g. a file called `version.txt`, or a tool such as [GitVersion](https://github.com/GitTools/GitVersion)) to inject version information into a set of files (`AssemblyInfo.cs`, `*.csproj`, `*.nuspec`, `*.xml`, ...).
 These files  might contain "blank versions" (`0.0.0`, `0.0.0.0`) which are only ever changed in memory while a build is active. In my opinion such processes require too much magic, even though they work for a lot of people.
-Bumpy was born because I wanted a simple tool that I can use to handle all my versioning requirements in a project.
+Bumpy was born because I wanted a simple tool that I can use in combination with existing source control management systems to handle all my versioning requirements in a project.
 
 ## Usage & Examples
 
