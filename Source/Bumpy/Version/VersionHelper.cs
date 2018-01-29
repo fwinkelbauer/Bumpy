@@ -19,11 +19,11 @@ namespace Bumpy.Version
             newVersion.ThrowIfNull(nameof(newVersion));
 
             var newText = text;
-            var version = FindVersion(text, regexPattern);
+            var version = FindVersionString(text, regexPattern);
 
             if (version != null)
             {
-                newText = text.Replace(version.ToString(), newVersion.ToString());
+                newText = text.Replace(version, newVersion.ToString());
                 var tmp = FindVersion(newText, regexPattern);
 
                 if (tmp == null || !tmp.Equals(newVersion))
@@ -35,7 +35,7 @@ namespace Bumpy.Version
             return newText;
         }
 
-        public static BumpyVersion FindVersion(string text, string regexPattern)
+        public static string FindVersionString(string text, string regexPattern)
         {
             text.ThrowIfNull(nameof(text));
             regexPattern.ThrowIfNull(nameof(regexPattern));
@@ -45,7 +45,22 @@ namespace Bumpy.Version
 
             if (group.Success)
             {
-                return ParseVersionFromText(group.Value);
+                return group.Value;
+            }
+
+            return null;
+        }
+
+        public static BumpyVersion FindVersion(string text, string regexPattern)
+        {
+            text.ThrowIfNull(nameof(text));
+            regexPattern.ThrowIfNull(nameof(regexPattern));
+
+            var version = FindVersionString(text, regexPattern);
+
+            if (version != null)
+            {
+                return ParseVersionFromText(version);
             }
 
             return null;
