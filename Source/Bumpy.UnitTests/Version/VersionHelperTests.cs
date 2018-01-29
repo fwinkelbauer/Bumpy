@@ -39,7 +39,16 @@ namespace Bumpy.UnitTests.Version
         {
             var version = VersionHelper.ParseVersionFromText("1.2.3");
 
-            Assert.ThrowsException<ArgumentException>(() => VersionHelper.ReplaceVersionInText("a0.0.0a", @"(?<version>a\d\.\d\.\da)", version));
+            Assert.ThrowsException<InvalidOperationException>(() => VersionHelper.ReplaceVersionInText("a0.0.0a", @"(?<version>a\d\.\d\.\da)", version));
+        }
+
+        [TestMethod]
+        public void ReplaceVersionInText_LeadingZeros()
+        {
+            var version = VersionHelper.ParseVersionFromText("1.2.3");
+            var text = VersionHelper.ReplaceVersionInText("a00.00.0000a", @"a(?<version>\d+\.\d+\.\d+)a", version);
+
+            Assert.AreEqual("a1.2.3a", text);
         }
 
         [DataTestMethod]
