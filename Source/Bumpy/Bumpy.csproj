@@ -48,5 +48,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Bumpy.Core\Bumpy.Core.csproj">
+      <Project>{f6061a71-45da-48c3-836f-9a5f112404c7}</Project>
+      <Name>Bumpy.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -7,16 +7,21 @@ namespace Bumpy.Core.Tests
     public class VersionFunctionsTests
     {
         [DataTestMethod]
-        [DataRow(1, "2.2.2.2", "3.0.0.0")]
-        [DataRow(2, "2.2.2.2", "2.3.0.0")]
-        [DataRow(3, "2.2.2.2", "2.2.3.0")]
-        [DataRow(4, "2.2.2.2", "2.2.2.3")]
-        [DataRow(4, "2.2.2.2+bar", "2.2.2.3+bar")]
-        public void Increment_IncrementDifferentPositions(int position, string originalVersionText, string expectedVersionText)
+        [DataRow(1, "2.2.2.2", "3.0.0.0", true)]
+        [DataRow(2, "2.2.2.2", "2.3.0.0", true)]
+        [DataRow(3, "2.2.2.2", "2.2.3.0", true)]
+        [DataRow(4, "2.2.2.2", "2.2.2.3", true)]
+        [DataRow(4, "2.2.2.2+bar", "2.2.2.3+bar", true)]
+        [DataRow(1, "2.2.2.2", "3.2.2.2", false)]
+        [DataRow(2, "2.2.2.2", "2.3.2.2", false)]
+        [DataRow(3, "2.2.2.2", "2.2.3.2", false)]
+        [DataRow(4, "2.2.2.2", "2.2.2.3", false)]
+        [DataRow(4, "2.2.2.2+bar", "2.2.2.3+bar", false)]
+        public void Increment_IncrementDifferentPositions(int position, string originalVersionText, string expectedVersionText, bool cascade)
         {
             var version = VersionFunctions.ParseVersion(originalVersionText);
 
-            var inc = VersionFunctions.Increment(version, position);
+            var inc = VersionFunctions.Increment(version, position, cascade);
 
             Assert.AreEqual(expectedVersionText, inc.ToString());
         }
@@ -26,7 +31,7 @@ namespace Bumpy.Core.Tests
         {
             var version = VersionFunctions.ParseVersion("2.2.2.2");
 
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => VersionFunctions.Increment(version, - 1));
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => VersionFunctions.Increment(version, -1, true));
         }
 
         [DataTestMethod]
@@ -62,6 +67,7 @@ namespace Bumpy.Core.Tests
         [DataRow("18.5.3-beta03")]
         [DataRow("8.25.3-beta03+master0004")]
         [DataRow("8.5.43+bar")]
+        [DataRow("1.0.0_final2")]
         public void ParseVersionFromText_ValidText(string versionText)
         {
             var version = VersionFunctions.ParseVersion(versionText);
@@ -72,7 +78,7 @@ namespace Bumpy.Core.Tests
         [TestMethod]
         public void ParseVersionFromText_InvalidText()
         {
-            Assert.ThrowsException<ArgumentException>(() => VersionFunctions.ParseVersion("a.b"));
+            Assert.ThrowsException<ArgumentException>(() => VersionFunctions.ParseVersion("invalid.input"));
         }
 
         [TestMethod]
@@ -85,7 +91,7 @@ namespace Bumpy.Core.Tests
         }
 
         [TestMethod]
-        public void TryParseVersionInText_RegexWithoutNamedGroup()
+        public void TryParseVersionInText_InvalidRegexWithoutNamedGroup()
         {
             var success = VersionFunctions.TryParseVersionInText("100", @"\d", out var version);
 
@@ -100,7 +106,7 @@ namespace Bumpy.Core.Tests
         }
 
         [TestMethod]
-        public void TryParseVersionInText_ValidRegexButNoData()
+        public void TryParseVersionInText_ValidRegexButTextIsNoVersion()
         {
             var success = VersionFunctions.TryParseVersionInText("something", @"a(?<version>\d\.\d)a", out var version);
 

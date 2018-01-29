@@ -25,8 +25,6 @@ namespace Bumpy.Core
 
         public IEnumerable<BumpyConfiguration> ReadConfigFile(FileInfo configFile)
         {
-            configFile.ThrowIfNull(nameof(configFile));
-
             var lines = File.ReadLines(configFile.FullName);
             var profile = string.Empty;
 

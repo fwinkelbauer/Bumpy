@@ -22,7 +22,7 @@ namespace Bumpy.Core.Tests
         {
             var version = VersionFunctions.ParseVersion("1.2");
 
-            Assert.ThrowsException<InvalidOperationException>(() => TextFunctions.EnsureExpectedVersion("foobar", @"(?<version>\d\.\d)", version));
+            Assert.ThrowsException<InvalidOperationException>(() => TextFunctions.EnsureExpectedVersion("not a number", @"(?<version>\d\.\d)", version));
         }
 
         [TestMethod]
@@ -30,7 +30,7 @@ namespace Bumpy.Core.Tests
         {
             var version = VersionFunctions.ParseVersion("1.2");
 
-            Assert.ThrowsException<InvalidOperationException>(() => TextFunctions.EnsureExpectedVersion("1.2", "foobar", version));
+            Assert.ThrowsException<InvalidOperationException>(() => TextFunctions.EnsureExpectedVersion("1.2", "wrong regex", version));
         }
     }
 }

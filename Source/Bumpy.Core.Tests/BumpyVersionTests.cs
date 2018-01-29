@@ -10,6 +10,7 @@ namespace Bumpy.Core.Tests
         [DataRow("3.0.0.0")]
         [DataRow("100.52.89.1024")]
         [DataRow("5.17.0-foo+bar")]
+        [DataRow("5.17.0_final")]
         public void ToString_ReturnsVersionString(string versionText)
         {
             var version = VersionFunctions.ParseVersion(versionText);

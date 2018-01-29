@@ -10,9 +10,9 @@ namespace Bumpy.Core
         private const string _numbersGroupName = "numbers";
         private const string _labelGroupName = "label";
 
-        private static readonly Regex _bumpyRegex = new Regex(@"^(?<numbers>\d+(\.\d+)*)(?<label>[\-\+\.0-9a-zA-Z]*)$", RegexOptions.Singleline);
+        private static readonly Regex _bumpyRegex = new Regex(@"^(?<numbers>\d+(\.\d+)*)(?<label>[_\-\+\.0-9a-zA-Z]*)$", RegexOptions.Singleline);
 
-        public static BumpyVersion Increment(BumpyVersion version, int position)
+        public static BumpyVersion Increment(BumpyVersion version, int position, bool cascade)
         {
             var numbers = version.ThrowIfNull(nameof(version)).Numbers;
             var numbersCount = numbers.Count;
@@ -20,9 +20,12 @@ namespace Bumpy.Core
 
             numbers[checked(position - 1)]++;
 
-            for (int i = position; i < numbers.Count; i++)
+            if (cascade)
             {
-                numbers[i] = 0;
+                for (int i = position; i < numbersCount; i++)
+                {
+                    numbers[i] = 0;
+                }
             }
 
             return new BumpyVersion(numbers, version.Label);
@@ -49,7 +52,7 @@ namespace Bumpy.Core
 
             if (!numbersGroup.Success || !labelGroup.Success)
             {
-                throw new ArgumentException($"Invalid version string '{versionText}'");
+                throw new ArgumentException($"The provided version string '{versionText}' is not supported");
             }
 
             var numbers = numbersGroup.Value.Split('.').Select(p => Convert.ToInt32(p));
