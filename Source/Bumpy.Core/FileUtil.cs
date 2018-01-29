@@ -23,6 +23,16 @@ namespace Bumpy.Core
                 .Where(f => glob.IsMatch(f.ToRelativePath(directory)));
         }
 
+        public FileContent ReadFile(FileInfo file, Encoding encoding)
+        {
+            return new FileContent(file, File.ReadLines(file.FullName, encoding), encoding);
+        }
+
+        public void WriteFile(FileContent file)
+        {
+            File.WriteAllLines(file.File.FullName, file.Lines, file.Encoding);
+        }
+
         public IEnumerable<BumpyConfiguration> ReadConfigFile(FileInfo configFile)
         {
             var lines = File.ReadLines(configFile.FullName);
