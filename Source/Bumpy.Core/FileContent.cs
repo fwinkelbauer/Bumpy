@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Bumpy.Core
 {
-    internal class FileContent
+    public sealed class FileContent
     {
         public FileContent(FileInfo file, IEnumerable<string> lines, Encoding encoding)
         {

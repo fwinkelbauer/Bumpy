@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bumpy", "Bumpy\Bumpy.csproj", "{2115A19D-9AB9-4ABC-8816-B9C49298E04E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bumpy.Core", "Bumpy.Core\Bumpy.Core.csproj", "{F6061A71-45DA-48C3-836F-9A5F112404C7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bumpy.Core", "Bumpy.Core\Bumpy.Core.csproj", "{F6061A71-45DA-48C3-836F-9A5F112404C7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bumpy.Core.Tests", "Bumpy.Core.Tests\Bumpy.Core.Tests.csproj", "{6A77B4F4-24F5-4D99-8389-EEC83D61BAD1}"
 EndProject

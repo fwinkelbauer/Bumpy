@@ -2,7 +2,7 @@
 
 namespace Bumpy.Core
 {
-    public class Glob
+    public sealed class Glob
     {
         private readonly Regex _regex;
 

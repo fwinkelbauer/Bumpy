@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Bumpy.Core
 {
-    internal class FileUtil
+    public sealed class FileUtil : IFileUtil
     {
         private const string AllFilesPattern = "*";
         private const string CommentPattern = "#";
@@ -23,17 +23,63 @@ namespace Bumpy.Core
                 .Where(f => glob.IsMatch(f.ToRelativePath(directory)));
         }
 
-        public FileContent ReadFile(FileInfo file, Encoding encoding)
+        public FileContent ReadFileContent(FileInfo file, Encoding encoding)
         {
             return new FileContent(file, File.ReadLines(file.FullName, encoding), encoding);
         }
 
-        public void WriteFile(FileContent file)
+        public void WriteFileContent(FileContent fileContent)
         {
-            File.WriteAllLines(file.File.FullName, file.Lines, file.Encoding);
+            File.WriteAllLines(fileContent.File.FullName, fileContent.Lines, fileContent.Encoding);
         }
 
-        public IEnumerable<BumpyConfiguration> ReadConfigFile(FileInfo configFile)
+        public bool CreateConfigFile(FileInfo configFile)
+        {
+            configFile.ThrowIfNull(nameof(configFile));
+
+            if (configFile.Exists)
+            {
+                return false;
+            }
+
+            var builder = new StringBuilder();
+            builder.AppendLine("# Configuration file for Bumpy");
+            builder.AppendLine();
+            builder.AppendLine("# Usage: <file glob pattern> = <regular expression>");
+            builder.AppendLine("# Note that the regular expression must contain a named group 'version' which contains the actual version information");
+            builder.AppendLine();
+            builder.AppendLine("# Example: Search for version information of the format a.b.c.d (e.g. 1.22.7.50) in all AssemblyInfo.cs files");
+            builder.AppendLine(@"# AssemblyInfo.cs = (?<version>\d+\.\d+\.\d+\.\d+)");
+            builder.AppendLine();
+            builder.AppendLine("# Example: The default read/write encoding is UTF-8 without BOM, but you can change this behaviour (e.g. UTF-8 with BOM)");
+            builder.AppendLine(@"# AssemblyInfo.cs | UTF-8 = (?<version>\d+\.\d+\.\d+\.\d+)");
+            builder.AppendLine();
+            builder.AppendLine("# Example: Search for all .nuspec files in a NuSpec directory");
+            builder.AppendLine(@"# NuSpec\**\*.nuspec = <version>(?<version>\d+(\.\d+)+)");
+
+            File.WriteAllText(configFile.FullName, builder.ToString());
+
+            return true;
+        }
+
+        public IEnumerable<BumpyConfiguration> ReadConfigFile(FileInfo configFile, string profile)
+        {
+            var config = ReadConfigFile(configFile);
+
+            if (!profile.Equals(BumpyConfiguration.DefaultProfile))
+            {
+                config = config.Where(c => c.Profile == profile);
+
+                if (!config.Any())
+                {
+                    throw new InvalidOperationException($"Profile '{profile}' does not exist in '{configFile.Name}'");
+                }
+            }
+
+            return config;
+        }
+
+        private IEnumerable<BumpyConfiguration> ReadConfigFile(FileInfo configFile)
         {
             var lines = File.ReadLines(configFile.FullName);
             var profile = string.Empty;

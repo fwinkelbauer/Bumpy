@@ -4,7 +4,7 @@ using System.Diagnostics;
 namespace Bumpy.Core
 {
     [DebuggerStepThrough]
-    public static class ValidationExtensions
+    internal static class ValidationExtensions
     {
         public static T ThrowIfNull<T>([ValidatedNotNull] this T t, string paramName)
             where T : class

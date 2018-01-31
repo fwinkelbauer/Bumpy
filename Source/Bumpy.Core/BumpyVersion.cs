@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Bumpy.Core
 {
-    public class BumpyVersion
+    public sealed class BumpyVersion
     {
         private readonly int[] _numbers;
 

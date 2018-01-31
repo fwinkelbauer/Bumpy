@@ -113,5 +113,32 @@ namespace Bumpy.Core.Tests
             Assert.IsFalse(success);
             Assert.IsNull(version);
         }
+
+        [TestMethod]
+        public void EnsureExpectedVersion_Ok()
+        {
+            var expectedText = "a1.2a";
+            var version = VersionFunctions.ParseVersion("1.2");
+
+            var actualText = VersionFunctions.EnsureExpectedVersion(expectedText, @"a(?<version>\d\.\d)a", version);
+
+            Assert.AreEqual(expectedText, actualText);
+        }
+
+        [TestMethod]
+        public void EnsureExpectedVersion_WrongText()
+        {
+            var version = VersionFunctions.ParseVersion("1.2");
+
+            Assert.ThrowsException<InvalidOperationException>(() => VersionFunctions.EnsureExpectedVersion("not a number", @"(?<version>\d\.\d)", version));
+        }
+
+        [TestMethod]
+        public void EnsureExpectedVersion_WrongRegex()
+        {
+            var version = VersionFunctions.ParseVersion("1.2");
+
+            Assert.ThrowsException<InvalidOperationException>(() => VersionFunctions.EnsureExpectedVersion("1.2", "wrong regex", version));
+        }
     }
 }
