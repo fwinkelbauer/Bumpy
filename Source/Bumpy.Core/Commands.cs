@@ -23,11 +23,13 @@ namespace Bumpy.Core
         public void CommandList(string profile)
         {
             var configEntries = _fileUtil.ReadConfigFile(_configFile, profile);
+            var currentProfile = BumpyConfiguration.DefaultProfile;
 
             foreach (var config in configEntries)
             {
-                if (!string.IsNullOrEmpty(config.Profile))
+                if (!currentProfile.Equals(config.Profile))
                 {
+                    currentProfile = config.Profile;
                     _writeLine($"[{config.Profile}]");
                 }
 
