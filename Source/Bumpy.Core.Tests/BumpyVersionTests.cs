@@ -21,10 +21,8 @@ namespace Bumpy.Core.Tests
         [TestMethod]
         public void Constructor_ValidateInput()
         {
-            Assert.ThrowsException<ArgumentNullException>(() => new BumpyVersion(null, string.Empty));
             Assert.ThrowsException<ArgumentException>(() => new BumpyVersion(new int[] { }, string.Empty));
             Assert.ThrowsException<ArgumentOutOfRangeException>(() => new BumpyVersion(new[] { 2, 1, -3 }, string.Empty));
-            Assert.ThrowsException<ArgumentNullException>(() => new BumpyVersion(new[] { 1 }, null));
         }
 
         [DataTestMethod]

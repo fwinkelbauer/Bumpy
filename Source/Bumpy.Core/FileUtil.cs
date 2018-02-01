@@ -35,8 +35,6 @@ namespace Bumpy.Core
 
         public bool CreateConfigFile(FileInfo configFile)
         {
-            configFile.ThrowIfNull(nameof(configFile));
-
             if (configFile.Exists)
             {
                 return false;

@@ -14,8 +14,9 @@ namespace Bumpy.Core
 
         public static BumpyVersion Increment(BumpyVersion version, int position, bool cascade)
         {
-            var numbers = version.ThrowIfNull(nameof(version)).Numbers;
+            var numbers = version.Numbers;
             var numbersCount = numbers.Count;
+
             position.ThrowIfOutOfRange(n => n < 1 || n > numbersCount, nameof(position), $"Position must be between 1 and {numbersCount}");
 
             numbers[checked(position - 1)]++;
@@ -33,7 +34,7 @@ namespace Bumpy.Core
 
         public static BumpyVersion Assign(BumpyVersion version, int position, int number)
         {
-            var numbers = version.ThrowIfNull(nameof(version)).Numbers;
+            var numbers = version.Numbers;
             var numbersCount = numbers.Count;
 
             position.ThrowIfOutOfRange(n => n < 1 || n > numbersCount, nameof(position), $"Position must be between 1 and {numbersCount}");
@@ -46,7 +47,7 @@ namespace Bumpy.Core
 
         public static BumpyVersion ParseVersion(string versionText)
         {
-            var match = _bumpyRegex.Match(versionText.ThrowIfNull(nameof(versionText)));
+            var match = _bumpyRegex.Match(versionText);
             var numbersGroup = match.Groups[_numbersGroupName];
             var labelGroup = match.Groups[_labelGroupName];
 
@@ -62,9 +63,6 @@ namespace Bumpy.Core
 
         public static bool TryParseVersionInText(string text, string regexPattern, out BumpyVersion version)
         {
-            text.ThrowIfNull(nameof(text));
-            regexPattern.ThrowIfNull(nameof(regexPattern));
-
             version = null;
 
             var regex = new Regex(regexPattern, RegexOptions.Singleline);

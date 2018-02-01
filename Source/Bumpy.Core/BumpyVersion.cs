@@ -10,8 +10,8 @@ namespace Bumpy.Core
 
         public BumpyVersion(IEnumerable<int> numbers, string label)
         {
-            _numbers = numbers.ThrowIfNull(nameof(numbers)).ToArray();
-            Label = label.ThrowIfNull(nameof(label));
+            _numbers = numbers.ToArray();
+            Label = label;
 
             if (_numbers.Length == 0)
             {

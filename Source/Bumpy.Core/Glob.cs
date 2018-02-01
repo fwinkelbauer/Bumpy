@@ -8,8 +8,7 @@ namespace Bumpy.Core
 
         public Glob(string searchPattern)
         {
-            var unifiedPattern = searchPattern.ThrowIfNull(nameof(searchPattern))
-                .Replace("\\", "/");
+            var unifiedPattern = searchPattern.Replace("\\", "/");
             var escapedPattern = Regex.Escape(unifiedPattern)
                 .Replace(@"\*", ".*")
                 .Replace(@"\?", ".")
