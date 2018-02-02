@@ -12,6 +12,7 @@ namespace Bumpy
             var escapedPattern = Regex.Escape(unifiedPattern)
                 .Replace(@"\*", ".*")
                 .Replace(@"\?", ".")
+                .Replace("/.*.*/", "/(.*.*/)?")
                 .Replace("/", @"[\\\/]");
 
             _regex = new Regex($"{escapedPattern}$");

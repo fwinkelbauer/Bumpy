@@ -1,6 +1,6 @@
 # Bumpy
 
-Bumpy is a tool to manipulate version information across multiple files found in the current working directory using a configuration file which consists of [glob patterns](https://github.com/kthompson/glob/) and regular expressions.
+Bumpy is a tool to manipulate version information across multiple files found in the current working directory using a configuration file which consists of [glob patterns](https://en.wikipedia.org/wiki/Glob_(programming)) and regular expressions.
 
 NuGet and Chocolatey packages can be found [here](https://www.nuget.org/packages/Bumpy/) and [here](https://chocolatey.org/packages/bumpy.portable).
 
@@ -160,7 +160,7 @@ bumpy list -d D:\my_project -c D:\my_project\.bumpyconfig
 
 ## Configuration
 
-Bumpy's configuration is based on the presence of a `.bumpyconfig` file in the current working directory. This file dictates the behaviour of Bumpy using a pair of [glob patterns](https://github.com/kthompson/glob/) and regular expressions, e.g:
+Bumpy's configuration is based on the presence of a `.bumpyconfig` file in the current working directory. This file dictates the behaviour of Bumpy using a pair of glob patterns and regular expressions, e.g:
 
 ```
 # Usage: <file glob pattern> = <regular expression>
