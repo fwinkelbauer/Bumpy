@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace Bumpy.Core
+namespace Bumpy
 {
     public sealed class Glob
     {

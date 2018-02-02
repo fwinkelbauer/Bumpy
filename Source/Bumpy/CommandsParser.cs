@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace Bumpy.Core
+namespace Bumpy
 {
-    // TODO fw write some tests
     public sealed class CommandsParser
     {
         private readonly IFileUtil _fileUtil;

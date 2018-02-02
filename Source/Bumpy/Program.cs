@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using Bumpy.Core;
 
 namespace Bumpy
 {
@@ -25,7 +24,6 @@ namespace Bumpy
 #endif
         }
 
-        // TODO change .bumpyconfig to do this
         private static void PrintInfo()
         {
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();

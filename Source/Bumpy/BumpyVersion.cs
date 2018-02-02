@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Bumpy.Core
+namespace Bumpy
 {
     public sealed class BumpyVersion
     {

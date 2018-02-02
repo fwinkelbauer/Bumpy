@@ -1,7 +1,8 @@
 ﻿using System;
 
-namespace Bumpy.Core
+namespace Bumpy
 {
+    [Serializable]
     public sealed class ParserException : Exception
     {
         public ParserException(string message)

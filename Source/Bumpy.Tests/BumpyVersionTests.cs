@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Bumpy.Core.Tests
+namespace Bumpy.Tests
 {
     [TestClass]
     public class BumpyVersionTests

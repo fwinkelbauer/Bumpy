@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Bumpy.Core
+namespace Bumpy
 {
     public sealed class FileUtil : IFileUtil
     {

@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace Bumpy.Core
+namespace Bumpy
 {
     public sealed class BumpyConfiguration
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace Bumpy.Core
+namespace Bumpy
 {
     internal static class FileInfoExtensions
     {

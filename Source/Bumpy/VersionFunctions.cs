@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace Bumpy.Core
+namespace Bumpy
 {
     public static class VersionFunctions
     {

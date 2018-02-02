@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 
-namespace Bumpy.Core
+namespace Bumpy
 {
     [DebuggerStepThrough]
     internal static class ValidationExtensions
