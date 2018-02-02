@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace Bumpy
@@ -15,34 +14,46 @@ namespace Bumpy
         public static BumpyVersion Increment(BumpyVersion version, int position, bool cascade)
         {
             var numbers = version.Numbers;
-            var numbersCount = numbers.Count;
+            var digits = version.Digits;
 
-            position.ThrowIfOutOfRange(n => n < 1 || n > numbersCount, nameof(position), $"Position must be between 1 and {numbersCount}");
+            position.ThrowIfOutOfRange(n => n < 1 || n > numbers.Length, nameof(position), $"Position must be between 1 and {numbers.Length}");
 
-            numbers[checked(position - 1)]++;
+            var zeroBasedIndex = position - 1;
+            numbers[zeroBasedIndex]++;
+            var digitCount = numbers[zeroBasedIndex].ToString().Length;
+            digits[zeroBasedIndex] = Math.Max(digits[zeroBasedIndex], digitCount);
 
             if (cascade)
             {
-                for (int i = position; i < numbersCount; i++)
+                for (int i = position; i < numbers.Length; i++)
                 {
                     numbers[i] = 0;
                 }
             }
 
-            return new BumpyVersion(numbers, version.Label);
+            return new BumpyVersion(numbers, digits, version.Label);
         }
 
-        public static BumpyVersion Assign(BumpyVersion version, int position, int number)
+        public static BumpyVersion Assign(BumpyVersion version, int position, string formattedNumber)
         {
+            int number;
+
+            if (!int.TryParse(formattedNumber, out number))
+            {
+                throw new ArgumentException($"Expected '{formattedNumber}' to be a number");
+            }
+
             var numbers = version.Numbers;
-            var numbersCount = numbers.Count;
+            var digits = version.Digits;
 
-            position.ThrowIfOutOfRange(n => n < 1 || n > numbersCount, nameof(position), $"Position must be between 1 and {numbersCount}");
-            number.ThrowIfOutOfRange(n => n < 0, nameof(number), "Number cannot be negative");
+            position.ThrowIfOutOfRange(n => n < 1 || n > numbers.Length, nameof(position), $"Position must be between 1 and {numbers.Length}");
+            number.ThrowIfOutOfRange(n => n < 0, nameof(formattedNumber), "Number cannot be negative");
 
-            numbers[checked(position - 1)] = number;
+            var zeroBasedIndex = position - 1;
+            numbers[zeroBasedIndex] = number;
+            digits[zeroBasedIndex] = formattedNumber.Length;
 
-            return new BumpyVersion(numbers, version.Label);
+            return new BumpyVersion(numbers, digits, version.Label);
         }
 
         public static BumpyVersion ParseVersion(string versionText)
@@ -56,9 +67,9 @@ namespace Bumpy
                 throw new ArgumentException($"The provided version string '{versionText}' is not supported");
             }
 
-            var numbers = numbersGroup.Value.Split('.').Select(p => Convert.ToInt32(p));
+            var formattedNumbers = numbersGroup.Value.Split('.');
 
-            return new BumpyVersion(numbers, labelGroup.Value);
+            return new BumpyVersion(formattedNumbers, labelGroup.Value);
         }
 
         public static bool TryParseVersionInText(string text, string regexPattern, out BumpyVersion version)

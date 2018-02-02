@@ -12,7 +12,7 @@ namespace Bumpy
 
         private CommandType _commandType;
         private int _position;
-        private int _number;
+        private string _formattedNumber;
         private string _version;
         private DirectoryInfo _workingDirectory;
         private FileInfo _configFile;
@@ -25,7 +25,7 @@ namespace Bumpy
 
             _commandType = CommandType.Help;
             _position = -1;
-            _number = -1;
+            _formattedNumber = "-1";
             _version = string.Empty;
             _workingDirectory = new DirectoryInfo(".");
             _configFile = new FileInfo(BumpyConfiguration.ConfigFile);
@@ -47,7 +47,7 @@ namespace Bumpy
                 throw new ParserException("Invalid arguments. See 'bumpy help'.", e);
             }
 
-            return new CommandRunner(_fileUtil, _writeLine, _commandType, _position, _number, _version, _workingDirectory, _configFile, _profile);
+            return new CommandRunner(_fileUtil, _writeLine, _commandType, _position, _formattedNumber, _version, _workingDirectory, _configFile, _profile);
         }
 
         private void ParseCommand(Queue<string> args)
@@ -75,7 +75,7 @@ namespace Bumpy
             else if (_commandType == CommandType.Assign)
             {
                 _position = Convert.ToInt32(args.Dequeue());
-                _number = Convert.ToInt32(args.Dequeue());
+                _formattedNumber = args.Dequeue();
             }
 
             var shouldParseOptions = _commandType == CommandType.List

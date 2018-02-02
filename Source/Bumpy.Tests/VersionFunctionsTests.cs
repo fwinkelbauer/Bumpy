@@ -17,6 +17,9 @@ namespace Bumpy.Tests
         [DataRow(3, "2.2.2.2", "2.2.3.2", false)]
         [DataRow(4, "2.2.2.2", "2.2.2.3", false)]
         [DataRow(4, "2.2.2.2+bar", "2.2.2.3+bar", false)]
+        [DataRow(4, "2.2.2.002", "2.2.2.003", false)]
+        [DataRow(4, "2.2.2.09", "2.2.2.10", false)]
+        [DataRow(3, "2.2.99.2", "2.2.100.2", false)]
         public void Increment_IncrementDifferentPositions(int position, string originalVersionText, string expectedVersionText, bool cascade)
         {
             var version = VersionFunctions.ParseVersion(originalVersionText);
@@ -35,15 +38,16 @@ namespace Bumpy.Tests
         }
 
         [DataTestMethod]
-        [DataRow(1, "1.1.1", "9.1.1", 9)]
-        [DataRow(2, "1.1.1", "1.9.1", 9)]
-        [DataRow(3, "1.1.1", "1.1.9", 9)]
-        [DataRow(1, "1.1.1-foo", "9.1.1-foo", 9)]
-        public void Assign_AssignPositions(int position, string originalVersionText, string expectedVersionText, int number)
+        [DataRow(1, "1.1.1", "9.1.1", "9")]
+        [DataRow(2, "1.1.1", "1.9.1", "9")]
+        [DataRow(3, "1.1.1", "1.1.9", "9")]
+        [DataRow(1, "1.1.1-foo", "9.1.1-foo", "9")]
+        [DataRow(1, "1.1.1", "009.1.1", "009")]
+        public void Assign_AssignPositions(int position, string originalVersionText, string expectedVersionText, string formattedNumber)
         {
             var version = VersionFunctions.ParseVersion(originalVersionText);
 
-            var inc = VersionFunctions.Assign(version, position, number);
+            var inc = VersionFunctions.Assign(version, position, formattedNumber);
 
             Assert.AreEqual(expectedVersionText, inc.ToString());
         }
@@ -53,14 +57,15 @@ namespace Bumpy.Tests
         {
             var version = VersionFunctions.ParseVersion("2.2.2");
 
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => VersionFunctions.Assign(version, 0, -1));
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => VersionFunctions.Assign(version, -1, 0));
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => VersionFunctions.Assign(version, 0, "-1"));
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => VersionFunctions.Assign(version, -1, "0"));
+            Assert.ThrowsException<ArgumentException>(() => VersionFunctions.Assign(version, 1, "not a number"));
         }
 
         [DataTestMethod]
         [DataRow("8")]
         [DataRow("100.5")]
-        [DataRow("2020.100.143")]
+        [DataRow("2018.01.01")]
         [DataRow("1.0.0.9")]
         [DataRow("1.0.0.9-foo")]
         [DataRow("1.100aBc")]

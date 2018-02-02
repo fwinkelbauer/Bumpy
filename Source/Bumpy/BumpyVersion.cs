@@ -7,28 +7,47 @@ namespace Bumpy
     public sealed class BumpyVersion
     {
         private readonly int[] _numbers;
+        private readonly int[] _digits;
 
-        public BumpyVersion(IEnumerable<int> numbers, string label)
+        public BumpyVersion(string[] formattedNumbers, string label)
         {
-            _numbers = numbers.ToArray();
+            _numbers = formattedNumbers.Select(fn => Convert.ToInt32(fn)).ToArray();
+            _digits = new int[_numbers.Length];
             Label = label;
 
             if (_numbers.Length == 0)
             {
-                throw new ArgumentException("Parameter must at least contain one element", nameof(numbers));
+                throw new ArgumentException("Parameter must at least contain one element", nameof(formattedNumbers));
             }
 
-            foreach (var number in _numbers)
+            for (int i = 0; i < _numbers.Length; i++)
             {
-                number.ThrowIfOutOfRange(n => n < 0, nameof(numbers), "Elements cannot be negative");
+                _numbers[i].ThrowIfOutOfRange(n => n < 0, nameof(formattedNumbers), "Elements cannot be negative");
+
+                _digits[i] = formattedNumbers[i].Length;
             }
         }
 
-        public IList<int> Numbers
+        internal BumpyVersion(int[] numbers, int[] digits, string label)
+        {
+            _numbers = numbers;
+            _digits = digits;
+            Label = label;
+        }
+
+        public int[] Numbers
         {
             get
             {
-                return new List<int>(_numbers);
+                return _numbers.ToArray();
+            }
+        }
+
+        public int[] Digits
+        {
+            get
+            {
+                return _digits.ToArray();
             }
         }
 
@@ -39,7 +58,14 @@ namespace Bumpy
 
         public override string ToString()
         {
-            return string.Join(".", _numbers) + Label;
+            var formattedNumbers = new string[_numbers.Length];
+
+            for (int i = 0; i < _numbers.Length; i++)
+            {
+                formattedNumbers[i] = _numbers[i].ToString($"D{_digits[i]}");
+            }
+
+            return string.Join(".", formattedNumbers) + Label;
         }
 
         public override bool Equals(object obj)

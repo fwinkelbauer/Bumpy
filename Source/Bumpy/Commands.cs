@@ -67,9 +67,9 @@ namespace Bumpy
             WriteTransformation(profile, version => VersionFunctions.Increment(version, position, false));
         }
 
-        public void CommandAssign(string profile, int position, int number)
+        public void CommandAssign(string profile, int position, string formattedNumber)
         {
-            WriteTransformation(profile, version => VersionFunctions.Assign(version, position, number));
+            WriteTransformation(profile, version => VersionFunctions.Assign(version, position, formattedNumber));
         }
 
         public void CommandWrite(string profile, string versionText)

@@ -8,6 +8,7 @@ namespace Bumpy.Tests
     {
         [DataTestMethod]
         [DataRow("3.0.0.0")]
+        [DataRow("2018.01.01")]
         [DataRow("100.52.89.1024")]
         [DataRow("5.17.0-foo+bar")]
         [DataRow("5.17.0_final")]
@@ -21,14 +22,17 @@ namespace Bumpy.Tests
         [TestMethod]
         public void Constructor_ValidateInput()
         {
-            Assert.ThrowsException<ArgumentException>(() => new BumpyVersion(new int[] { }, string.Empty));
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => new BumpyVersion(new[] { 2, 1, -3 }, string.Empty));
+            Assert.ThrowsException<ArgumentException>(() => new BumpyVersion(new string[] { }, string.Empty));
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => new BumpyVersion(new[] { "2", "1", "-3" }, string.Empty));
         }
 
         [DataTestMethod]
         [DataRow("9.1.1")]
         [DataRow("1.9.1")]
         [DataRow("1.1.9")]
+        [DataRow("01.1.1")]
+        [DataRow("1.01.1")]
+        [DataRow("1.1.01")]
         [DataRow("1.1.1-foo")]
         public void Equals_DifferentState(string versionText)
         {
@@ -42,6 +46,7 @@ namespace Bumpy.Tests
 
         [DataTestMethod]
         [DataRow("1.8.5")]
+        [DataRow("0001.008.0005")]
         [DataRow("1.8.5-foo")]
         public void Equals_SameState(string versionText)
         {
