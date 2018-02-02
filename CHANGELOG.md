@@ -6,6 +6,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+- Fixed a off-by-one bug when printing the lines of found versions
+- Fixed some bugs which caused unnecessary regex and file write operations
+
 ### Added
 
 - [#23](https://github.com/fwinkelbauer/Bumpy/issues/23) Added support for code pages in `.bumpyconfig`
