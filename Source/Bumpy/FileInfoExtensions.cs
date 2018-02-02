@@ -3,7 +3,7 @@ using System.IO;
 
 namespace Bumpy
 {
-    internal static class FileInfoExtensions
+    public static class FileInfoExtensions
     {
         public static string ToRelativePath(this FileInfo file, DirectoryInfo parent)
         {
@@ -15,7 +15,14 @@ namespace Bumpy
                 throw new ArgumentException($"'{parentName}' is not a parent directory of '{fileName}'");
             }
 
-            return fileName.Substring(parentName.Length);
+            int count = parentName.Length;
+
+            if (!parentName.EndsWith("/") && !parentName.EndsWith("\\"))
+            {
+                count++;
+            }
+
+            return fileName.Substring(count);
         }
     }
 }
