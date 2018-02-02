@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 - Fixed a off-by-one bug when printing the lines of found versions
 - Fixed some bugs which caused unnecessary regex and file write operations
 - Slightly changed the glob implementation. My current approach relies on regex and is not fully compliant to any "glob standard". I might switch to an open source glob library if users start to have issues.
+- Add support for version formats with leading zeros (e.g. increment "2018.01.01" to "2018.01.02" instead of "2018.1.2")
 
 ### Added
 

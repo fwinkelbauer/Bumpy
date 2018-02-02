@@ -24,9 +24,9 @@ namespace Bumpy.Tests
         {
             var version = VersionFunctions.ParseVersion(originalVersionText);
 
-            var inc = VersionFunctions.Increment(version, position, cascade);
+            var newVersion = VersionFunctions.Increment(version, position, cascade);
 
-            Assert.AreEqual(expectedVersionText, inc.ToString());
+            Assert.AreEqual(expectedVersionText, newVersion.ToString());
         }
 
         [TestMethod]
@@ -47,9 +47,9 @@ namespace Bumpy.Tests
         {
             var version = VersionFunctions.ParseVersion(originalVersionText);
 
-            var inc = VersionFunctions.Assign(version, position, formattedNumber);
+            var newVersion = VersionFunctions.Assign(version, position, formattedNumber);
 
-            Assert.AreEqual(expectedVersionText, inc.ToString());
+            Assert.AreEqual(expectedVersionText, newVersion.ToString());
         }
 
         [TestMethod]
