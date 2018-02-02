@@ -43,8 +43,10 @@
   <ItemGroup>
     <Compile Include="BumpyConfiguration.cs" />
     <Compile Include="BumpyVersion.cs" />
+    <Compile Include="CommandRunner.cs" />
     <Compile Include="Commands.cs" />
-    <Compile Include="CommandsParser.cs" />
+    <Compile Include="CommandParser.cs" />
+    <Compile Include="CommandType.cs" />
     <Compile Include="FileContent.cs" />
     <Compile Include="FileInfoExtensions.cs" />
     <Compile Include="FileUtil.cs" />

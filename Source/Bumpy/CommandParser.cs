@@ -5,44 +5,34 @@ using System.Linq;
 
 namespace Bumpy
 {
-    public sealed class CommandsParser
+    public sealed class CommandParser
     {
         private readonly IFileUtil _fileUtil;
         private readonly Action<string> _writeLine;
 
         private CommandType _commandType;
-
         private int _position;
         private int _number;
         private string _version;
-
         private DirectoryInfo _workingDirectory;
         private FileInfo _configFile;
         private string _profile;
 
-        public CommandsParser(IFileUtil fileUtil, Action<string> writeLine)
+        public CommandParser(IFileUtil fileUtil, Action<string> writeLine)
         {
             _fileUtil = fileUtil;
             _writeLine = writeLine;
-            _commandType = CommandType.Help;
 
+            _commandType = CommandType.Help;
+            _position = -1;
+            _number = -1;
+            _version = string.Empty;
             _workingDirectory = new DirectoryInfo(".");
             _configFile = new FileInfo(BumpyConfiguration.ConfigFile);
             _profile = BumpyConfiguration.DefaultProfile;
         }
 
-        private enum CommandType
-        {
-            Help,
-            List,
-            New,
-            Increment,
-            IncrementOnly,
-            Write,
-            Assign
-        }
-
-        public void Execute(string[] args)
+        public CommandRunner Parse(string[] args)
         {
             try
             {
@@ -57,7 +47,7 @@ namespace Bumpy
                 throw new ParserException("Invalid arguments. See 'bumpy help'.", e);
             }
 
-            RunCommand();
+            return new CommandRunner(_fileUtil, _writeLine, _commandType, _position, _number, _version, _workingDirectory, _configFile, _profile);
         }
 
         private void ParseCommand(Queue<string> args)
@@ -129,45 +119,6 @@ namespace Bumpy
             else
             {
                 throw new ParserException($"Option '{option}' not recognized. See 'bumpy help'.");
-            }
-        }
-
-        private void RunCommand()
-        {
-            var commands = new Commands(_fileUtil, _configFile, _workingDirectory, _writeLine);
-
-            if (_commandType == CommandType.List)
-            {
-                commands.CommandList(_profile);
-            }
-            else if (_commandType == CommandType.New)
-            {
-                commands.CommandNew();
-            }
-            else if (_commandType == CommandType.Increment)
-            {
-                commands.CommandIncrement(_profile, _position);
-            }
-            else if (_commandType == CommandType.IncrementOnly)
-            {
-                commands.CommandIncrementOnly(_profile, _position);
-            }
-            else if (_commandType == CommandType.Write)
-            {
-                commands.CommandWrite(_profile, _version);
-            }
-            else if (_commandType == CommandType.Assign)
-            {
-                commands.CommandAssign(_profile, _position, _number);
-            }
-            else if (_commandType == CommandType.Help)
-            {
-                commands.CommandHelp();
-            }
-            else
-            {
-                // This Exception is only thrown if we forget to extend this method after introducing new commands.
-                throw new ParserException("Could not execute command");
             }
         }
     }
