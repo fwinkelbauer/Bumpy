@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BumpyVersionTests.cs" />
+    <Compile Include="CommandParserTests.cs" />
     <Compile Include="FileInfoExtensionTests.cs" />
     <Compile Include="GlobTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
