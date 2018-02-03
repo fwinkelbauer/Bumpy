@@ -5,11 +5,11 @@ namespace Bumpy
 {
     public static class VersionFunctions
     {
-        private const string _versionGroupName = "version";
-        private const string _numbersGroupName = "numbers";
-        private const string _labelGroupName = "label";
+        private const string VersionGroupName = "version";
+        private const string NumbersGroupName = "numbers";
+        private const string LabelGroupName = "label";
 
-        private static readonly Regex _bumpyRegex = new Regex(@"^(?<numbers>\d+(\.\d+)*)(?<label>[_\-\+\.0-9a-zA-Z]*)$", RegexOptions.Singleline);
+        private static readonly Regex BumpyRegex = new Regex(@"^(?<numbers>\d+(\.\d+)*)(?<label>[_\-\+\.0-9a-zA-Z]*)$", RegexOptions.Singleline);
 
         public static BumpyVersion Increment(BumpyVersion version, int position, bool cascade)
         {
@@ -36,9 +36,7 @@ namespace Bumpy
 
         public static BumpyVersion Assign(BumpyVersion version, int position, string formattedNumber)
         {
-            int number;
-
-            if (!int.TryParse(formattedNumber, out number))
+            if (!int.TryParse(formattedNumber, out int number))
             {
                 throw new ArgumentException($"Expected '{formattedNumber}' to be a number");
             }
@@ -58,9 +56,9 @@ namespace Bumpy
 
         public static BumpyVersion ParseVersion(string versionText)
         {
-            var match = _bumpyRegex.Match(versionText);
-            var numbersGroup = match.Groups[_numbersGroupName];
-            var labelGroup = match.Groups[_labelGroupName];
+            var match = BumpyRegex.Match(versionText);
+            var numbersGroup = match.Groups[NumbersGroupName];
+            var labelGroup = match.Groups[LabelGroupName];
 
             if (!numbersGroup.Success || !labelGroup.Success)
             {
@@ -77,7 +75,7 @@ namespace Bumpy
             version = null;
 
             var regex = new Regex(regexPattern, RegexOptions.Singleline);
-            var group = regex.Match(text).Groups[_versionGroupName];
+            var group = regex.Match(text).Groups[VersionGroupName];
             var success = group.Success;
 
             if (success)

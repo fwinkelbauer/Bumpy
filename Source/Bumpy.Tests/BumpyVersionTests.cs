@@ -64,7 +64,6 @@ namespace Bumpy.Tests
             var version = VersionFunctions.ParseVersion("1.1.1");
 
             Assert.IsFalse(version.Equals(null));
-            Assert.IsFalse(version.Equals(string.Empty));
         }
     }
 }

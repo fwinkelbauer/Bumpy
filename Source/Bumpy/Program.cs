@@ -3,7 +3,7 @@ using System.Diagnostics;
 
 namespace Bumpy
 {
-    class Program
+    public static class Program
     {
         public static void Main(string[] args)
         {

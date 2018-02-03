@@ -62,11 +62,11 @@ namespace Bumpy
 
         public IEnumerable<BumpyConfiguration> ReadConfigFile(FileInfo configFile, string profile)
         {
-            var config = ReadConfigFile(configFile);
+            var config = ReadConfigFile(configFile).ToArray();
 
             if (!profile.Equals(BumpyConfiguration.DefaultProfile))
             {
-                config = config.Where(c => c.Profile == profile);
+                config = config.Where(c => c.Profile == profile).ToArray();
 
                 if (!config.Any())
                 {

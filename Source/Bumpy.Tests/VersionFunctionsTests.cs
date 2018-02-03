@@ -107,7 +107,7 @@ namespace Bumpy.Tests
         [TestMethod]
         public void TryParseVersionInText_InvalidRegexWithNamedGroup()
         {
-            Assert.ThrowsException<ArgumentException>(() => VersionFunctions.TryParseVersionInText("1.0//", @"(?<version>1.0//)", out var version));
+            Assert.ThrowsException<ArgumentException>(() => VersionFunctions.TryParseVersionInText("1.0//", @"(?<version>1.0//)", out _));
         }
 
         [TestMethod]

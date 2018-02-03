@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace Bumpy
@@ -35,21 +34,9 @@ namespace Bumpy
             Label = label;
         }
 
-        public int[] Numbers
-        {
-            get
-            {
-                return _numbers.ToArray();
-            }
-        }
+        public int[] Numbers => _numbers.ToArray();
 
-        public int[] Digits
-        {
-            get
-            {
-                return _digits.ToArray();
-            }
-        }
+        public int[] Digits => _digits.ToArray();
 
         public string Label
         {
@@ -70,9 +57,7 @@ namespace Bumpy
 
         public override bool Equals(object obj)
         {
-            var version = obj as BumpyVersion;
-
-            if (version != null)
+            if (obj is BumpyVersion version)
             {
                 return version.ToString().Equals(ToString());
             }
