@@ -35,11 +35,11 @@ Lists all versions and their profiles (see below to learn more about profiles).
 
 ```
 [assembly]
-\Source\Bumpy\Properties\AssemblyInfo.cs (35): 0.2.1.0
-\Source\Bumpy\Properties\AssemblyInfo.cs (36): 0.2.1.0
+Bumpy\Properties\AssemblyInfo.cs (16): 0.8.0.0
+Bumpy\Properties\AssemblyInfo.cs (17): 0.8.0.0
 [semver]
-\NuSpec\Chocolatey\Bumpy.Portable.nuspec (5): 0.2.1
-\NuSpec\NuGet\Bumpy.nuspec (5): 0.2.1
+NuSpec\Chocolatey\Bumpy.Portable.nuspec (6): 0.8.0
+NuSpec\NuGet\Bumpy.nuspec (6): 0.8.0
 ```
 
 ### Create New Configuration
@@ -58,13 +58,13 @@ bumpy increment <one-based index number>
 
 Increments the specified component of each version.
 
-**Example:** `bumpy increment 2`
+**Example:** `bumpy increment 3`
 
 ```
-\Source\Bumpy\Properties\AssemblyInfo.cs (35): 0.2.1.0 -> 0.3.0.0
-\Source\Bumpy\Properties\AssemblyInfo.cs (36): 0.2.1.0 -> 0.3.0.0
-\NuSpec\Chocolatey\Bumpy.Portable.nuspec (5): 0.2.1 -> 0.3.0
-\NuSpec\NuGet\Bumpy.nuspec (5): 0.2.1 -> 0.3.0
+Bumpy\Properties\AssemblyInfo.cs (16): 0.8.0.0 -> 0.8.1.0
+Bumpy\Properties\AssemblyInfo.cs (17): 0.8.0.0 -> 0.8.1.0
+NuSpec\Chocolatey\Bumpy.Portable.nuspec (6): 0.8.0 -> 0.8.1
+NuSpec\NuGet\Bumpy.nuspec (6): 0.8.0 -> 0.8.1
 ```
 
 ### Incrementonly
@@ -78,10 +78,10 @@ Increments the specified component of each version, without updating following c
 **Example:** `bumpy incrementonly 2`
 
 ```
-\Source\Bumpy\Properties\AssemblyInfo.cs (35): 0.2.1.0 -> 0.3.1.0
-\Source\Bumpy\Properties\AssemblyInfo.cs (36): 0.2.1.0 -> 0.3.1.0
-\NuSpec\Chocolatey\Bumpy.Portable.nuspec (5): 0.2.1 -> 0.3.1
-\NuSpec\NuGet\Bumpy.nuspec (5): 0.2.1 -> 0.3.1
+Bumpy\Properties\AssemblyInfo.cs (16): 0.8.1.0 -> 0.9.1.0
+Bumpy\Properties\AssemblyInfo.cs (17): 0.8.1.0 -> 0.9.1.0
+NuSpec\Chocolatey\Bumpy.Portable.nuspec (6): 0.8.1 -> 0.9.1
+NuSpec\NuGet\Bumpy.nuspec (6): 0.8.1 -> 0.9.1
 ```
 
 ### Write
@@ -97,20 +97,18 @@ This command could be used to e.g:
 - Unify the version information of projects and files in a solution
 - Change the version information of a newly created project to be in line with other projects in a solution
 
-**Example:** `bumpy write 1.2.5.0`
+**Example:** `bumpy write 1.0.0.0 -p assembly`
 
 ```
-\Source\Bumpy\Properties\AssemblyInfo.cs (35): 0.3.0.0 -> 1.2.5.0
-\Source\Bumpy\Properties\AssemblyInfo.cs (36): 0.3.0.0 -> 1.2.5.0
-\NuSpec\Chocolatey\Bumpy.Portable.nuspec (5): 0.3.0 -> 1.2.5.0
-\NuSpec\NuGet\Bumpy.nuspec (5): 0.3.0 -> 1.2.5.0
+Bumpy\Properties\AssemblyInfo.cs (16): 0.9.1.0 -> 1.0.0.0
+Bumpy\Properties\AssemblyInfo.cs (17): 0.9.1.0 -> 1.0.0.0
 ```
 
-**Example:** `bumpy write 1.2.5 -p semver`
+**Example:** `bumpy write 1.0.0 -p semver`
 
 ```
-\NuSpec\Chocolatey\Bumpy.Portable.nuspec (5): 1.2.5.0 -> 1.2.5
-\NuSpec\NuGet\Bumpy.nuspec (5): 1.2.5.0 -> 1.2.5
+NuSpec\Chocolatey\Bumpy.Portable.nuspec (6): 0.9.1 -> 1.0.0
+NuSpec\NuGet\Bumpy.nuspec (6): 0.9.1 -> 1.0.0
 ```
 
 ### Assign
@@ -121,13 +119,13 @@ bumpy assign <one-based index number> <version number>
 
 Replaces the specified component of a version with a new number. This command could for example be used by a CI server to add the current build number.
 
-**Example:** `bumpy assign 3 99`
+**Example:** `bumpy assign 3 42`
 
 ```
-\Source\Bumpy\Properties\AssemblyInfo.cs (35): 1.2.5.0 -> 1.2.99.0
-\Source\Bumpy\Properties\AssemblyInfo.cs (36): 1.2.5.0 -> 1.2.99.0
-\NuSpec\Chocolatey\Bumpy.Portable.nuspec (5): 1.2.5.0 -> 1.2.99.0
-\NuSpec\NuGet\Bumpy.nuspec (5): 1.2.5 -> 1.2.99
+Bumpy\Properties\AssemblyInfo.cs (16): 1.0.0.0 -> 1.0.42.0
+Bumpy\Properties\AssemblyInfo.cs (17): 1.0.0.0 -> 1.0.42.0
+NuSpec\Chocolatey\Bumpy.Portable.nuspec (6): 1.0.0 -> 1.0.42
+NuSpec\NuGet\Bumpy.nuspec (6): 1.0.0 -> 1.0.42
 ```
 
 ### Help
