@@ -11,7 +11,7 @@ namespace Bumpy.Tests
         {
             var runner = Parse("help");
 
-            Assert.AreEqual(CommandType.Help, runner.Type);
+            Assert.AreEqual(CommandType.Help, runner.CmdType);
         }
 
         [TestMethod]
@@ -19,7 +19,7 @@ namespace Bumpy.Tests
         {
             var runner = Parse("new");
 
-            Assert.AreEqual(CommandType.New, runner.Type);
+            Assert.AreEqual(CommandType.New, runner.CmdType);
         }
 
         [TestMethod]
@@ -27,7 +27,7 @@ namespace Bumpy.Tests
         {
             var runner = Parse("list");
 
-            Assert.AreEqual(CommandType.List, runner.Type);
+            Assert.AreEqual(CommandType.List, runner.CmdType);
         }
 
         [TestMethod]
@@ -35,7 +35,7 @@ namespace Bumpy.Tests
         {
             var runner = Parse("increment 3");
 
-            Assert.AreEqual(CommandType.Increment, runner.Type);
+            Assert.AreEqual(CommandType.Increment, runner.CmdType);
             Assert.AreEqual(3, runner.Position);
         }
 
@@ -44,7 +44,7 @@ namespace Bumpy.Tests
         {
             var runner = Parse("incrementonly 3");
 
-            Assert.AreEqual(CommandType.IncrementOnly, runner.Type);
+            Assert.AreEqual(CommandType.IncrementOnly, runner.CmdType);
             Assert.AreEqual(3, runner.Position);
         }
 
@@ -53,7 +53,7 @@ namespace Bumpy.Tests
         {
             var runner = Parse("assign 2 007");
 
-            Assert.AreEqual(CommandType.Assign, runner.Type);
+            Assert.AreEqual(CommandType.Assign, runner.CmdType);
             Assert.AreEqual(2, runner.Position);
             Assert.AreEqual("007", runner.FormattedNumber);
         }
@@ -63,7 +63,7 @@ namespace Bumpy.Tests
         {
             var runner = Parse("write 1.0.0");
 
-            Assert.AreEqual(CommandType.Write, runner.Type);
+            Assert.AreEqual(CommandType.Write, runner.CmdType);
             Assert.AreEqual("1.0.0", runner.Version);
         }
 

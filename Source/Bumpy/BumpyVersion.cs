@@ -1,25 +1,26 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Bumpy
 {
     public sealed class BumpyVersion
     {
-        private readonly int[] _numbers;
-        private readonly int[] _digits;
+        private readonly List<int> _numbers;
+        private readonly List<int> _digits;
 
         public BumpyVersion(string[] formattedNumbers, string label)
         {
-            _numbers = formattedNumbers.Select(fn => Convert.ToInt32(fn)).ToArray();
-            _digits = new int[_numbers.Length];
+            _numbers = formattedNumbers.Select(fn => Convert.ToInt32(fn)).ToList();
+            _digits = new List<int>(_numbers.Count);
             Label = label;
 
-            if (_numbers.Length == 0)
+            if (_numbers.Count == 0)
             {
                 throw new ArgumentException("Parameter must at least contain one element", nameof(formattedNumbers));
             }
 
-            for (int i = 0; i < _numbers.Length; i++)
+            for (int i = 0; i < _numbers.Count; i++)
             {
                 _numbers[i].ThrowIfOutOfRange(n => n < 0, nameof(formattedNumbers), "Elements cannot be negative");
 
@@ -27,16 +28,16 @@ namespace Bumpy
             }
         }
 
-        internal BumpyVersion(int[] numbers, int[] digits, string label)
+        internal BumpyVersion(IEnumerable<int> numbers, IEnumerable<int> digits, string label)
         {
-            _numbers = numbers;
-            _digits = digits;
+            _numbers = numbers.ToList();
+            _digits = digits.ToList();
             Label = label;
         }
 
-        public int[] Numbers => _numbers.ToArray();
+        public IList<int> Numbers => new List<int>(_numbers);
 
-        public int[] Digits => _digits.ToArray();
+        public IList<int> Digits => new List<int>(_digits);
 
         public string Label
         {
@@ -45,9 +46,9 @@ namespace Bumpy
 
         public override string ToString()
         {
-            var formattedNumbers = new string[_numbers.Length];
+            var formattedNumbers = new string[_numbers.Count];
 
-            for (int i = 0; i < _numbers.Length; i++)
+            for (int i = 0; i < _numbers.Count; i++)
             {
                 formattedNumbers[i] = _numbers[i].ToString($"D{_digits[i]}");
             }

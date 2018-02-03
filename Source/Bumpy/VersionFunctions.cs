@@ -16,16 +16,16 @@ namespace Bumpy
             var numbers = version.Numbers;
             var digits = version.Digits;
 
-            position.ThrowIfOutOfRange(n => n < 1 || n > numbers.Length, nameof(position), $"Position must be between 1 and {numbers.Length}");
+            position.ThrowIfOutOfRange(n => n < 1 || n > numbers.Count, nameof(position), $"Position must be between 1 and {numbers.Count}");
 
-            var zeroBasedIndex = position - 1;
+            var zeroBasedIndex = checked(position - 1);
             numbers[zeroBasedIndex]++;
             var digitCount = numbers[zeroBasedIndex].ToString().Length;
             digits[zeroBasedIndex] = Math.Max(digits[zeroBasedIndex], digitCount);
 
             if (cascade)
             {
-                for (int i = position; i < numbers.Length; i++)
+                for (int i = position; i < numbers.Count; i++)
                 {
                     numbers[i] = 0;
                 }
@@ -44,10 +44,10 @@ namespace Bumpy
             var numbers = version.Numbers;
             var digits = version.Digits;
 
-            position.ThrowIfOutOfRange(n => n < 1 || n > numbers.Length, nameof(position), $"Position must be between 1 and {numbers.Length}");
+            position.ThrowIfOutOfRange(n => n < 1 || n > numbers.Count, nameof(position), $"Position must be between 1 and {numbers.Count}");
             number.ThrowIfOutOfRange(n => n < 0, nameof(formattedNumber), "Number cannot be negative");
 
-            var zeroBasedIndex = position - 1;
+            var zeroBasedIndex = checked(position - 1);
             numbers[zeroBasedIndex] = number;
             digits[zeroBasedIndex] = formattedNumber.Length;
 

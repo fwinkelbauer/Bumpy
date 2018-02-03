@@ -10,14 +10,15 @@ namespace Bumpy
             var fileName = file.FullName;
             var parentName = parent.FullName;
 
-            if (!fileName.StartsWith(parentName))
+            if (!fileName.StartsWith(parentName, StringComparison.OrdinalIgnoreCase))
             {
                 throw new ArgumentException($"'{parentName}' is not a parent directory of '{fileName}'");
             }
 
             int count = parentName.Length;
 
-            if (!parentName.EndsWith("/") && !parentName.EndsWith("\\"))
+            if (!parentName.EndsWith("/", StringComparison.OrdinalIgnoreCase)
+                && !parentName.EndsWith("\\", StringComparison.OrdinalIgnoreCase))
             {
                 count++;
             }

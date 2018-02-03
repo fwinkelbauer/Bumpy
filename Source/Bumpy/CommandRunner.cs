@@ -8,12 +8,12 @@ namespace Bumpy
         private readonly IFileUtil _fileUtil;
         private readonly Action<string> _writeLine;
 
-        public CommandRunner(IFileUtil fileUtil, Action<string> writeLine, CommandType type, int position, string formattedNumber, string version, DirectoryInfo workingDirectory, FileInfo configFile, string profile)
+        public CommandRunner(IFileUtil fileUtil, Action<string> writeLine, CommandType cmdType, int position, string formattedNumber, string version, DirectoryInfo workingDirectory, FileInfo configFile, string profile)
         {
             _fileUtil = fileUtil;
             _writeLine = writeLine;
 
-            Type = type;
+            CmdType = cmdType;
             Position = position;
             FormattedNumber = formattedNumber;
             Version = version;
@@ -22,7 +22,7 @@ namespace Bumpy
             Profile = profile;
         }
 
-        public CommandType Type { get; }
+        public CommandType CmdType { get; }
 
         public int Position { get; }
 
@@ -40,31 +40,31 @@ namespace Bumpy
         {
             var commands = new Commands(_fileUtil, ConfigFile, WorkingDirectory, _writeLine);
 
-            if (Type == CommandType.List)
+            if (CmdType == CommandType.List)
             {
                 commands.CommandList(Profile);
             }
-            else if (Type == CommandType.New)
+            else if (CmdType == CommandType.New)
             {
                 commands.CommandNew();
             }
-            else if (Type == CommandType.Increment)
+            else if (CmdType == CommandType.Increment)
             {
                 commands.CommandIncrement(Profile, Position);
             }
-            else if (Type == CommandType.IncrementOnly)
+            else if (CmdType == CommandType.IncrementOnly)
             {
                 commands.CommandIncrementOnly(Profile, Position);
             }
-            else if (Type == CommandType.Write)
+            else if (CmdType == CommandType.Write)
             {
                 commands.CommandWrite(Profile, Version);
             }
-            else if (Type == CommandType.Assign)
+            else if (CmdType == CommandType.Assign)
             {
                 commands.CommandAssign(Profile, Position, FormattedNumber);
             }
-            else if (Type == CommandType.Help)
+            else if (CmdType == CommandType.Help)
             {
                 commands.CommandHelp();
             }
