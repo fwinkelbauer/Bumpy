@@ -16,6 +16,7 @@
     <tags>Versioning Build AssemblyInfo NuSpec</tags>
   </metadata>
   <files>
-    <file src=".\..\..\BuildArtifacts\Output\Bumpy\*" target="tools" />
+    <file src=".\..\..\..\Artifacts\Bumpy\*" target="tools" />
+    <file src=".\..\..\..\LICENSE.txt" target="tools" />
   </files>
 </package>
