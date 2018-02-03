@@ -7,42 +7,60 @@ void CleanArtifacts()
     CleanDirectory(ArtifactsDirectory);
 }
 
-void StoreChocolatey(FilePath nuspec)
+void StoreChocolatey(string nuspecPattern)
+{
+    StoreChocolatey(GetFiles(nuspecPattern));
+}
+
+void StoreChocolatey(IEnumerable<FilePath> nuspecPaths)
 {
     var dir = $"{ArtifactsDirectory}/Chocolatey";
     EnsureDirectoryExists(dir);
-    Information("Creating Chocolatey package in directory {0}", dir);
-    ChocolateyPack(nuspec, new ChocolateyPackSettings { OutputDirectory = dir });
+    Information("Creating Chocolatey package(s) in directory {0}", dir);
+
+    foreach (var nuspec in nuspecPaths)
+    {
+        ChocolateyPack(nuspec, new ChocolateyPackSettings { OutputDirectory = dir });
+    }
 }
 
-void StoreNuGet(FilePath nuspec)
+void StoreNuGet(string nuspecPattern)
+{
+    StoreNuGet(GetFiles(nuspecPattern));
+}
+
+void StoreNuGet(IEnumerable<FilePath> nuspecPaths)
 {
     var dir = $"{ArtifactsDirectory}/NuGet";
     EnsureDirectoryExists(dir);
-    Information("Creating NuGet package in directory {0}", dir);
-    NuGetPack(nuspec, new NuGetPackSettings { OutputDirectory = dir });
+    Information("Creating NuGet package(s) in directory {0}", dir);
+
+    foreach (var nuspec in nuspecPaths)
+    {
+        NuGetPack(nuspec, new NuGetPackSettings { OutputDirectory = dir });
+    }
 }
 
-void StoreArtifacts(string projectName, string includePattern)
+void StoreArtifacts(string projectName, string filePattern)
 {
-    StoreArtifacts(projectName, GetFiles(includePattern));
+    StoreArtifacts(projectName, GetFiles(filePattern));
 }
 
-void StoreArtifacts(string projectName, IEnumerable<FilePath> files)
+void StoreArtifacts(string projectName, IEnumerable<FilePath> filePaths)
 {
     var dir = $"{ArtifactsDirectory}/{projectName}";
     EnsureDirectoryExists(dir);
 
     Information("Copying artifacts to {0}", dir);
-    CopyFiles(files, dir);
+    CopyFiles(filePaths, dir);
     DeleteFiles($"{dir}/*.pdb");
     DeleteFiles($"{dir}/*.lastcodeanalysissucceeded");
     DeleteFiles($"{dir}/*.CodeAnalysisLog.xml");
 }
 
-void MSTest2_VS2017(string pattern)
+void MSTest2_VS2017(string assemblyPattern)
 {
-    MSTest2_VS2017(GetFiles(pattern));
+    MSTest2_VS2017(GetFiles(assemblyPattern));
 }
 
 void MSTest2_VS2017(IEnumerable<FilePath> assemblyPaths)
