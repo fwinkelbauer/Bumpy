@@ -3,7 +3,7 @@ using System.IO;
 
 namespace Bumpy
 {
-    public class CommandRunner
+    public sealed class CommandRunner
     {
         private readonly IFileUtil _fileUtil;
         private readonly Action<string> _writeLine;
