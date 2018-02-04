@@ -20,6 +20,7 @@ namespace Bumpy.Tests
         [DataRow(4, "2.2.2.002", "2.2.2.003", false)]
         [DataRow(4, "2.2.2.09", "2.2.2.10", false)]
         [DataRow(3, "2.2.99.2", "2.2.100.2", false)]
+        [DataRow(2, "2.2.99.2", "2.3.0.0", true)]
         public void Increment_IncrementDifferentPositions(int position, string originalVersionText, string expectedVersionText, bool cascade)
         {
             var version = VersionFunctions.ParseVersion(originalVersionText);

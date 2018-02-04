@@ -28,6 +28,7 @@ namespace Bumpy
                 for (int i = position; i < numbers.Count; i++)
                 {
                     numbers[i] = 0;
+                    digits[i] = 1;
                 }
             }
 
