@@ -1,54 +1,70 @@
-#tool vswhere
-
 private const string ArtifactsDirectory = "../Artifacts";
+private const string ChocolateyDirectory = ArtifactsDirectory + "/Chocolatey";
+private const string NuGetDirectory = ArtifactsDirectory + "/NuGet";
 
 void CleanArtifacts()
 {
     CleanDirectory(ArtifactsDirectory);
 }
 
-void StoreChocolatey(string nuspecPattern)
+void PublishChocolateyArtifact(string packageId, string pushSource)
 {
-    StoreChocolatey(GetFiles(nuspecPattern));
+    var files = GetFiles($"{ChocolateyDirectory}/{packageId}/*.nupkg");
+
+    foreach (var file in files)
+    {
+        ChocolateyPush(file, new ChocolateyPushSettings { Source = pushSource });
+    }
 }
 
-void StoreChocolatey(IEnumerable<FilePath> nuspecPaths)
+void StoreChocolateyArtifacts(string nuspecPattern)
 {
-    var dir = $"{ArtifactsDirectory}/Chocolatey";
-    EnsureDirectoryExists(dir);
-    Information("Creating Chocolatey package(s) in directory {0}", dir);
+    StoreChocolateyArtifacts(GetFiles(nuspecPattern));
+}
 
+void StoreChocolateyArtifacts(IEnumerable<FilePath> nuspecPaths)
+{
     foreach (var nuspec in nuspecPaths)
     {
+        var dir = $"{ChocolateyDirectory}/{nuspec.GetFilenameWithoutExtension()}";
+        EnsureDirectoryExists(dir);
         ChocolateyPack(nuspec, new ChocolateyPackSettings { OutputDirectory = dir });
     }
 }
 
-void StoreNuGet(string nuspecPattern)
+void PublishNuGetArtifact(string packageId, string pushSource)
 {
-    StoreNuGet(GetFiles(nuspecPattern));
+    var files = GetFiles($"{NuGetDirectory}/{packageId}/*.nupkg");
+
+    foreach (var file in files)
+    {
+        NuGetPush(files, new NuGetPushSettings { Source = pushSource });
+    }
 }
 
-void StoreNuGet(IEnumerable<FilePath> nuspecPaths)
+void StoreNuGetArtifacts(string nuspecPattern)
 {
-    var dir = $"{ArtifactsDirectory}/NuGet";
-    EnsureDirectoryExists(dir);
-    Information("Creating NuGet package(s) in directory {0}", dir);
+    StoreNuGetArtifacts(GetFiles(nuspecPattern));
+}
 
+void StoreNuGetArtifacts(IEnumerable<FilePath> nuspecPaths)
+{
     foreach (var nuspec in nuspecPaths)
     {
+        var dir = $"{NuGetDirectory}/{nuspec.GetFilenameWithoutExtension()}";
+        EnsureDirectoryExists(dir);
         NuGetPack(nuspec, new NuGetPackSettings { OutputDirectory = dir });
     }
 }
 
-void StoreArtifacts(string projectName, string filePattern)
+void StoreBuildArtifacts(string projectName, string filePattern)
 {
-    StoreArtifacts(projectName, GetFiles(filePattern));
+    StoreBuildArtifacts(projectName, GetFiles(filePattern));
 }
 
-void StoreArtifacts(string projectName, IEnumerable<FilePath> filePaths)
+void StoreBuildArtifacts(string projectName, IEnumerable<FilePath> filePaths)
 {
-    var dir = $"{ArtifactsDirectory}/{projectName}";
+    var dir = $"{ArtifactsDirectory}/Build/{projectName}";
     EnsureDirectoryExists(dir);
 
     Information("Copying artifacts to {0}", dir);
@@ -71,6 +87,7 @@ void MSTest2_VS2017(IEnumerable<FilePath> assemblyPaths)
 // https://github.com/cake-build/cake/issues/1522
 VSTestSettings FixToolPath(VSTestSettings settings)
 {
+    #tool vswhere
     settings.ToolPath =
         VSWhereLatest(new VSWhereLatestSettings { Requires = "Microsoft.VisualStudio.PackageGroup.TestTools.Core" })
         .CombineWithFilePath(File(@"Common7\IDE\CommonExtensions\Microsoft\TestWindow\vstest.console.exe"));

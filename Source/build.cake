@@ -23,7 +23,7 @@ Task("Build")
     .Does(() =>
 {
     MSBuild("Bumpy.sln", new MSBuildSettings { Configuration = configuration, WarningsAsError = true });
-    StoreArtifacts("Bumpy", $"Bumpy/bin/{configuration}/*");
+    StoreBuildArtifacts("Bumpy", $"Bumpy/bin/{configuration}/*");
 });
 
 Task("Test")
@@ -37,8 +37,16 @@ Task("Pack")
     .IsDependentOn("Test")
     .Does(() =>
 {
-    StoreChocolatey("NuSpec/Chocolatey/Bumpy.Portable.nuspec");
-    StoreNuGet("NuSpec/NuGet/Bumpy.nuspec");
+    StoreChocolateyArtifacts("NuSpec/Chocolatey/Bumpy.Portable.nuspec");
+    StoreNuGetArtifacts("NuSpec/NuGet/Bumpy.nuspec");
+});
+
+Task("Publish")
+    .IsDependentOn("Pack")
+    .Does(() =>
+{
+    PublishChocolateyArtifact("Bumpy.Portable", "https://push.chocolatey.org/");
+    PublishNuGetArtifact("Bumpy", "https://www.nuget.org/api/v2/package");
 });
 
 Task("Default").IsDependentOn("Pack").Does(() => { });
