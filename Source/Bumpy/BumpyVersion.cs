@@ -24,7 +24,7 @@ namespace Bumpy
             {
                 _numbers[i].ThrowIfOutOfRange(n => n < 0, nameof(formattedNumbers), "Elements cannot be negative");
 
-                _digits[i] = formattedNumbers[i].Length;
+                _digits.Add(formattedNumbers[i].Length);
             }
         }
 
