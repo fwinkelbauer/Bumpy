@@ -1,4 +1,5 @@
-#load "common.cake"
+#load "artifact.cake"
+#load "mstest2.cake"
 
 var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Release");
