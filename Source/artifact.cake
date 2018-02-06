@@ -26,11 +26,7 @@ void StoreBuildArtifacts(string projectName, IEnumerable<FilePath> filePaths)
 void PublishChocolateyArtifact(string packageId, string pushSource)
 {
     var files = GetFiles($"{ChocolateyDirectory}/{packageId}/*.nupkg");
-
-    foreach (var file in files)
-    {
-        ChocolateyPush(file, new ChocolateyPushSettings { Source = pushSource });
-    }
+    ChocolateyPush(files, new ChocolateyPushSettings { Source = pushSource });
 }
 
 void StoreChocolateyArtifact(FilePath nuspecPath)
@@ -43,11 +39,7 @@ void StoreChocolateyArtifact(FilePath nuspecPath)
 void PublishNuGetArtifact(string packageId, string pushSource)
 {
     var files = GetFiles($"{NuGetDirectory}/{packageId}/*.nupkg");
-
-    foreach (var file in files)
-    {
-        NuGetPush(files, new NuGetPushSettings { Source = pushSource });
-    }
+    NuGetPush(files, new NuGetPushSettings { Source = pushSource });
 }
 
 void StoreNuGetArtifact(FilePath nuspecPath)
