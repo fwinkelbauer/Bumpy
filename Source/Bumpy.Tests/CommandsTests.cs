@@ -71,7 +71,7 @@ namespace Bumpy.Tests
 
             commands.CommandIncrement(string.Empty, 2);
 
-            fileUtil.Received().WriteFileContent(Arg.Is<FileContent>(f => f.Lines.SequenceEqual(lines)));
+            fileUtil.DidNotReceive().WriteFileContent(Arg.Is<FileContent>(f => f.Lines.SequenceEqual(lines)));
             writeLine.DidNotReceive().Invoke(Arg.Any<string>());
         }
 

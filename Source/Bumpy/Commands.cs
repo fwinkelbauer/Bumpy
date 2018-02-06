@@ -139,6 +139,7 @@ namespace Bumpy
 
                     var lineNumber = 1;
                     var newLines = new List<string>();
+                    var dirty = false;
 
                     foreach (var line in content.Lines)
                     {
@@ -148,8 +149,14 @@ namespace Bumpy
                         if (success)
                         {
                             var newVersion = transformFunction(oldVersion);
-                            newLine = line.Replace(oldVersion.ToString(), newVersion.ToString());
-                            VersionFunctions.EnsureExpectedVersion(newLine, config.RegularExpression, newVersion);
+
+                            if (!newVersion.Equals(oldVersion))
+                            {
+                                newLine = line.Replace(oldVersion.ToString(), newVersion.ToString());
+                                VersionFunctions.EnsureExpectedVersion(newLine, config.RegularExpression, newVersion);
+                                dirty = true;
+                            }
+
                             _writeLine($"{file.ToRelativePath(_directory)} ({lineNumber}): {oldVersion} -> {newVersion}");
                         }
 
@@ -157,8 +164,11 @@ namespace Bumpy
                         lineNumber++;
                     }
 
-                    var newContent = new FileContent(file, newLines, content.Encoding);
-                    _fileUtil.WriteFileContent(newContent);
+                    if (dirty)
+                    {
+                        var newContent = new FileContent(file, newLines, content.Encoding);
+                        _fileUtil.WriteFileContent(newContent);
+                    }
                 }
             }
         }
