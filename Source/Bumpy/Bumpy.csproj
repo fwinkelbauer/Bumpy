@@ -4,15 +4,17 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{AADDBA37-532F-4966-AB00-9D0C4E30B5CD}</ProjectGuid>
+    <ProjectGuid>{2115A19D-9AB9-4ABC-8816-B9C49298E04E}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Bumpy</RootNamespace>
     <AssemblyName>Bumpy</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -24,6 +26,7 @@
     <CodeAnalysisRuleSet>..\Bumpy.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -33,37 +36,33 @@
     <RunCodeAnalysis>true</RunCodeAnalysis>
     <CodeAnalysisRuleSet>..\Bumpy.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject>Bumpy.Program</StartupObject>
-  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Command\Commands.cs" />
-    <Compile Include="Command\CommandsParser.cs" />
+    <Compile Include="BumpyConfiguration.cs" />
+    <Compile Include="BumpyVersion.cs" />
+    <Compile Include="CommandRunner.cs" />
+    <Compile Include="Commands.cs" />
+    <Compile Include="CommandParser.cs" />
+    <Compile Include="CommandType.cs" />
+    <Compile Include="FileContent.cs" />
     <Compile Include="FileInfoExtensions.cs" />
-    <Compile Include="Command\ParserException.cs" />
+    <Compile Include="FileUtil.cs" />
+    <Compile Include="Glob.cs" />
+    <Compile Include="IFileUtil.cs" />
+    <Compile Include="ParserException.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Util\BumpyConfiguration.cs" />
-    <Compile Include="Util\FileUtil.cs" />
-    <Compile Include="Util\GlobUtil.cs" />
-    <Compile Include="Util\IFileUtil.cs" />
-    <Compile Include="Util\FileContent.cs" />
-    <Compile Include="ValidatedNotNullAttribute.cs" />
     <Compile Include="ValidationExtensions.cs" />
-    <Compile Include="Version\BumpyVersion.cs" />
-    <Compile Include="Version\VersionHelper.cs" />
+    <Compile Include="VersionFunctions.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

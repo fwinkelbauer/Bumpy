@@ -1,28 +1,55 @@
-#load "nuget:?package=cake.mug.tools"
-#load "nuget:?package=cake.mug"
+#load "artifact.cake"
+#load "mstest2.cake"
 
 var target = Argument("target", "Default");
-BuildParameters.Configuration = Argument("configuration", "Release");
-BuildParameters.DupFinderExcludePattern = new string[] { "./**/CommandsTests.cs" };
+var configuration = Argument("configuration", "Release");
 
-PackageParameters.ChocolateySpecs.Add("../NuSpec/Chocolatey/Bumpy.Portable.nuspec");
-PackageParameters.ChocolateyPushSource = "https://push.chocolatey.org/";
-
-PackageParameters.NuGetSpecs.Add("../NuSpec/NuGet/Bumpy.nuspec");
-PackageParameters.NuGetPushSource = "https://www.nuget.org/api/v2/package";
-
-Task("Default")
-    .IsDependentOn("Analyze")
-    .IsDependentOn("CreatePackages")
+Task("Clean")
     .Does(() =>
 {
+    CleanArtifacts();
+    CleanDirectories($"Bumpy*/bin/{configuration}");
+    CleanDirectory("TestResults");
+});
+
+Task("Restore")
+    .IsDependentOn("Clean")
+    .Does(() =>
+{
+    NuGetRestore("Bumpy.sln");
+});
+
+Task("Build")
+    .IsDependentOn("Restore")
+    .Does(() =>
+{
+    MSBuild("Bumpy.sln", new MSBuildSettings { Configuration = configuration, WarningsAsError = true });
+    StoreBuildArtifacts("Bumpy", $"Bumpy/bin/{configuration}/**/*");
+});
+
+Task("Test")
+    .IsDependentOn("Build")
+    .Does(() =>
+{
+    MSTest2_VS2017($"*.Tests/bin/{configuration}/*.Tests.dll");
+});
+
+Task("Pack")
+    .IsDependentOn("Test")
+    .Does(() =>
+{
+    StoreChocolateyArtifact("NuSpec/Chocolatey/Bumpy.Portable.nuspec");
+    StoreNuGetArtifact("NuSpec/NuGet/Bumpy.nuspec");
 });
 
 Task("Publish")
-    .IsDependentOn("Analyze")
-    .IsDependentOn("PushPackages")
+    .IsDependentOn("Pack")
     .Does(() =>
 {
+    PublishChocolateyArtifact("Bumpy.Portable", "https://push.chocolatey.org/");
+    PublishNuGetArtifact("Bumpy", "https://www.nuget.org/api/v2/package");
 });
+
+Task("Default").IsDependentOn("Pack").Does(() => { });
 
 RunTarget(target);

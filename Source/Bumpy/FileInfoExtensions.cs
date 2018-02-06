@@ -1,12 +1,29 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 
 namespace Bumpy
 {
-    internal static class FileInfoExtensions
+    public static class FileInfoExtensions
     {
         public static string ToRelativePath(this FileInfo file, DirectoryInfo parent)
         {
-            return file.FullName.Substring(parent.FullName.Length);
+            var fileName = file.FullName;
+            var parentName = parent.FullName;
+
+            if (!fileName.StartsWith(parentName, StringComparison.OrdinalIgnoreCase))
+            {
+                throw new ArgumentException($"'{parentName}' is not a parent directory of '{fileName}'");
+            }
+
+            int count = parentName.Length;
+
+            if (!parentName.EndsWith("/", StringComparison.OrdinalIgnoreCase)
+                && !parentName.EndsWith("\\", StringComparison.OrdinalIgnoreCase))
+            {
+                count++;
+            }
+
+            return fileName.Substring(count);
         }
     }
 }

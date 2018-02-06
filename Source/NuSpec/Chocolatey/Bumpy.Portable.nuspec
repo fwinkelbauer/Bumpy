@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
+  <metadata>
+    <id>bumpy.portable</id>
+    <title>Bumpy</title>
+    <version>0.8.0</version>
+    <authors>fwinkelbauer</authors>
+    <owners>fwinkelbauer</owners>
+    <projectUrl>https://github.com/fwinkelbauer/Bumpy</projectUrl>
+    <projectSourceUrl>https://github.com/fwinkelbauer/Bumpy</projectSourceUrl>
+    <packageSourceUrl>https://github.com/fwinkelbauer/Bumpy</packageSourceUrl>
+    <releaseNotes>https://github.com/fwinkelbauer/Bumpy/blob/master/CHANGELOG.md</releaseNotes>
+    <bugTrackerUrl>https://github.com/fwinkelbauer/Bumpy/issues</bugTrackerUrl>
+    <licenseUrl>https://github.com/fwinkelbauer/Bumpy/blob/master/LICENSE.txt</licenseUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <summary>A tool to manipulate version information across multiple files.</summary>
+    <description>Bumpy is a tool to manipulate version information across multiple files found in the current working directory using a configuration file which consists of glob patterns and regular expressions.</description>
+    <copyright>Copyright (c) 2018 Florian Winkelbauer</copyright>
+    <tags>Versioning Build AssemblyInfo NuSpec</tags>
+  </metadata>
+  <files>
+    <file src=".\..\..\..\Artifacts\Build\Bumpy\*" target="tools" />
+    <file src=".\..\..\..\LICENSE.txt" target="tools" />
+    <file src="VERIFICATION.txt" target="tools" />
+  </files>
+</package>

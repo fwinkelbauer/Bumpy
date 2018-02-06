@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using Bumpy.Command;
 
 namespace Bumpy
 {
@@ -10,25 +9,24 @@ namespace Bumpy
         {
             try
             {
-                PrintBumpy();
-                new CommandsParser().Execute(args);
+                PrintInfo();
+                var parser = new CommandParser(new FileUtil(), Console.WriteLine);
+                var runner = parser.Parse(args);
+                runner.Execute();
             }
             catch (Exception e)
             {
                 Console.WriteLine("Error: " + e.Message);
-                Console.WriteLine();
                 Environment.ExitCode = 1;
             }
 
-            // This is only used for convenience when working in Visual Studio
-            if (Debugger.IsAttached)
-            {
-                Console.WriteLine("Press ENTER to exit...");
-                Console.ReadLine();
-            }
+#if DEBUG
+            Console.WriteLine("Press ENTER to exit...");
+            Console.ReadLine();
+#endif
         }
 
-        private static void PrintBumpy()
+        private static void PrintInfo()
         {
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();
             var versionInfo = FileVersionInfo.GetVersionInfo(assembly.Location);
