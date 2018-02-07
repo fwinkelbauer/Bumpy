@@ -16,7 +16,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 - Slightly changed the glob implementation. My current approach relies on regex and is not fully compliant to any "glob standard". I might switch to an open source glob library if users start to have issues
 
-## Fixed
+### Fixed
 
 - A off-by-one bug when printing the lines of found versions
 - Some bugs which caused unnecessary regex and file write operations
