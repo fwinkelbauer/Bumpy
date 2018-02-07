@@ -16,7 +16,7 @@
     <tags>Versioning Build AssemblyInfo NuSpec</tags>
   </metadata>
   <files>
-    <file src=".\..\..\..\Artifacts\Build\Bumpy\*" target="tools" />
+    <file src=".\..\..\..\Artifacts\Build\Bumpy\**\*" exclude="**\*.lastcodeanalysissucceeded;**\*.CodeAnalysisLog.xml" target="tools" />
     <file src=".\..\..\..\LICENSE.txt" target="tools" />
   </files>
 </package>
