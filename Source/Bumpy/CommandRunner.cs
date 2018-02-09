@@ -8,7 +8,7 @@ namespace Bumpy
         private readonly IFileUtil _fileUtil;
         private readonly Action<string> _writeLine;
 
-        public CommandRunner(IFileUtil fileUtil, Action<string> writeLine, CommandType cmdType, int position, string formattedNumber, string version, DirectoryInfo workingDirectory, FileInfo configFile, string profile)
+        public CommandRunner(IFileUtil fileUtil, Action<string> writeLine, CommandType cmdType, int position, string formattedNumber, string text, DirectoryInfo workingDirectory, FileInfo configFile, string profile)
         {
             _fileUtil = fileUtil;
             _writeLine = writeLine;
@@ -16,7 +16,7 @@ namespace Bumpy
             CmdType = cmdType;
             Position = position;
             FormattedNumber = formattedNumber;
-            Version = version;
+            Text = text;
             WorkingDirectory = workingDirectory;
             ConfigFile = configFile;
             Profile = profile;
@@ -28,7 +28,7 @@ namespace Bumpy
 
         public string FormattedNumber { get; }
 
-        public string Version { get; }
+        public string Text { get; }
 
         public DirectoryInfo WorkingDirectory { get; }
 
@@ -58,11 +58,15 @@ namespace Bumpy
             }
             else if (CmdType == CommandType.Write)
             {
-                commands.CommandWrite(Profile, Version);
+                commands.CommandWrite(Profile, Text);
             }
             else if (CmdType == CommandType.Assign)
             {
                 commands.CommandAssign(Profile, Position, FormattedNumber);
+            }
+            else if (CmdType == CommandType.Label)
+            {
+                commands.CommandLabel(Profile, Text);
             }
             else if (CmdType == CommandType.Help)
             {

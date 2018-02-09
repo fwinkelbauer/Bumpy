@@ -77,6 +77,11 @@ namespace Bumpy
             WriteTransformation(profile, version => VersionFunctions.ParseVersion(versionText));
         }
 
+        public void CommandLabel(string profile, string versionLabel)
+        {
+            WriteTransformation(profile, version => VersionFunctions.Label(version, versionLabel));
+        }
+
         public void CommandNew()
         {
             var configFile = new FileInfo(Path.Combine(_directory.FullName, BumpyConfiguration.ConfigFile));
@@ -112,8 +117,10 @@ namespace Bumpy
             builder.AppendLine("    Overwrites a version with another version (e.g. 'bumpy write 1.0.0.0')");
             builder.AppendLine("  assign <one-based index number> <version number> (e.g. 'bumpy assign 3 99')");
             builder.AppendLine("    Replaces the specified component of a version with a new number");
+            builder.AppendLine("  label <postfix version text>");
+            builder.AppendLine("    Adds a postfix text to a numerical version (e.g. 'bumpy label \"-beta\"')");
             builder.AppendLine();
-            builder.AppendLine("Options: (only available for 'list', 'increment', 'incrementonly', 'write' and 'assign')");
+            builder.AppendLine("Options: (only available for 'list', 'increment', 'incrementonly', 'write', 'assign' and 'label')");
             builder.AppendLine("  -p <profile name>");
             builder.AppendLine("    Limit a command to a profile");
             builder.AppendLine("  -d <directory>");

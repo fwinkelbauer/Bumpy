@@ -8,6 +8,7 @@
         Increment,
         IncrementOnly,
         Write,
-        Assign
+        Assign,
+        Label
     }
 }

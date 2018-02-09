@@ -128,6 +128,33 @@ NuSpec\Chocolatey\Bumpy.Portable.nuspec (6): 1.0.0 -> 1.0.42
 NuSpec\NuGet\Bumpy.nuspec (6): 1.0.0 -> 1.0.42
 ```
 
+### Label
+
+```
+bumpy label <postfix version text>
+```
+
+Replaces the postfix text of a version.
+
+**Example:** `bumpy label "-beta" -p semver`
+
+```
+NuSpec\Chocolatey\Bumpy.Portable.nuspec (6): 0.8.0 -> 0.8.0-beta
+NuSpec\NuGet\Bumpy.nuspec (6): 0.8.0 -> 0.8.0-beta
+```
+
+```
+NuSpec\Chocolatey\Bumpy.Portable.nuspec (6): 0.8.0-alpha -> 0.8.0-beta
+NuSpec\NuGet\Bumpy.nuspec (6): 0.8.0-alpha -> 0.8.0-beta
+```
+
+**Example:** `bumpy label "" -p semver`
+
+```
+NuSpec\Chocolatey\Bumpy.Portable.nuspec (6): 0.8.0-beta -> 0.8.0
+NuSpec\NuGet\Bumpy.nuspec (6): 0.8.0-beta -> 0.8.0
+```
+
 ### Help
 
 ```
@@ -138,7 +165,7 @@ Shows all available commands and options.
 
 ### Options
 
-The following options are available for the commands `list`, `increment`, `incrementonly`, `write` and `assign`:
+The following options are available for the commands `list`, `increment`, `incrementonly`, `write`, `assign` and `label`:
 
 - `-p <profile name>`
 - `-d <directory in which Bumpy should operate>`

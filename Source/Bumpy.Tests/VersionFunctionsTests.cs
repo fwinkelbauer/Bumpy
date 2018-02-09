@@ -63,6 +63,20 @@ namespace Bumpy.Tests
             Assert.ThrowsException<ArgumentException>(() => VersionFunctions.Assign(version, 1, "not a number"));
         }
 
+        [TestMethod]
+        [DataRow("1.1.1", "1.1.1", "")]
+        [DataRow("1.1.1", "1.1.1-beta", "-beta")]
+        [DataRow("1.1.1-alpha", "1.1.1-beta", "-beta")]
+        [DataRow("1.1.1-alpha", "1.1.1", "")]
+        public void Label_ChangeLabel(string originalVersionText, string expectedVersionText, string versionLabel)
+        {
+            var version = VersionFunctions.ParseVersion(originalVersionText);
+
+            var newVersion = VersionFunctions.Label(version, versionLabel);
+
+            Assert.AreEqual(expectedVersionText, newVersion.ToString());
+        }
+
         [DataTestMethod]
         [DataRow("8")]
         [DataRow("100.5")]

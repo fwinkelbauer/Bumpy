@@ -55,6 +55,11 @@ namespace Bumpy
             return new BumpyVersion(numbers, digits, version.Label);
         }
 
+        public static BumpyVersion Label(BumpyVersion version, string versionLabel)
+        {
+            return new BumpyVersion(version.Numbers, version.Digits, versionLabel);
+        }
+
         public static BumpyVersion ParseVersion(string versionText)
         {
             var match = BumpyRegex.Match(versionText);

@@ -13,7 +13,7 @@ namespace Bumpy
         private CommandType _commandType;
         private int _position;
         private string _formattedNumber;
-        private string _version;
+        private string _text;
         private DirectoryInfo _workingDirectory;
         private FileInfo _configFile;
         private string _profile;
@@ -26,7 +26,7 @@ namespace Bumpy
             _commandType = CommandType.Help;
             _position = -1;
             _formattedNumber = "-1";
-            _version = string.Empty;
+            _text = string.Empty;
             _workingDirectory = new DirectoryInfo(".");
             _configFile = new FileInfo(BumpyConfiguration.ConfigFile);
             _profile = BumpyConfiguration.DefaultProfile;
@@ -47,7 +47,7 @@ namespace Bumpy
                 throw new ParserException("Invalid arguments. See 'bumpy help'.", e);
             }
 
-            return new CommandRunner(_fileUtil, _writeLine, _commandType, _position, _formattedNumber, _version, _workingDirectory, _configFile, _profile);
+            return new CommandRunner(_fileUtil, _writeLine, _commandType, _position, _formattedNumber, _text, _workingDirectory, _configFile, _profile);
         }
 
         private void ParseCommand(Queue<string> args)
@@ -68,9 +68,9 @@ namespace Bumpy
             {
                 _position = Convert.ToInt32(args.Dequeue());
             }
-            else if (_commandType == CommandType.Write)
+            else if (_commandType == CommandType.Write || _commandType == CommandType.Label)
             {
-                _version = args.Dequeue();
+                _text = args.Dequeue();
             }
             else if (_commandType == CommandType.Assign)
             {
@@ -82,7 +82,8 @@ namespace Bumpy
                 || _commandType == CommandType.Increment
                 || _commandType == CommandType.IncrementOnly
                 || _commandType == CommandType.Write
-                || _commandType == CommandType.Assign;
+                || _commandType == CommandType.Assign
+                || _commandType == CommandType.Label;
 
             if (!shouldParseOptions)
             {

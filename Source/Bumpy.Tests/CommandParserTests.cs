@@ -59,12 +59,23 @@ namespace Bumpy.Tests
         }
 
         [TestMethod]
+        [DataRow("label -beta", "-beta")]
+        [DataRow("label ", "")]
+        public void Parse_Label(string args, string expectedLabel)
+        {
+            var runner = Parse(args);
+
+            Assert.AreEqual(CommandType.Label, runner.CmdType);
+            Assert.AreEqual(expectedLabel, runner.Text);
+        }
+
+        [TestMethod]
         public void Parse_Write()
         {
             var runner = Parse("write 1.0.0");
 
             Assert.AreEqual(CommandType.Write, runner.CmdType);
-            Assert.AreEqual("1.0.0", runner.Version);
+            Assert.AreEqual("1.0.0", runner.Text);
         }
 
         [TestMethod]
