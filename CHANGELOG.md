@@ -6,7 +6,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
-- [#29](https://github.com/fwinkelbauer/Bumpy/issues/29) Added support to change the postfix text of a version (e.g. "-beta001")
+## [0.9.0] - 2018-02-09
+
+### Added
+
+- [#29](https://github.com/fwinkelbauer/Bumpy/issues/29) Support to change the postfix text of a version (e.g. "-beta001")
 
 ## [0.8.0] - 2018-02-06
 
