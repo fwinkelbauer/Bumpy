@@ -9,53 +9,53 @@ namespace Bumpy.Tests
         [TestMethod]
         public void Parse_Help()
         {
-            var runner = Parse("help");
+            var arguments = Parse("help");
 
-            Assert.AreEqual(CommandType.Help, runner.CmdType);
+            Assert.AreEqual(CommandType.Help, arguments.CmdType);
         }
 
         [TestMethod]
         public void Parse_New()
         {
-            var runner = Parse("new");
+            var arguments = Parse("new");
 
-            Assert.AreEqual(CommandType.New, runner.CmdType);
+            Assert.AreEqual(CommandType.New, arguments.CmdType);
         }
 
         [TestMethod]
         public void Parse_List()
         {
-            var runner = Parse("list");
+            var arguments = Parse("list");
 
-            Assert.AreEqual(CommandType.List, runner.CmdType);
+            Assert.AreEqual(CommandType.List, arguments.CmdType);
         }
 
         [TestMethod]
         public void Parse_Increment()
         {
-            var runner = Parse("increment 3");
+            var arguments = Parse("increment 3");
 
-            Assert.AreEqual(CommandType.Increment, runner.CmdType);
-            Assert.AreEqual(3, runner.Position);
+            Assert.AreEqual(CommandType.Increment, arguments.CmdType);
+            Assert.AreEqual(3, arguments.Position);
         }
 
         [TestMethod]
         public void Parse_IncrementOnly()
         {
-            var runner = Parse("incrementonly 3");
+            var arguments = Parse("incrementonly 3");
 
-            Assert.AreEqual(CommandType.IncrementOnly, runner.CmdType);
-            Assert.AreEqual(3, runner.Position);
+            Assert.AreEqual(CommandType.IncrementOnly, arguments.CmdType);
+            Assert.AreEqual(3, arguments.Position);
         }
 
         [TestMethod]
         public void Parse_Assign()
         {
-            var runner = Parse("assign 2 007");
+            var arguments = Parse("assign 2 007");
 
-            Assert.AreEqual(CommandType.Assign, runner.CmdType);
-            Assert.AreEqual(2, runner.Position);
-            Assert.AreEqual("007", runner.FormattedNumber);
+            Assert.AreEqual(CommandType.Assign, arguments.CmdType);
+            Assert.AreEqual(2, arguments.Position);
+            Assert.AreEqual("007", arguments.FormattedNumber);
         }
 
         [TestMethod]
@@ -63,39 +63,39 @@ namespace Bumpy.Tests
         [DataRow("label ", "")]
         public void Parse_Label(string args, string expectedLabel)
         {
-            var runner = Parse(args);
+            var arguments = Parse(args);
 
-            Assert.AreEqual(CommandType.Label, runner.CmdType);
-            Assert.AreEqual(expectedLabel, runner.Text);
+            Assert.AreEqual(CommandType.Label, arguments.CmdType);
+            Assert.AreEqual(expectedLabel, arguments.Text);
         }
 
         [TestMethod]
         public void Parse_Write()
         {
-            var runner = Parse("write 1.0.0");
+            var arguments = Parse("write 1.0.0");
 
-            Assert.AreEqual(CommandType.Write, runner.CmdType);
-            Assert.AreEqual("1.0.0", runner.Text);
+            Assert.AreEqual(CommandType.Write, arguments.CmdType);
+            Assert.AreEqual("1.0.0", arguments.Text);
         }
 
         [TestMethod]
         public void Parse_DefaultOptions()
         {
-            var runner = Parse("list");
+            var arguments = Parse("list");
 
-            Assert.AreEqual(string.Empty, runner.Profile);
-            Assert.AreEqual(new FileInfo(".bumpyconfig").FullName, runner.ConfigFile.FullName);
-            Assert.AreEqual(new DirectoryInfo(".").FullName, runner.WorkingDirectory.FullName);
+            Assert.AreEqual(string.Empty, arguments.Profile);
+            Assert.AreEqual(new FileInfo(".bumpyconfig").FullName, arguments.ConfigFile.FullName);
+            Assert.AreEqual(new DirectoryInfo(".").FullName, arguments.WorkingDirectory.FullName);
         }
 
         [TestMethod]
         public void Parse_CustomOptions()
         {
-            var runner = Parse("list -p bar -c foo.config -d foodir");
+            var arguments = Parse("list -p bar -c foo.config -d foodir");
 
-            Assert.AreEqual("bar", runner.Profile);
-            Assert.AreEqual(new FileInfo("foo.config").FullName, runner.ConfigFile.FullName);
-            Assert.AreEqual(new DirectoryInfo("foodir").FullName, runner.WorkingDirectory.FullName);
+            Assert.AreEqual("bar", arguments.Profile);
+            Assert.AreEqual(new FileInfo("foo.config").FullName, arguments.ConfigFile.FullName);
+            Assert.AreEqual(new DirectoryInfo("foodir").FullName, arguments.WorkingDirectory.FullName);
         }
 
         [TestMethod]
@@ -114,9 +114,9 @@ namespace Bumpy.Tests
             Assert.ThrowsException<ParserException>(() => Parse("new -c foo.config -d foodir"));
         }
 
-        private CommandRunner Parse(string args)
+        private CommandArguments Parse(string args)
         {
-            var parser = new CommandParser(null, null);
+            var parser = new CommandParser();
 
             return parser.Parse(args.Split(' '));
         }

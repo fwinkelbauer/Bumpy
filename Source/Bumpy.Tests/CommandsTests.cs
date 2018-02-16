@@ -71,7 +71,7 @@ namespace Bumpy.Tests
 
             commands.CommandIncrement(string.Empty, 2);
 
-            fileUtil.DidNotReceive().WriteFileContent(Arg.Is<FileContent>(f => f.Lines.SequenceEqual(lines)));
+            fileUtil.DidNotReceive().WriteFileContent(Arg.Any<FileContent>());
             writeLine.DidNotReceive().Invoke(Arg.Any<string>());
         }
 
@@ -87,6 +87,21 @@ namespace Bumpy.Tests
 
             var newLines = new[] { "some", "version", "here", "1.3.0", "foobar 0.26.0" };
             fileUtil.Received().WriteFileContent(Arg.Is<FileContent>(f => f.Lines.SequenceEqual(newLines)));
+            writeLine.Received().Invoke(@"foo.txt (4): 1.2.3 -> 1.3.0");
+            writeLine.Received().Invoke(@"foo.txt (5): 0.25.0 -> 0.26.0");
+        }
+
+        [TestMethod]
+        public void CommandIncrement_IncrementVersionsNoFileWrite()
+        {
+            var fileUtil = Substitute.For<IFileUtil>();
+            PrepareFileUtilSubstitute(fileUtil, new[] { "some", "version", "here", "1.2.3", "foobar 0.25.0" });
+            var writeLine = Substitute.For<Action<string>>();
+            var commands = CreateCommands(fileUtil, writeLine, true);
+
+            commands.CommandIncrement(string.Empty, 2);
+
+            fileUtil.DidNotReceive().WriteFileContent(Arg.Any<FileContent>());
             writeLine.Received().Invoke(@"foo.txt (4): 1.2.3 -> 1.3.0");
             writeLine.Received().Invoke(@"foo.txt (5): 0.25.0 -> 0.26.0");
         }
@@ -111,12 +126,12 @@ namespace Bumpy.Tests
                 new FileContent(new FileInfo("foo.txt"), lines, new UTF8Encoding(false)));
         }
 
-        private Commands CreateCommands(IFileUtil fileUtil = null, Action<string> writeLine = null)
+        private Commands CreateCommands(IFileUtil fileUtil = null, Action<string> writeLine = null, bool noOperation = false)
         {
             fileUtil = fileUtil ?? Substitute.For<IFileUtil>();
             writeLine = writeLine ?? (l => { });
 
-            return new Commands(fileUtil, new FileInfo(".bumpyconfig"), new DirectoryInfo("."), writeLine);
+            return new Commands(fileUtil, new FileInfo(".bumpyconfig"), new DirectoryInfo("."), noOperation, writeLine);
         }
     }
 }

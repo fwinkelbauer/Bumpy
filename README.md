@@ -167,9 +167,10 @@ Shows all available commands and options.
 
 The following options are available for the commands `list`, `increment`, `incrementonly`, `write`, `assign` and `label`:
 
-- `-p <profile name>`
-- `-d <directory in which Bumpy should operate>`
-- `-c <path to a configuration file Bumpy should use>`
+- Use a profile: `-p <profile name>`
+- Change Bumpy's working directory: `-d <directory in which Bumpy should operate>`
+- Specify a configuration file: `-c <path to a configuration file Bumpy should use>`
+- Use "no-operation" (preview) mode: `-n`
 
 **Examples:**
 
@@ -181,6 +182,9 @@ bumpy list -d ..\some_other_project
 
 # Using this command Bumpy will only run in the specified folder (configuration loading + execution)
 bumpy list -d D:\my_project -c D:\my_project\.bumpyconfig
+
+# Bumpy will show a preview of the increment command (without changing a file on disk)
+bumpy increment 1 -n
 ```
 
 ## Configuration

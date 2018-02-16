@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="BumpyConfiguration.cs" />
     <Compile Include="BumpyVersion.cs" />
+    <Compile Include="CommandArguments.cs" />
     <Compile Include="CommandRunner.cs" />
     <Compile Include="Commands.cs" />
     <Compile Include="CommandParser.cs" />

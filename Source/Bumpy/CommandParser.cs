@@ -7,32 +7,28 @@ namespace Bumpy
 {
     public sealed class CommandParser
     {
-        private readonly IFileUtil _fileUtil;
-        private readonly Action<string> _writeLine;
-
         private CommandType _commandType;
         private int _position;
         private string _formattedNumber;
         private string _text;
         private DirectoryInfo _workingDirectory;
         private FileInfo _configFile;
+        private bool _noOperation;
         private string _profile;
 
-        public CommandParser(IFileUtil fileUtil, Action<string> writeLine)
+        public CommandParser()
         {
-            _fileUtil = fileUtil;
-            _writeLine = writeLine;
-
             _commandType = CommandType.Help;
             _position = -1;
             _formattedNumber = "-1";
             _text = string.Empty;
             _workingDirectory = new DirectoryInfo(".");
             _configFile = new FileInfo(BumpyConfiguration.ConfigFile);
+            _noOperation = false;
             _profile = BumpyConfiguration.DefaultProfile;
         }
 
-        public CommandRunner Parse(string[] args)
+        public CommandArguments Parse(string[] args)
         {
             try
             {
@@ -47,7 +43,7 @@ namespace Bumpy
                 throw new ParserException("Invalid arguments. See 'bumpy help'.", e);
             }
 
-            return new CommandRunner(_fileUtil, _writeLine, _commandType, _position, _formattedNumber, _text, _workingDirectory, _configFile, _profile);
+            return new CommandArguments(_commandType, _position, _formattedNumber, _text, _workingDirectory, _configFile, _noOperation, _profile);
         }
 
         private void ParseCommand(Queue<string> args)
@@ -116,6 +112,10 @@ namespace Bumpy
             else if (option.Equals("-c"))
             {
                 _configFile = new FileInfo(args.Dequeue());
+            }
+            else if (option.Equals("-n"))
+            {
+                _noOperation = true;
             }
             else
             {

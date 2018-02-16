@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 
 namespace Bumpy
 {
@@ -7,68 +6,48 @@ namespace Bumpy
     {
         private readonly IFileUtil _fileUtil;
         private readonly Action<string> _writeLine;
+        private readonly CommandArguments _arguments;
 
-        public CommandRunner(IFileUtil fileUtil, Action<string> writeLine, CommandType cmdType, int position, string formattedNumber, string text, DirectoryInfo workingDirectory, FileInfo configFile, string profile)
+        public CommandRunner(IFileUtil fileUtil, Action<string> writeLine, CommandArguments arguments)
         {
             _fileUtil = fileUtil;
             _writeLine = writeLine;
-
-            CmdType = cmdType;
-            Position = position;
-            FormattedNumber = formattedNumber;
-            Text = text;
-            WorkingDirectory = workingDirectory;
-            ConfigFile = configFile;
-            Profile = profile;
+            _arguments = arguments;
         }
-
-        public CommandType CmdType { get; }
-
-        public int Position { get; }
-
-        public string FormattedNumber { get; }
-
-        public string Text { get; }
-
-        public DirectoryInfo WorkingDirectory { get; }
-
-        public FileInfo ConfigFile { get; }
-
-        public string Profile { get; }
 
         public void Execute()
         {
-            var commands = new Commands(_fileUtil, ConfigFile, WorkingDirectory, _writeLine);
+            var commands = new Commands(_fileUtil, _arguments.ConfigFile, _arguments.WorkingDirectory, _arguments.NoOperation, _writeLine);
 
-            if (CmdType == CommandType.List)
+            if (_arguments.CmdType == CommandType.List)
             {
-                commands.CommandList(Profile);
+                commands.CommandList(_arguments.Profile);
             }
-            else if (CmdType == CommandType.New)
+            else if (_arguments.CmdType == CommandType.New)
             {
                 commands.CommandNew();
             }
-            else if (CmdType == CommandType.Increment)
+            else if (_arguments.CmdType == CommandType.Increment)
             {
-                commands.CommandIncrement(Profile, Position);
+                commands.CommandIncrement(_arguments.Profile, _arguments.Position);
             }
-            else if (CmdType == CommandType.IncrementOnly)
+            else if (_arguments.CmdType == CommandType.IncrementOnly)
             {
-                commands.CommandIncrementOnly(Profile, Position);
+                commands.CommandIncrementOnly(_arguments.Profile, _arguments.Position);
             }
-            else if (CmdType == CommandType.Write)
+            else if (_arguments.CmdType == CommandType.Write)
             {
-                commands.CommandWrite(Profile, Text);
+                commands.CommandWrite(_arguments.Profile, _arguments.Text);
             }
-            else if (CmdType == CommandType.Assign)
+            else if (_arguments.CmdType == CommandType.Assign)
             {
-                commands.CommandAssign(Profile, Position, FormattedNumber);
+                commands.CommandAssign(_arguments.Profile, _arguments.Position, _arguments.FormattedNumber);
             }
-            else if (CmdType == CommandType.Label)
+            else if (_arguments.CmdType == CommandType.Label)
             {
-                commands.CommandLabel(Profile, Text);
+                commands.CommandLabel(_arguments.Profile, _arguments.Text);
             }
-            else if (CmdType == CommandType.Help)
+            else if (_arguments.CmdType == CommandType.Help)
             {
                 commands.CommandHelp();
             }

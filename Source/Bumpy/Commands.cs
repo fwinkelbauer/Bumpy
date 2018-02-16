@@ -10,13 +10,15 @@ namespace Bumpy
         private readonly IFileUtil _fileUtil;
         private readonly FileInfo _configFile;
         private readonly DirectoryInfo _directory;
+        private readonly bool _noOperation;
         private readonly Action<string> _writeLine;
 
-        public Commands(IFileUtil fileUtil, FileInfo configurationFile, DirectoryInfo directory, Action<string> writeLine)
+        public Commands(IFileUtil fileUtil, FileInfo configurationFile, DirectoryInfo directory, bool noOperation, Action<string> writeLine)
         {
             _fileUtil = fileUtil;
             _configFile = configurationFile;
             _directory = directory;
+            _noOperation = noOperation;
             _writeLine = writeLine;
         }
 
@@ -127,6 +129,8 @@ namespace Bumpy
             builder.AppendLine("    Run a command in a specific folder (the working directory is used by default)");
             builder.AppendLine("  -c <config file path>");
             builder.AppendLine("    Alternative name/path of a configuration file (default: './.bumpyconfig')");
+            builder.AppendLine("  -n");
+            builder.AppendLine("    No operation: The specified command (e.g. increment) will not perform file changes");
 
             _writeLine(builder.ToString());
         }
@@ -134,6 +138,11 @@ namespace Bumpy
         private void WriteTransformation(string profile, Func<BumpyVersion, BumpyVersion> transformFunction)
         {
             var configEntries = _fileUtil.ReadConfigFile(_configFile, profile);
+
+            if (_noOperation)
+            {
+                _writeLine("(NO-OP MODE: Will not persist changes to disk)");
+            }
 
             foreach (var config in configEntries)
             {
@@ -167,11 +176,15 @@ namespace Bumpy
                             _writeLine($"{file.ToRelativePath(_directory)} ({lineNumber}): {oldVersion} -> {newVersion}");
                         }
 
-                        newLines.Add(newLine);
+                        if (!_noOperation)
+                        {
+                            newLines.Add(newLine);
+                        }
+
                         lineNumber++;
                     }
 
-                    if (dirty)
+                    if (dirty && !_noOperation)
                     {
                         var newContent = new FileContent(file, newLines, content.Encoding);
                         _fileUtil.WriteFileContent(newContent);

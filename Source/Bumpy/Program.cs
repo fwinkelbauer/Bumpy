@@ -10,8 +10,9 @@ namespace Bumpy
             try
             {
                 PrintInfo();
-                var parser = new CommandParser(new FileUtil(), Console.WriteLine);
-                var runner = parser.Parse(args);
+                var parser = new CommandParser();
+                var arguments = parser.Parse(args);
+                var runner = new CommandRunner(new FileUtil(), Console.WriteLine, arguments);
                 runner.Execute();
             }
             catch (Exception e)
