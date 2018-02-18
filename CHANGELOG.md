@@ -6,8 +6,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
-- Added "no-operation" flag which prevents commands such as `bumpy increment` to persist changes
-- Added support for versions which use comma as a delimiter (e.g. Visual Studio C++ resource files contain versions such as "1,0,0,0")
+- [#32](https://github.com/fwinkelbauer/Bumpy/issues/32) Bumpy now highlights files with no version information
+- [#31](https://github.com/fwinkelbauer/Bumpy/issues/31) Added "no-operation" flag which prevents commands such as `bumpy increment` to persist changes
+- [#28](https://github.com/fwinkelbauer/Bumpy/issues/28) Added support for versions which use comma as a delimiter (e.g. Visual Studio C++ resource files contain versions such as "1,0,0,0")
 
 ## [0.9.0] - 2018-02-09
 
@@ -19,7 +20,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ### Added
 
-- Support for version formats with leading zeros (e.g. increment "2018.01.01" to "2018.01.02" instead of "2018.1.2")
+- [#26](https://github.com/fwinkelbauer/Bumpy/issues/26) Support for version formats with leading zeros (e.g. increment "2018.01.01" to "2018.01.02" instead of "2018.1.2")
 
 ### Changed
 

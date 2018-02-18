@@ -34,7 +34,7 @@ namespace Bumpy.Tests
         }
 
         [TestMethod]
-        public void CommandList_NoOutput()
+        public void CommandList_NoVersion()
         {
             var fileUtil = Substitute.For<IFileUtil>();
             PrepareFileUtilSubstitute(fileUtil, new[] { "no", "version", "here" });
@@ -43,7 +43,7 @@ namespace Bumpy.Tests
 
             commands.CommandList(string.Empty);
 
-            writeLine.DidNotReceive().Invoke(Arg.Any<string>());
+            writeLine.Received().Invoke(@"foo.txt: no version found");
         }
 
         [TestMethod]
@@ -61,7 +61,7 @@ namespace Bumpy.Tests
         }
 
         [TestMethod]
-        public void CommandIncrement_NoChange()
+        public void CommandIncrement_NoVersion()
         {
             var lines = new[] { "no", "version", "here" };
             var fileUtil = Substitute.For<IFileUtil>();
@@ -72,7 +72,7 @@ namespace Bumpy.Tests
             commands.CommandIncrement(string.Empty, 2);
 
             fileUtil.DidNotReceive().WriteFileContent(Arg.Any<FileContent>());
-            writeLine.DidNotReceive().Invoke(Arg.Any<string>());
+            writeLine.Received().Invoke(@"foo.txt: no version found");
         }
 
         [TestMethod]
@@ -104,6 +104,21 @@ namespace Bumpy.Tests
             fileUtil.DidNotReceive().WriteFileContent(Arg.Any<FileContent>());
             writeLine.Received().Invoke(@"foo.txt (4): 1.2.3 -> 1.3.0");
             writeLine.Received().Invoke(@"foo.txt (5): 0.25.0 -> 0.26.0");
+        }
+
+        [TestMethod]
+        public void CommandAssign_NoWrite()
+        {
+            var lines = new[] { "1.0.42" };
+            var fileUtil = Substitute.For<IFileUtil>();
+            PrepareFileUtilSubstitute(fileUtil, lines);
+            var writeLine = Substitute.For<Action<string>>();
+            var commands = CreateCommands(fileUtil, writeLine);
+
+            commands.CommandAssign(string.Empty, 3, "42");
+
+            fileUtil.DidNotReceive().WriteFileContent(Arg.Any<FileContent>());
+            writeLine.Received().Invoke(@"foo.txt (1): 1.0.42 -> 1.0.42");
         }
 
         private void PrepareFileUtilSubstitute(IFileUtil fileUtil, IEnumerable<string> lines)

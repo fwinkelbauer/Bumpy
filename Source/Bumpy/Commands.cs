@@ -43,6 +43,7 @@ namespace Bumpy
                     var content = _fileUtil.ReadFileContent(file, config.Encoding);
 
                     var lineNumber = 1;
+                    var versionFound = false;
 
                     foreach (var line in content.Lines)
                     {
@@ -50,10 +51,16 @@ namespace Bumpy
 
                         if (success)
                         {
+                            versionFound = true;
                             _writeLine($"{content.File.ToRelativePath(_directory)} ({lineNumber}): {version}");
                         }
 
                         lineNumber++;
+                    }
+
+                    if (!versionFound)
+                    {
+                        _writeLine($"{content.File.ToRelativePath(_directory)}: no version found");
                     }
                 }
             }
@@ -155,6 +162,7 @@ namespace Bumpy
 
                     var lineNumber = 1;
                     var newLines = new List<string>();
+                    var versionFound = false;
                     var dirty = false;
 
                     foreach (var line in content.Lines)
@@ -164,6 +172,7 @@ namespace Bumpy
 
                         if (success)
                         {
+                            versionFound = true;
                             var newVersion = transformFunction(oldVersion);
 
                             if (!newVersion.Equals(oldVersion))
@@ -184,7 +193,11 @@ namespace Bumpy
                         lineNumber++;
                     }
 
-                    if (dirty && !_noOperation)
+                    if (!versionFound)
+                    {
+                        _writeLine($"{content.File.ToRelativePath(_directory)}: no version found");
+                    }
+                    else if (dirty && !_noOperation)
                     {
                         var newContent = new FileContent(file, newLines, content.Encoding);
                         _fileUtil.WriteFileContent(newContent);
