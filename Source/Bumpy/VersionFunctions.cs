@@ -9,7 +9,7 @@ namespace Bumpy
         private const string NumbersGroupName = "numbers";
         private const string LabelGroupName = "label";
 
-        private static readonly Regex BumpyRegex = new Regex(@"^(?<numbers>\d+(\.\d+)*)(?<label>[_\-\+\.0-9a-zA-Z]*)$", RegexOptions.Singleline);
+        private static readonly Regex BumpyRegex = new Regex(@"^(?<numbers>\d+((\.|,)\d+)*)(?<label>[_\-\+\.0-9a-zA-Z]*)$", RegexOptions.Singleline);
 
         public static BumpyVersion Increment(BumpyVersion version, int position, bool cascade)
         {
@@ -32,7 +32,7 @@ namespace Bumpy
                 }
             }
 
-            return new BumpyVersion(numbers, digits, version.Label);
+            return new BumpyVersion(numbers, digits, version.Label, version.NumberDelimiter);
         }
 
         public static BumpyVersion Assign(BumpyVersion version, int position, string formattedNumber)
@@ -52,12 +52,12 @@ namespace Bumpy
             numbers[zeroBasedIndex] = number;
             digits[zeroBasedIndex] = formattedNumber.Length;
 
-            return new BumpyVersion(numbers, digits, version.Label);
+            return new BumpyVersion(numbers, digits, version.Label, version.NumberDelimiter);
         }
 
         public static BumpyVersion Label(BumpyVersion version, string versionLabel)
         {
-            return new BumpyVersion(version.Numbers, version.Digits, versionLabel);
+            return new BumpyVersion(version.Numbers, version.Digits, versionLabel, version.NumberDelimiter);
         }
 
         public static BumpyVersion ParseVersion(string versionText)
@@ -71,9 +71,19 @@ namespace Bumpy
                 throw new ArgumentException($"The provided version string '{versionText}' is not supported");
             }
 
-            var formattedNumbers = numbersGroup.Value.Split('.');
+            string textNumbers = numbersGroup.Value;
+            char numberDelimiter = '.';
 
-            return new BumpyVersion(formattedNumbers, labelGroup.Value);
+            // C++ resource files contain versions in the format a,b,c,d (e.g. 1,0,0,0)
+            // This is a rather simple approach, but it should work for now
+            if (textNumbers.Contains(",") && !textNumbers.Contains("."))
+            {
+                numberDelimiter = ',';
+            }
+
+            var formattedNumbers = textNumbers.Split(numberDelimiter);
+
+            return new BumpyVersion(formattedNumbers, labelGroup.Value, numberDelimiter);
         }
 
         public static bool TryParseVersionInText(string text, string regexPattern, out BumpyVersion version)

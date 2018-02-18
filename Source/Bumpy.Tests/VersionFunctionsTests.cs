@@ -21,6 +21,7 @@ namespace Bumpy.Tests
         [DataRow(4, "2.2.2.09", "2.2.2.10", false)]
         [DataRow(3, "2.2.99.2", "2.2.100.2", false)]
         [DataRow(2, "2.2.99.2", "2.3.0.0", true)]
+        [DataRow(1, "2,2,2,2", "3,0,0,0", true)]
         public void Increment_IncrementDifferentPositions(int position, string originalVersionText, string expectedVersionText, bool cascade)
         {
             var version = VersionFunctions.ParseVersion(originalVersionText);
@@ -44,6 +45,7 @@ namespace Bumpy.Tests
         [DataRow(3, "1.1.1", "1.1.9", "9")]
         [DataRow(1, "1.1.1-foo", "9.1.1-foo", "9")]
         [DataRow(1, "1.1.1", "009.1.1", "009")]
+        [DataRow(1, "1,1,1", "9,1,1", "9")]
         public void Assign_AssignPositions(int position, string originalVersionText, string expectedVersionText, string formattedNumber)
         {
             var version = VersionFunctions.ParseVersion(originalVersionText);
@@ -68,6 +70,7 @@ namespace Bumpy.Tests
         [DataRow("1.1.1", "1.1.1-beta", "-beta")]
         [DataRow("1.1.1-alpha", "1.1.1-beta", "-beta")]
         [DataRow("1.1.1-alpha", "1.1.1", "")]
+        [DataRow("1,1,1", "1,1,1-beta", "-beta")]
         public void Label_ChangeLabel(string originalVersionText, string expectedVersionText, string versionLabel)
         {
             var version = VersionFunctions.ParseVersion(originalVersionText);
@@ -88,6 +91,7 @@ namespace Bumpy.Tests
         [DataRow("8.25.3-beta03+master0004")]
         [DataRow("8.5.43+bar")]
         [DataRow("1.0.0_final2")]
+        [DataRow("1,0,0,9")]
         public void ParseVersionFromText_ValidText(string versionText)
         {
             var version = VersionFunctions.ParseVersion(versionText);

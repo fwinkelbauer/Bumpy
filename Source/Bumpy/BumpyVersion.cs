@@ -9,11 +9,12 @@ namespace Bumpy
         private readonly List<int> _numbers;
         private readonly List<int> _digits;
 
-        public BumpyVersion(string[] formattedNumbers, string label)
+        public BumpyVersion(string[] formattedNumbers, string label, char numberDelimiter)
         {
             _numbers = formattedNumbers.Select(fn => Convert.ToInt32(fn)).ToList();
             _digits = new List<int>(_numbers.Count);
             Label = label;
+            NumberDelimiter = numberDelimiter;
 
             if (_numbers.Count == 0)
             {
@@ -28,11 +29,12 @@ namespace Bumpy
             }
         }
 
-        internal BumpyVersion(IEnumerable<int> numbers, IEnumerable<int> digits, string label)
+        internal BumpyVersion(IEnumerable<int> numbers, IEnumerable<int> digits, string label, char numberDelimiter)
         {
             _numbers = numbers.ToList();
             _digits = digits.ToList();
             Label = label;
+            NumberDelimiter = numberDelimiter;
         }
 
         public IList<int> Numbers => new List<int>(_numbers);
@@ -40,6 +42,11 @@ namespace Bumpy
         public IList<int> Digits => new List<int>(_digits);
 
         public string Label
+        {
+            get;
+        }
+
+        public char NumberDelimiter
         {
             get;
         }
@@ -53,7 +60,7 @@ namespace Bumpy
                 formattedNumbers[i] = _numbers[i].ToString($"D{_digits[i]}");
             }
 
-            return string.Join(".", formattedNumbers) + Label;
+            return string.Join(string.Empty + NumberDelimiter, formattedNumbers) + Label;
         }
 
         public override bool Equals(object obj)

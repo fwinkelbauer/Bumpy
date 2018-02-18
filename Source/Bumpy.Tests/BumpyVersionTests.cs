@@ -12,6 +12,7 @@ namespace Bumpy.Tests
         [DataRow("100.52.89.1024")]
         [DataRow("5.17.0-foo+bar")]
         [DataRow("5.17.0_final")]
+        [DataRow("3,0,0,0")]
         public void ToString_ReturnsVersionString(string versionText)
         {
             var version = VersionFunctions.ParseVersion(versionText);
@@ -22,8 +23,8 @@ namespace Bumpy.Tests
         [TestMethod]
         public void Constructor_ValidateInput()
         {
-            Assert.ThrowsException<ArgumentException>(() => new BumpyVersion(new string[] { }, string.Empty));
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => new BumpyVersion(new[] { "2", "1", "-3" }, string.Empty));
+            Assert.ThrowsException<ArgumentException>(() => new BumpyVersion(new string[] { }, string.Empty, '.'));
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => new BumpyVersion(new[] { "2", "1", "-3" }, string.Empty, '.'));
         }
 
         [DataTestMethod]
@@ -34,6 +35,7 @@ namespace Bumpy.Tests
         [DataRow("1.01.1")]
         [DataRow("1.1.01")]
         [DataRow("1.1.1-foo")]
+        [DataRow("1,1,1")]
         public void Equals_DifferentState(string versionText)
         {
             var version = VersionFunctions.ParseVersion("1.1.1");
@@ -48,6 +50,7 @@ namespace Bumpy.Tests
         [DataRow("1.8.5")]
         [DataRow("0001.008.0005")]
         [DataRow("1.8.5-foo")]
+        [DataRow("1,8,5")]
         public void Equals_SameState(string versionText)
         {
             var version = VersionFunctions.ParseVersion(versionText);

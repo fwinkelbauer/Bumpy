@@ -204,8 +204,9 @@ AssemblyInfo.cs | UTF-8 = (?<version>\d+\.\d+\.\d+\.\d+)
 For each line of a specific file (found through the glob pattern) Bumpy uses the provided regular expression to extract the named regex group `?<version>`.
 These regex groups can contain versions in different formats. Bumpy can currently handle formats such as:
 
-- `\d+(\.\d+)*` (meaning versions such as 1, 1.0, 1.0.0, 1.0.0.0, ...)
-- [SemVer](http://semver.org/) (1.8.0-beta01, 1.0.0-alpha+001, ...)
+- `\d+(\.\d+)*` (meaning versions such as `1`, `1.0`, `1.0.0`, `1.0.0.0`, ...)
+- `\d+(,\d+)*` (`1,0,0,0`)
+- [SemVer](http://semver.org/) (`1.8.0-beta`, `1.0.0-alpha+001`, ...)
 
 Type `bumpy new` to create a new configuration file. This file contains additional information about configuration possibilities (e.g. how to change the read/write encoding).
 
