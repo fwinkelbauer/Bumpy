@@ -6,6 +6,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unreleased]
 
+- [#34](https://github.com/fwinkelbauer/Bumpy/issues/34) Add regex capture group "tag"
 - [#32](https://github.com/fwinkelbauer/Bumpy/issues/32) Bumpy now highlights files with no version information
 - [#31](https://github.com/fwinkelbauer/Bumpy/issues/31) Added "no-operation" flag which prevents commands such as `bumpy increment` to persist changes
 - [#28](https://github.com/fwinkelbauer/Bumpy/issues/28) Added support for versions which use comma as a delimiter (e.g. Visual Studio C++ resource files contain versions such as "1,0,0,0")

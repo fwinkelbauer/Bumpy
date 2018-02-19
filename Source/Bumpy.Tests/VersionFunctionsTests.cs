@@ -108,34 +108,46 @@ namespace Bumpy.Tests
         [TestMethod]
         public void TryParseVersionInText_Found()
         {
-            var success = VersionFunctions.TryParseVersionInText("a1.2a", @"a(?<version>\d\.\d)a", out var version);
+            var success = VersionFunctions.TryParseVersionInText("a1.2a", @"a(?<version>\d\.\d)a", out var version, out var tag);
 
             Assert.IsTrue(success);
             Assert.AreEqual("1.2", version.ToString());
+            Assert.IsTrue(string.IsNullOrEmpty(tag));
         }
 
         [TestMethod]
         public void TryParseVersionInText_InvalidRegexWithoutNamedGroup()
         {
-            var success = VersionFunctions.TryParseVersionInText("100", @"\d", out var version);
+            var success = VersionFunctions.TryParseVersionInText("100", @"\d", out var version, out var tag);
 
             Assert.IsFalse(success);
             Assert.IsNull(version);
+            Assert.IsTrue(string.IsNullOrEmpty(tag));
         }
 
         [TestMethod]
         public void TryParseVersionInText_InvalidRegexWithNamedGroup()
         {
-            Assert.ThrowsException<ArgumentException>(() => VersionFunctions.TryParseVersionInText("1.0//", @"(?<version>1.0//)", out _));
+            Assert.ThrowsException<ArgumentException>(() => VersionFunctions.TryParseVersionInText("1.0//", @"(?<version>1.0//)", out _, out _));
         }
 
         [TestMethod]
         public void TryParseVersionInText_ValidRegexButTextIsNoVersion()
         {
-            var success = VersionFunctions.TryParseVersionInText("something", @"a(?<version>\d\.\d)a", out var version);
+            var success = VersionFunctions.TryParseVersionInText("something", @"a(?<version>\d\.\d)a", out var version, out var tag);
 
             Assert.IsFalse(success);
             Assert.IsNull(version);
+            Assert.IsTrue(string.IsNullOrEmpty(tag));
+        }
+
+        [TestMethod]
+        public void TryParseVersionInText_ValidTag()
+        {
+            var success = VersionFunctions.TryParseVersionInText("foo 1.0", @"(?<tag>foo) (?<version>1.0)", out var _, out var tag);
+
+            Assert.IsTrue(success);
+            Assert.AreEqual("foo", tag);
         }
 
         [TestMethod]

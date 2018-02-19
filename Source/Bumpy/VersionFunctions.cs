@@ -8,6 +8,7 @@ namespace Bumpy
         private const string VersionGroupName = "version";
         private const string NumbersGroupName = "numbers";
         private const string LabelGroupName = "label";
+        private const string TagGroupName = "tag";
 
         private static readonly Regex BumpyRegex = new Regex(@"^(?<numbers>\d+((\.|,)\d+)*)(?<label>[_\-\+\.0-9a-zA-Z]*)$", RegexOptions.Singleline);
 
@@ -86,25 +87,29 @@ namespace Bumpy
             return new BumpyVersion(formattedNumbers, labelGroup.Value, numberDelimiter);
         }
 
-        public static bool TryParseVersionInText(string text, string regexPattern, out BumpyVersion version)
+        public static bool TryParseVersionInText(string text, string regexPattern, out BumpyVersion version, out string tag)
         {
             version = null;
 
             var regex = new Regex(regexPattern, RegexOptions.Singleline);
-            var group = regex.Match(text).Groups[VersionGroupName];
-            var success = group.Success;
+            var match = regex.Match(text);
+            var versionGroup = match.Groups[VersionGroupName];
+            var tagGroup = match.Groups[TagGroupName];
+            var success = versionGroup.Success;
 
             if (success)
             {
-                version = ParseVersion(group.Value);
+                version = ParseVersion(versionGroup.Value);
             }
+
+            tag = tagGroup.Success ? tagGroup.Value : string.Empty;
 
             return success;
         }
 
         public static string EnsureExpectedVersion(string text, string regexPattern, BumpyVersion expectedVersion)
         {
-            if (TryParseVersionInText(text, regexPattern, out var version))
+            if (TryParseVersionInText(text, regexPattern, out var version, out _))
             {
                 if (version.Equals(expectedVersion))
                 {

@@ -47,12 +47,18 @@ namespace Bumpy
 
                     foreach (var line in content.Lines)
                     {
-                        var success = VersionFunctions.TryParseVersionInText(line, config.RegularExpression, out var version);
+                        var success = VersionFunctions.TryParseVersionInText(line, config.RegularExpression, out var version, out var tag);
 
                         if (success)
                         {
                             versionFound = true;
-                            _writeLine($"{content.File.ToRelativePath(_directory)} ({lineNumber}): {version}");
+
+                            if (string.IsNullOrEmpty(tag))
+                            {
+                                tag = lineNumber.ToString();
+                            }
+
+                            _writeLine($"{content.File.ToRelativePath(_directory)} ({tag}): {version}");
                         }
 
                         lineNumber++;
@@ -168,7 +174,7 @@ namespace Bumpy
                     foreach (var line in content.Lines)
                     {
                         var newLine = line;
-                        var success = VersionFunctions.TryParseVersionInText(line, config.RegularExpression, out var oldVersion);
+                        var success = VersionFunctions.TryParseVersionInText(line, config.RegularExpression, out var oldVersion, out var tag);
 
                         if (success)
                         {
@@ -182,7 +188,12 @@ namespace Bumpy
                                 dirty = true;
                             }
 
-                            _writeLine($"{file.ToRelativePath(_directory)} ({lineNumber}): {oldVersion} -> {newVersion}");
+                            if (string.IsNullOrEmpty(tag))
+                            {
+                                tag = lineNumber.ToString();
+                            }
+
+                            _writeLine($"{file.ToRelativePath(_directory)} ({tag}): {oldVersion} -> {newVersion}");
                         }
 
                         if (!_noOperation)
