@@ -1,7 +1,5 @@
-# Captures AssemblyVersion and AssemblyFileVersion in a single AssemblyInfo.cs file
 [assembly]
-Bumpy\Properties\AssemblyInfo.cs | UTF-8 = (?<version>\d+\.\d+\.\d+\.\d+)
+Bumpy\Properties\AssemblyInfo.cs
 
-# Captures the version tag in all .nuspec files (Chocolatey, NuGet)
-[semver]
-NuSpec\**\*.nuspec = <version>(?<version>\d+\.\d+\.\d+.*)</version>
+[nuspec]
+NuSpec\**\*.nuspec

@@ -41,19 +41,21 @@ namespace Bumpy
             }
 
             var builder = new StringBuilder();
-            builder.AppendLine("# Configuration file for Bumpy");
-            builder.AppendLine();
-            builder.AppendLine("# Usage: <file glob pattern> = <regular expression>");
+            builder.AppendLine("# General usage:");
+            builder.AppendLine("# <file glob pattern> = <regular expression>");
+            builder.AppendLine("# <file glob pattern> | <encoding> = <regular expression>");
+            builder.AppendLine("# <file glob pattern> | <code page> = <regular expression>");
             builder.AppendLine("# Note that the regular expression must contain a named group 'version' which contains the actual version information");
             builder.AppendLine();
-            builder.AppendLine("# Example: Search for version information of the format a.b.c.d (e.g. 1.22.7.50) in all AssemblyInfo.cs files");
-            builder.AppendLine(@"# AssemblyInfo.cs = (?<version>\d+\.\d+\.\d+\.\d+)");
-            builder.AppendLine();
-            builder.AppendLine("# Example: The default read/write encoding is UTF-8 without BOM, but you can change this behaviour (e.g. UTF-8 with BOM)");
+            builder.AppendLine("# Example: Search for version information of the format a.b.c.d (e.g. 1.22.7.50) in all AssemblyInfo.cs files (with UTF-8 with BOM)");
             builder.AppendLine(@"# AssemblyInfo.cs | UTF-8 = (?<version>\d+\.\d+\.\d+\.\d+)");
             builder.AppendLine();
-            builder.AppendLine("# Example: Search for all .nuspec files in a NuSpec directory");
+            builder.AppendLine("# Example: Search for all .nuspec files (UTF-8 without BOM) in a NuSpec directory");
             builder.AppendLine(@"# NuSpec\**\*.nuspec = <version>(?<version>\d+(\.\d+)+)");
+            builder.AppendLine();
+            builder.AppendLine("# Templates exist for AssemblyInfo.cs and *.nuspec files. These can be used for simple .NET projects:");
+            builder.AppendLine("AssemblyInfo.cs");
+            builder.AppendLine("*.nuspec");
 
             File.WriteAllText(configFile.FullName, builder.ToString());
 
@@ -109,6 +111,12 @@ namespace Bumpy
                 //   <search pattern> = <regex>
                 var mainSplit = line.Split(MainSplit);
                 var leftSplit = mainSplit[0].Split(EncodingSplit);
+
+                if (mainSplit.Length == 1 && Template.TryFindTemplate(mainSplit[0], out Template template))
+                {
+                    yield return new BumpyConfiguration(profile, mainSplit[0], template.RegularExpression, template.Encoding);
+                    continue;
+                }
 
                 Encoding encoding = new UTF8Encoding(false);
 
