@@ -132,8 +132,8 @@ namespace Bumpy
             builder.AppendLine("    Overwrites a version with another version (e.g. 'bumpy write 1.0.0.0')");
             builder.AppendLine("  assign <one-based index number> <version number> (e.g. 'bumpy assign 3 99')");
             builder.AppendLine("    Replaces the specified component of a version with a new number");
-            builder.AppendLine("  label <postfix version text>");
-            builder.AppendLine("    Replaces the postfix text of a version (e.g. 'bumpy label \"-beta\"')");
+            builder.AppendLine("  label <suffix version text>");
+            builder.AppendLine("    Replaces the suffix text of a version (e.g. 'bumpy label \"-beta\"')");
             builder.AppendLine();
             builder.AppendLine("Options: (only available for 'list', 'increment', 'incrementonly', 'write', 'assign' and 'label')");
             builder.AppendLine("  -p <profile name>");

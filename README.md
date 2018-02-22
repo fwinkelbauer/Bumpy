@@ -1,17 +1,43 @@
 # Bumpy
 
-Bumpy is a tool to manipulate version information across multiple files found in the current working directory using a configuration file which consists of [glob patterns](https://en.wikipedia.org/wiki/Glob_(programming)) and regular expressions.
+Bumpy is a tool to manipulate version information across multiple files found in the current working directory using a `.bumpyconfig` file which consists of [glob patterns](https://en.wikipedia.org/wiki/Glob_(programming)) and regular expressions.
+I am using Bumpy to handle C# projects, but the tool can be configured for any set of files.
 
-NuGet and Chocolatey packages can be found [here](https://www.nuget.org/packages/Bumpy/) and [here](https://chocolatey.org/packages/bumpy.portable).
+NuGet and Chocolatey packages can be found [here](https://www.nuget.org/packages/Bumpy/) and [here](https://chocolatey.org/packages/bumpy.portable). A Cake Addin is provided [here](https://www.nuget.org/packages/Cake.Bumpy/).
 
-**Note:** As Bumpy's behaviour is heavily influenced by the provided configuration (see below), make sure that your files are kept under version control so that you can easily verify Bumpy's results.
+**Note:** As Bumpy's behaviour is heavily influenced by your `.bumpyconfig` file, make sure that your files are kept under version control so that you can easily verify Bumpy's results.
 
 ## Why?
 
 Most of the build systems that I have seen or worked with in the past create a workflow in which they utilize a single source
 (e.g. a file called `version.txt`, or a tool such as [GitVersion](https://github.com/GitTools/GitVersion)) to inject version information into a set of files (`AssemblyInfo.cs`, `*.csproj`, `*.nuspec`, `*.xml`, ...).
-These files  might contain "blank versions" (`0.0.0`, `0.0.0.0`) which are only ever changed in memory while a build is active. In my opinion such processes require too much magic, even though they work for a lot of people.
-Bumpy was born because I wanted a simple tool that I can use in combination with existing source control management systems to handle all my versioning requirements in a project.
+These files  might contain "blank versions" (`0.0.0`, `0.0.0.0`) which are only ever changed in memory while a build is active. I prefer to store all file changes in a source code management system.
+Bumpy was born because I wanted a simple tool that I can use to handle version information across several files in one operation.
+
+## Getting Started
+
+Using Bumpy in a .NET Framework project is rather easy:
+
+- Download the Bumpy NuGet package (or install it via Chocolatey - `choco install bumpy.portable`)
+- Type `bumpy new` in the Package Manager Console in Visual Studio
+
+Afterwards you will find a `.bumpyconfig` in your solution. Type `bumpy list` to see the version of each project:
+
+```
+ConsoleApp1\Properties\AssemblyInfo.cs (AssemblyVersion): 1.0.0.0
+ConsoleApp1\Properties\AssemblyInfo.cs (AssemblyFileVersion): 1.0.0.0
+UnitTestProject1\Properties\AssemblyInfo.cs (AssemblyVersion): 1.0.0.0
+UnitTestProject1\Properties\AssemblyInfo.cs (AssemblyFileVersion): 1.0.0.0
+```
+
+Now you can use Bumpy to change all versions in one operation, e.g. `bumpy increment 4`:
+
+```
+ConsoleApp1\Properties\AssemblyInfo.cs (AssemblyVersion): 1.0.0.0 -> 1.0.0.1
+ConsoleApp1\Properties\AssemblyInfo.cs (AssemblyFileVersion): 1.0.0.0 -> 1.0.0.1
+UnitTestProject1\Properties\AssemblyInfo.cs (AssemblyVersion): 1.0.0.0 -> 1.0.0.1
+UnitTestProject1\Properties\AssemblyInfo.cs (AssemblyFileVersion): 1.0.0.0 -> 1.0.0.1
+```
 
 ## Usage & Examples
 
@@ -37,7 +63,7 @@ Lists all versions and their profiles (see below to learn more about profiles).
 [assembly]
 Bumpy\Properties\AssemblyInfo.cs (16): 0.8.0.0
 Bumpy\Properties\AssemblyInfo.cs (17): 0.8.0.0
-[semver]
+[nuspec]
 NuSpec\Chocolatey\Bumpy.Portable.nuspec (6): 0.8.0
 NuSpec\NuGet\Bumpy.nuspec (6): 0.8.0
 ```
@@ -48,7 +74,7 @@ NuSpec\NuGet\Bumpy.nuspec (6): 0.8.0
 bumpy new
 ```
 
-Creates an empty `.bumpyconfig` file.
+Creates a `.bumpyconfig` file if it does not exist.
 
 ### Increment
 
@@ -61,8 +87,8 @@ Increments the specified component of each version.
 **Example:** `bumpy increment 3`
 
 ```
-Bumpy\Properties\AssemblyInfo.cs (16): 0.8.0.0 -> 0.8.1.0
-Bumpy\Properties\AssemblyInfo.cs (17): 0.8.0.0 -> 0.8.1.0
+Bumpy\Properties\AssemblyInfo.cs (16): 0.8.0.5 -> 0.8.1.0
+Bumpy\Properties\AssemblyInfo.cs (17): 0.8.0.5 -> 0.8.1.0
 NuSpec\Chocolatey\Bumpy.Portable.nuspec (6): 0.8.0 -> 0.8.1
 NuSpec\NuGet\Bumpy.nuspec (6): 0.8.0 -> 0.8.1
 ```
@@ -92,7 +118,7 @@ bumpy write <version string>
 
 Overwrites a version with another version.
 
-This command could be used to e.g:
+This command could be used to:
 
 - Unify the version information of projects and files in a solution
 - Change the version information of a newly created project to be in line with other projects in a solution
@@ -104,7 +130,7 @@ Bumpy\Properties\AssemblyInfo.cs (16): 0.9.1.0 -> 1.0.0.0
 Bumpy\Properties\AssemblyInfo.cs (17): 0.9.1.0 -> 1.0.0.0
 ```
 
-**Example:** `bumpy write 1.0.0 -p semver`
+**Example:** `bumpy write 1.0.0 -p nuspec`
 
 ```
 NuSpec\Chocolatey\Bumpy.Portable.nuspec (6): 0.9.1 -> 1.0.0
@@ -131,24 +157,26 @@ NuSpec\NuGet\Bumpy.nuspec (6): 1.0.0 -> 1.0.42
 ### Label
 
 ```
-bumpy label <postfix version text>
+bumpy label <suffix version text>
 ```
 
-Replaces the postfix text of a version.
+Replaces the suffix text of a version.
 
-**Example:** `bumpy label "-beta" -p semver`
+**Example:** `bumpy label "-beta" -p nuspec`
 
 ```
 NuSpec\Chocolatey\Bumpy.Portable.nuspec (6): 0.8.0 -> 0.8.0-beta
 NuSpec\NuGet\Bumpy.nuspec (6): 0.8.0 -> 0.8.0-beta
 ```
 
+Or:
+
 ```
 NuSpec\Chocolatey\Bumpy.Portable.nuspec (6): 0.8.0-alpha -> 0.8.0-beta
 NuSpec\NuGet\Bumpy.nuspec (6): 0.8.0-alpha -> 0.8.0-beta
 ```
 
-**Example:** `bumpy label "" -p semver`
+**Example:** `bumpy label "" -p nuspec`
 
 ```
 NuSpec\Chocolatey\Bumpy.Portable.nuspec (6): 0.8.0-beta -> 0.8.0
@@ -175,7 +203,7 @@ The following options are available for the commands `list`, `increment`, `incre
 **Examples:**
 
 ```
-bumpy write 1.15.0-beta -p semver
+bumpy write 1.15.0-beta -p nuspec
 
 # In this example Bumpy will still expect a configuration file to be present in the current working directory
 bumpy list -d ..\some_other_project
@@ -207,8 +235,6 @@ These regex groups can contain versions in different formats. Bumpy can currentl
 - `\d+(\.\d+)*` (meaning versions such as `1`, `1.0`, `1.0.0`, `1.0.0.0`, ...)
 - `\d+(,\d+)*` (`1,0,0,0`)
 - [SemVer](http://semver.org/) (`1.8.0-beta`, `1.0.0-alpha+001`, ...)
-
-Type `bumpy new` to create a new configuration file. This file contains additional information about configuration possibilities (e.g. how to change the read/write encoding).
 
 ### Profiles
 
