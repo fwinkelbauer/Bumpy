@@ -1,8 +1,11 @@
 #load "artifact.cake"
 #load "mstest2.cake"
+#load "octokit.cake"
 
 var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Release");
+var githubReleaseToken = EnvironmentVariable("GITHUB_RELEASE_TOKEN");
+var githubReleaseVersion = "0.9.0";
 
 ArtifactsDirectory = "../Artifacts";
 
@@ -50,6 +53,22 @@ Task("Publish")
 {
     PublishChocolateyArtifact("Bumpy.Portable", "https://push.chocolatey.org/");
     PublishNuGetArtifact("Bumpy", "https://www.nuget.org/api/v2/package");
+
+    var settings = new OctokitSettings
+    {
+        Owner = "fwinkelbauer",
+        Repository = "Bumpy",
+        Token = githubReleaseToken,
+        GitTag = githubReleaseVersion,
+        TextBody = "More information about this release can be found in the [changelog](https://github.com/fwinkelbauer/Bumpy/blob/master/CHANGELOG.md)",
+        IsDraft = true,
+        IsPrerelease = false
+    };
+
+    var files = GetFiles($"{ArtifactsDirectory}/**/*.nupkg");
+    var assets = files.Select(f => new OctokitAsset(f, "application/zip"));
+
+    PublishGitHubReleaseWithArtifacts(settings, assets);
 });
 
 Task("Default").IsDependentOn("Pack").Does(() => { });
