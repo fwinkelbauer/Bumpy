@@ -11,7 +11,7 @@ NuGet and Chocolatey packages can be found [here](https://www.nuget.org/packages
 
 Most of the build systems that I have seen or worked with in the past create a workflow in which they utilize a single source
 (e.g. a file called `version.txt`, or a tool such as [GitVersion](https://github.com/GitTools/GitVersion)) to inject version information into a set of files (`AssemblyInfo.cs`, `*.csproj`, `*.nuspec`, `*.xml`, ...).
-These files  might contain "blank versions" (`0.0.0`, `0.0.0.0`) which are only ever changed in memory while a build is active. I prefer to persist version changes so that I can track the history in any source control management system.
+These files  might contain "blank versions" (`0.0.0`, `0.0.0.0`) which are only ever changed in memory while a build is active. I prefer to persist these changes so that I can track the history in any source control management system.
 Bumpy was born because I wanted a simple tool that I can use to update version information across several files in one operation.
 
 ## Getting Started
@@ -19,7 +19,7 @@ Bumpy was born because I wanted a simple tool that I can use to update version i
 Using Bumpy in a .NET project is rather easy:
 
 - Download the Bumpy NuGet package (or install it via Chocolatey - `choco install bumpy.portable`)
-- Make sure that the `<version>` tag exists in your `MyProject.csproj` file if the project uses .NET Standard or .NET Core
+- Make sure that the `<version>` tag exists in the `*.csproj` file (.NET Standard or .NET Core)
 - Type `bumpy new` in the Package Manager Console in Visual Studio
 
 Afterwards you will find a `.bumpyconfig` file in your solution. Type `bumpy list` to see the version of each project:
@@ -255,7 +255,7 @@ Most of Bumpy's commands can be applied to a certain profile by specifing the pr
 
 ### Tags
 
-Bumpy will print the line number for each version found in a file by default:
+Bumpy will per default print the line number for each version found in a file:
 
 ```
 MyProject.nuspec (6): 1.0.0
