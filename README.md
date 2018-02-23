@@ -11,17 +11,18 @@ NuGet and Chocolatey packages can be found [here](https://www.nuget.org/packages
 
 Most of the build systems that I have seen or worked with in the past create a workflow in which they utilize a single source
 (e.g. a file called `version.txt`, or a tool such as [GitVersion](https://github.com/GitTools/GitVersion)) to inject version information into a set of files (`AssemblyInfo.cs`, `*.csproj`, `*.nuspec`, `*.xml`, ...).
-These files  might contain "blank versions" (`0.0.0`, `0.0.0.0`) which are only ever changed in memory while a build is active. I prefer to store all file changes in a source code management system.
-Bumpy was born because I wanted a simple tool that I can use to handle version information across several files in one operation.
+These files  might contain "blank versions" (`0.0.0`, `0.0.0.0`) which are only ever changed in memory while a build is active. I prefer to persist version changes so that I can track the history in any source control management system.
+Bumpy was born because I wanted a simple tool that I can use to update version information across several files in one operation.
 
 ## Getting Started
 
-Using Bumpy in a .NET Framework project is rather easy:
+Using Bumpy in a .NET project is rather easy:
 
 - Download the Bumpy NuGet package (or install it via Chocolatey - `choco install bumpy.portable`)
+- Make sure that the `<version>` tag exists in your `MyProject.csproj` file if the project uses .NET Standard or .NET Core
 - Type `bumpy new` in the Package Manager Console in Visual Studio
 
-Afterwards you will find a `.bumpyconfig` in your solution. Type `bumpy list` to see the version of each project:
+Afterwards you will find a `.bumpyconfig` file in your solution. Type `bumpy list` to see the version of each project:
 
 ```
 ConsoleApp1\Properties\AssemblyInfo.cs (AssemblyVersion): 1.0.0.0
@@ -39,6 +40,8 @@ UnitTestProject1\Properties\AssemblyInfo.cs (AssemblyVersion): 1.0.0.0 -> 1.0.0.
 UnitTestProject1\Properties\AssemblyInfo.cs (AssemblyFileVersion): 1.0.0.0 -> 1.0.0.1
 ```
 
+Check out the documentation below to learn more about Bumpy's commands and how you can change the `.bumpyconfig` according to your needs.
+
 ## Usage & Examples
 
 Bumpy is a command line tool:
@@ -47,7 +50,7 @@ Bumpy is a command line tool:
 bumpy <command> <arguments> <options>
 ```
 
-Check out the `.bumpyconfig` file [here](https://github.com/fwinkelbauer/Bumpy/blob/master/.bumpyconfig) to see how the following examples were created directly using this repository:
+Have a look at the file `Source\.bumpyconfig` to see how the following examples were created using this repository:
 
 ### List
 
@@ -227,10 +230,13 @@ NuSpec\**\*.nuspec = <version>(?<version>\d+(\.\d+)+)
 
 # Example: The default read/write encoding is UTF-8 without BOM, but you can change this behaviour (e.g. UTF-8 with BOM)
 AssemblyInfo.cs | UTF-8 = (?<version>\d+\.\d+\.\d+\.\d+)
+
+# Example: Encodings can also be defined through code pages. This can be handy for Visual Studio C++ projects
+MyProject.rc | 1200 = \d+\.\d+\.\d+\.\d+
 ```
 
-For each line of a specific file (found through the glob pattern) Bumpy uses the provided regular expression to extract the named regex group `?<version>`.
-These regex groups can contain versions in different formats. Bumpy can currently handle formats such as:
+For each line of a specific file (found through a glob pattern) Bumpy uses the provided regular expression to extract the named capture group `?<version>`.
+These groups can contain versions in different formats. Bumpy can currently handle formats such as:
 
 - `\d+(\.\d+)*` (meaning versions such as `1`, `1.0`, `1.0.0`, `1.0.0.0`, ...)
 - `\d+(,\d+)*` (`1,0,0,0`)
@@ -246,6 +252,40 @@ Lines in a `.bumpyconfig` file can be organized using profiles ("groups"):
 ```
 
 Most of Bumpy's commands can be applied to a certain profile by specifing the profile name, e.g. `bumpy list -p my_profile`. This feature can be useful if you need to target a specific set of files in isolation (e.g. a `AssemblyInfo.cs` file in C# can only deal with versions of the format `1.0.0.0`, while a `.nuspec` file could contain textual elements such as `1.0.0-beta`).
+
+### Tags
+
+Bumpy will print the line number for each version found in a file by default:
+
+```
+MyProject.nuspec (6): 1.0.0
+```
+
+This behaviour can be changed using the named capture group `?<tag>`. A `.bumpyconfig` like this:
+
+```
+*.nuspec = <(?<tag>version)>(?<version>\d+(\.\d+)+)
+```
+
+Would change the output of `bumpy list` to something like this:
+
+```
+MyProject.nuspec (version): 1.0.0
+```
+
+### Templates
+
+Templates can be used to simplify a `.bumpyconfig` file for known file types. Currently `.nuspec`, `AssemblyInfo.cs` and `.csproj` files are supported.
+
+```
+# These glob patterns will inherit prredefined encodings and basic regular expressions:
+[nuspec]
+*.nuspec
+MyDotNetCoreProject/MyDotNetCoreProject.csproj
+
+[assembly]
+MyDotNetFrameworkProject/**/AssemblyInfo.cs
+```
 
 ## Trivia
 

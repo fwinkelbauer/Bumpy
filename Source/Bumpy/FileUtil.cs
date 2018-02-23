@@ -53,9 +53,10 @@ namespace Bumpy
             builder.AppendLine("# Example: Search for all .nuspec files (UTF-8 without BOM) in a NuSpec directory");
             builder.AppendLine(@"# NuSpec\**\*.nuspec = <version>(?<version>\d+(\.\d+)+)");
             builder.AppendLine();
-            builder.AppendLine("# Templates exist for AssemblyInfo.cs and *.nuspec files. These can be used for simple .NET projects:");
+            builder.AppendLine("# Templates exist for AssemblyInfo.cs, *.nuspec, *.csproj files. These can be used for simple .NET Framework, Standard and Core projects:");
             builder.AppendLine("AssemblyInfo.cs");
             builder.AppendLine("*.nuspec");
+            builder.AppendLine("*.csproj");
 
             File.WriteAllText(configFile.FullName, builder.ToString());
 
