@@ -47,13 +47,18 @@ namespace Bumpy
             {
                 commands.CommandLabel(_arguments.Profile, _arguments.Text);
             }
+            else if (_arguments.CmdType == CommandType.Ensure)
+            {
+                commands.CommandEnsure(_arguments.Profile);
+            }
             else if (_arguments.CmdType == CommandType.Help)
             {
                 commands.CommandHelp();
             }
             else
             {
-                // This Exception is only thrown if we forget to extend this method after introducing new commands.
+                // This Exception is only thrown if we forget to extend
+                // the 'Execute' method after introducing new commands.
                 throw new ParserException("Could not execute command");
             }
         }

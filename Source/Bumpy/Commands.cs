@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace Bumpy
@@ -97,6 +98,53 @@ namespace Bumpy
             WriteTransformation(profile, version => VersionFunctions.Label(version, versionLabel));
         }
 
+        public void CommandEnsure(string profile)
+        {
+            var configEntries = _fileUtil.ReadConfigFile(_configFile, profile);
+            var versionsPerProfile = new Dictionary<string, List<BumpyVersion>>();
+
+            foreach (var config in configEntries)
+            {
+                var glob = new Glob(config.SearchPattern);
+                var files = _fileUtil.GetFiles(_directory, glob);
+
+                if (!versionsPerProfile.ContainsKey(config.Profile))
+                {
+                    versionsPerProfile.Add(config.Profile, new List<BumpyVersion>());
+                }
+
+                foreach (var file in files)
+                {
+                    var content = _fileUtil.ReadFileContent(file, config.Encoding);
+
+                    foreach (var line in content.Lines)
+                    {
+                        var success = VersionFunctions.TryParseVersionInText(line, config.RegularExpression, out var version, out var tag);
+
+                        if (success)
+                        {
+                            versionsPerProfile[config.Profile].Add(version);
+                        }
+                    }
+                }
+            }
+
+            foreach (KeyValuePair<string, List<BumpyVersion>> entry in versionsPerProfile)
+            {
+                var distinctVersions = entry.Value.Distinct();
+
+                if (distinctVersions.Count() > 1)
+                {
+                    var profileText = string.IsNullOrEmpty(entry.Key) ? string.Empty : $" in profile '{entry.Key}'";
+                    var versions = string.Join(", ", distinctVersions.Select(v => v.ToString()));
+
+                    throw new InvalidDataException($"Found different versions{profileText}: {versions}. See 'bumpy list' for more information");
+                }
+            }
+
+            _writeLine("Success");
+        }
+
         public void CommandNew()
         {
             var configFile = new FileInfo(Path.Combine(_directory.FullName, BumpyConfiguration.ConfigFile));
@@ -134,8 +182,10 @@ namespace Bumpy
             builder.AppendLine("    Replaces the specified component of a version with a new number");
             builder.AppendLine("  label <suffix version text>");
             builder.AppendLine("    Replaces the suffix text of a version (e.g. 'bumpy label \"-beta\"')");
+            builder.AppendLine("  ensure");
+            builder.AppendLine("    Checks that all versions in a profile are equal");
             builder.AppendLine();
-            builder.AppendLine("Options: (only available for 'list', 'increment', 'incrementonly', 'write', 'assign' and 'label')");
+            builder.AppendLine("Options: (only available for 'list', 'increment', 'incrementonly', 'write', 'assign', 'label' and 'ensure')");
             builder.AppendLine("  -p <profile name>");
             builder.AppendLine("    Limit a command to a profile");
             builder.AppendLine("  -d <directory>");

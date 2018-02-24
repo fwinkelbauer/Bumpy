@@ -9,6 +9,7 @@
         IncrementOnly,
         Write,
         Assign,
-        Label
+        Label,
+        Ensure
     }
 }

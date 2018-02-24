@@ -79,6 +79,14 @@ namespace Bumpy.Tests
         }
 
         [TestMethod]
+        public void Parse_Ensure()
+        {
+            var arguments = Parse("ensure");
+
+            Assert.AreEqual(CommandType.Ensure, arguments.CmdType);
+        }
+
+        [TestMethod]
         public void Parse_DefaultOptions()
         {
             var arguments = Parse("list");

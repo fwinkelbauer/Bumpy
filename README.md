@@ -186,6 +186,29 @@ NuSpec\Chocolatey\Bumpy.Portable.nuspec (6): 0.8.0-beta -> 0.8.0
 NuSpec\NuGet\Bumpy.nuspec (6): 0.8.0-beta -> 0.8.0
 ```
 
+### Ensure
+
+```
+bumpy ensure
+```
+
+Checks that all versions in a profile are equal. This command can be used in a build pipeline to enforce consistency of version numbers.
+
+**Eample:** `bumpy list`, `bumpy ensure`
+
+```
+[assembly]
+Bumpy\Properties\AssemblyInfo.cs (16): 0.8.0.0
+Bumpy\Properties\AssemblyInfo.cs (17): 0.9.0.0
+[nuspec]
+NuSpec\Chocolatey\Bumpy.Portable.nuspec (6): 0.8.0
+NuSpec\NuGet\Bumpy.nuspec (6): 0.8.0
+```
+
+```
+Error: Found different versions in profile 'assembly': 0.8.0.0, 0.9.0.0. See 'bumpy list' for more information
+```
+
 ### Help
 
 ```

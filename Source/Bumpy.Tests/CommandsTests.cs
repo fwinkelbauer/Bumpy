@@ -61,6 +61,29 @@ namespace Bumpy.Tests
         }
 
         [TestMethod]
+        public void CommandEnsure_Success()
+        {
+            var fileUtil = Substitute.For<IFileUtil>();
+            PrepareFileUtilSubstitute(fileUtil, new[] { "1.2.3", "1.2.3" });
+            var writeLine = Substitute.For<Action<string>>();
+            var commands = CreateCommands(fileUtil, writeLine);
+
+            commands.CommandEnsure(string.Empty);
+
+            writeLine.Received().Invoke("Success");
+        }
+
+        [TestMethod]
+        public void CommandEnsure_Error()
+        {
+            var fileUtil = Substitute.For<IFileUtil>();
+            PrepareFileUtilSubstitute(fileUtil, new[] { "1.2.3", "1.2.4" });
+            var commands = CreateCommands(fileUtil);
+
+            Assert.ThrowsException<InvalidDataException>(() => commands.CommandEnsure(string.Empty));
+        }
+
+        [TestMethod]
         public void CommandIncrement_NoVersion()
         {
             var lines = new[] { "no", "version", "here" };

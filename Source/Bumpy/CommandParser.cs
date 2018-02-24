@@ -79,7 +79,8 @@ namespace Bumpy
                 || _commandType == CommandType.IncrementOnly
                 || _commandType == CommandType.Write
                 || _commandType == CommandType.Assign
-                || _commandType == CommandType.Label;
+                || _commandType == CommandType.Label
+                || _commandType == CommandType.Ensure;
 
             if (!shouldParseOptions)
             {
