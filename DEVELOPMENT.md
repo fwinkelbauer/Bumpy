@@ -8,9 +8,7 @@
 - Bumpy
 - Chocolatey
 
-## To Publish a Release
-
-These steps are necessary to publish a release:
+## Setup To Publish a Release
 
 - Register Chocolatey/NuGet API keys using `choco setApikey` and `nuget setApikey`
 - Create the environment variable `GITHUB_RELEASE_TOKEN`

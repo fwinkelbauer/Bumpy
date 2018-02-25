@@ -40,7 +40,7 @@ UnitTestProject1\Properties\AssemblyInfo.cs (AssemblyVersion): 1.0.0.0 -> 1.0.0.
 UnitTestProject1\Properties\AssemblyInfo.cs (AssemblyFileVersion): 1.0.0.0 -> 1.0.0.1
 ```
 
-Check out the documentation below to learn more about Bumpy's commands and how you can change the `.bumpyconfig` according to your needs.
+Check out the documentation below to learn more about Bumpy's commands and how you can configure Bumpy according to your needs.
 
 ## Usage & Examples
 
