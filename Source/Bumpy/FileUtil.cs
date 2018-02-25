@@ -45,17 +45,24 @@ namespace Bumpy
             builder.AppendLine("# <file glob pattern> = <regular expression>");
             builder.AppendLine("# <file glob pattern> | <encoding> = <regular expression>");
             builder.AppendLine("# <file glob pattern> | <code page> = <regular expression>");
-            builder.AppendLine("# Note that the regular expression must contain a named group 'version' which contains the actual version information");
+            builder.AppendLine("# Note that the regular expression must contain a named capture group '<?version>' which contains the actual version information");
             builder.AppendLine();
-            builder.AppendLine("# Example: Search for version information of the format a.b.c.d (e.g. 1.22.7.50) in all AssemblyInfo.cs files (with UTF-8 with BOM)");
+            builder.AppendLine("# Example: Search for versions of the format a.b.c.d (e.g. 1.22.7.50) in all AssemblyInfo.cs files (with UTF-8 with BOM)");
             builder.AppendLine(@"# AssemblyInfo.cs | UTF-8 = (?<version>\d+\.\d+\.\d+\.\d+)");
             builder.AppendLine();
-            builder.AppendLine("# Example: Search for all .nuspec files (UTF-8 without BOM) in a NuSpec directory");
+            builder.AppendLine("# Example: Search all .nuspec files (UTF-8 without BOM) in the folder 'NuSpec'");
             builder.AppendLine(@"# NuSpec\**\*.nuspec = <version>(?<version>\d+(\.\d+)+)");
             builder.AppendLine();
-            builder.AppendLine("# Templates exist for AssemblyInfo.cs, *.nuspec, *.csproj files. These can be used for simple .NET Framework, Standard and Core projects:");
+            builder.AppendLine("# Templates: Bumpy ships with a default configuration (regular expression + encoding) for some known file types.");
+            builder.AppendLine();
+            builder.AppendLine("# .NET Framework:");
+            builder.AppendLine("[assembly]");
             builder.AppendLine("AssemblyInfo.cs");
+            builder.AppendLine();
+            builder.AppendLine("[nuspec]");
             builder.AppendLine("*.nuspec");
+            builder.AppendLine();
+            builder.AppendLine("# .NET Core:");
             builder.AppendLine("*.csproj");
 
             File.WriteAllText(configFile.FullName, builder.ToString());
