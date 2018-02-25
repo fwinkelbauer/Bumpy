@@ -48,18 +48,18 @@ namespace Bumpy
 
                     foreach (var line in content.Lines)
                     {
-                        var success = VersionFunctions.TryParseVersionInText(line, config.RegularExpression, out var version, out var tag);
+                        var success = VersionFunctions.TryParseVersionInText(line, config.RegularExpression, out var version, out var marker);
 
                         if (success)
                         {
                             versionFound = true;
 
-                            if (string.IsNullOrEmpty(tag))
+                            if (string.IsNullOrEmpty(marker))
                             {
-                                tag = lineNumber.ToString();
+                                marker = lineNumber.ToString();
                             }
 
-                            _writeLine($"{content.File.ToRelativePath(_directory)} ({tag}): {version}");
+                            _writeLine($"{content.File.ToRelativePath(_directory)} ({marker}): {version}");
                         }
 
                         lineNumber++;
@@ -119,7 +119,7 @@ namespace Bumpy
 
                     foreach (var line in content.Lines)
                     {
-                        var success = VersionFunctions.TryParseVersionInText(line, config.RegularExpression, out var version, out var tag);
+                        var success = VersionFunctions.TryParseVersionInText(line, config.RegularExpression, out var version, out var marker);
 
                         if (success)
                         {
@@ -224,7 +224,7 @@ namespace Bumpy
                     foreach (var line in content.Lines)
                     {
                         var newLine = line;
-                        var success = VersionFunctions.TryParseVersionInText(line, config.RegularExpression, out var oldVersion, out var tag);
+                        var success = VersionFunctions.TryParseVersionInText(line, config.RegularExpression, out var oldVersion, out var marker);
 
                         if (success)
                         {
@@ -238,12 +238,12 @@ namespace Bumpy
                                 dirty = true;
                             }
 
-                            if (string.IsNullOrEmpty(tag))
+                            if (string.IsNullOrEmpty(marker))
                             {
-                                tag = lineNumber.ToString();
+                                marker = lineNumber.ToString();
                             }
 
-                            _writeLine($"{file.ToRelativePath(_directory)} ({tag}): {oldVersion} -> {newVersion}");
+                            _writeLine($"{file.ToRelativePath(_directory)} ({marker}): {oldVersion} -> {newVersion}");
                         }
 
                         if (!_noOperation)

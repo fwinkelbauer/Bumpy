@@ -9,9 +9,9 @@ namespace Bumpy
     {
         private static readonly Dictionary<string, Template> Templates = new Dictionary<string, Template>()
         {
-            { ".csproj", new Template(@"<(?<tag>[Vv]ersion)>(?<version>\d+\.\d+\.\d+.*)<\/[Vv]ersion>", new UTF8Encoding(false)) },
-            { ".nuspec", new Template(@"<(?<tag>[Vv]ersion)>(?<version>\d+\.\d+\.\d+.*)<\/[Vv]ersion>", new UTF8Encoding(false)) },
-            { "AssemblyInfo.cs", new Template(@"(?<tag>Assembly(File)?Version).*(?<version>\d+\.\d+\.\d+\.\d+)", new UTF8Encoding(true)) }
+            { ".csproj", new Template(@"<(?<marker>[Vv]ersion)>(?<version>\d+\.\d+\.\d+.*)<\/[Vv]ersion>", new UTF8Encoding(false)) },
+            { ".nuspec", new Template(@"<(?<marker>[Vv]ersion)>(?<version>\d+\.\d+\.\d+.*)<\/[Vv]ersion>", new UTF8Encoding(false)) },
+            { "AssemblyInfo.cs", new Template(@"(?<marker>Assembly(File)?Version).*(?<version>\d+\.\d+\.\d+\.\d+)", new UTF8Encoding(true)) }
         };
 
         private Template(string regularExpression, Encoding encoding)

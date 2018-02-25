@@ -19,7 +19,7 @@ Bumpy was born because I wanted a simple tool that I can use to update version i
 Using Bumpy in a .NET project is rather easy:
 
 - Download the Bumpy NuGet package (or install it via Chocolatey - `choco install bumpy.portable`)
-- Make sure that the `<version>` tag exists in the `*.csproj` file (.NET Standard or .NET Core)
+- Make sure that the `<version>` XML element exists in the `*.csproj` file (.NET Standard or .NET Core)
 - Type `bumpy new` in the Package Manager Console in Visual Studio
 
 Afterwards you will find a `.bumpyconfig` file in your solution. Type `bumpy list` to see the version of each project:
@@ -276,7 +276,7 @@ Lines in a `.bumpyconfig` file can be organized using profiles ("groups"):
 
 Most of Bumpy's commands can be applied to a certain profile by specifing the profile name, e.g. `bumpy list -p my_profile`. This feature can be useful if you need to target a specific set of files in isolation (e.g. a `AssemblyInfo.cs` file in C# can only deal with versions of the format `1.0.0.0`, while a `.nuspec` file could contain textual elements such as `1.0.0-beta`).
 
-### Tags
+### Marker
 
 Bumpy will per default print the line number for each version found in a file:
 
@@ -284,10 +284,10 @@ Bumpy will per default print the line number for each version found in a file:
 MyProject.nuspec (6): 1.0.0
 ```
 
-This behaviour can be changed using the named capture group `?<tag>`. A `.bumpyconfig` like this:
+This behaviour can be changed using the named capture group `?<marker>`. A `.bumpyconfig` like this:
 
 ```
-*.nuspec = <(?<tag>version)>(?<version>\d+(\.\d+)+)
+*.nuspec = <(?<marker>version)>(?<version>\d+(\.\d+)+)
 ```
 
 Would change the output of `bumpy list` to something like this:
