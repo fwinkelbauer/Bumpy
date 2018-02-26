@@ -1,6 +1,9 @@
 #load "artifact.cake"
+#load "changelog.cake"
 #load "mstest2.cake"
 #load "octokit.cake"
+
+#addin Cake.Bumpy
 
 var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Release");
@@ -51,6 +54,8 @@ Task("Publish")
     .IsDependentOn("Pack")
     .Does(() =>
 {
+    BumpyEnsure();
+    EnsureChangelog("../CHANGELOG.md", githubReleaseVersion);
     PublishChocolateyArtifact("Bumpy.Portable", "https://push.chocolatey.org/");
     PublishNuGetArtifact("Bumpy", "https://www.nuget.org/api/v2/package");
 
