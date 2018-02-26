@@ -138,7 +138,7 @@ namespace Bumpy
                     var profileText = string.IsNullOrEmpty(entry.Key) ? string.Empty : $" in profile '{entry.Key}'";
                     var versions = string.Join(", ", distinctVersions.Select(v => v.ToString()));
 
-                    throw new InvalidDataException($"Found different versions{profileText}: {versions}. See 'bumpy list' for more information");
+                    throw new InvalidDataException($"Found different versions{profileText} ({versions}). See 'bumpy list'.");
                 }
             }
 
