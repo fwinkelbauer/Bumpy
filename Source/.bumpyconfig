@@ -3,4 +3,4 @@ Bumpy\Properties\AssemblyInfo.cs
 
 [nuspec]
 NuSpec\**\*.nuspec
-build.cake = (?<tag>githubReleaseVersion) = "(?<version>.*)"
+build.cake = (?<marker>githubReleaseVersion) = "(?<version>.*)"
