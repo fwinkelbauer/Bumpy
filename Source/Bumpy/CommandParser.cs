@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Bumpy.Config;
 
 namespace Bumpy
 {
@@ -23,9 +24,9 @@ namespace Bumpy
             _formattedNumber = "-1";
             _text = string.Empty;
             _workingDirectory = new DirectoryInfo(".");
-            _configFile = new FileInfo(BumpyConfiguration.ConfigFile);
+            _configFile = new FileInfo(BumpyConfigEntry.ConfigFile);
             _noOperation = false;
-            _profile = BumpyConfiguration.DefaultProfile;
+            _profile = BumpyConfigEntry.DefaultProfile;
         }
 
         public CommandArguments Parse(string[] args)

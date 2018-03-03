@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Bumpy.Config;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 
@@ -148,11 +149,11 @@ namespace Bumpy.Tests
         {
             fileUtil.ReadConfigFile(Arg.Any<FileInfo>(), Arg.Any<string>()).Returns(new[]
             {
-                new BumpyConfiguration(
-                    string.Empty,
+                new BumpyConfigEntry(
                     "*.txt",
-                    @"(?<version>\d+\.\d+\.\d+)",
-                    new UTF8Encoding(false))
+                    string.Empty,
+                    new UTF8Encoding(false),
+                    @"(?<version>\d+\.\d+\.\d+)")
             });
 
             fileUtil.GetFiles(Arg.Any<DirectoryInfo>(), Arg.Any<Glob>()).Returns(new[]

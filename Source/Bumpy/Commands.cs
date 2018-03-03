@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Bumpy.Config;
 
 namespace Bumpy
 {
@@ -26,7 +27,7 @@ namespace Bumpy
         public void CommandList(string profile)
         {
             var configEntries = _fileUtil.ReadConfigFile(_configFile, profile);
-            var currentProfile = BumpyConfiguration.DefaultProfile;
+            var currentProfile = BumpyConfigEntry.DefaultProfile;
 
             foreach (var config in configEntries)
             {
@@ -36,7 +37,7 @@ namespace Bumpy
                     _writeLine($"[{config.Profile}]");
                 }
 
-                var glob = new Glob(config.SearchPattern);
+                var glob = new Glob(config.Glob);
                 var files = _fileUtil.GetFiles(_directory, glob);
 
                 foreach (var file in files)
@@ -48,7 +49,7 @@ namespace Bumpy
 
                     foreach (var line in content.Lines)
                     {
-                        var success = VersionFunctions.TryParseVersionInText(line, config.RegularExpression, out var version, out var marker);
+                        var success = VersionFunctions.TryParseVersionInText(line, config.Regex, out var version, out var marker);
 
                         if (success)
                         {
@@ -105,7 +106,7 @@ namespace Bumpy
 
             foreach (var config in configEntries)
             {
-                var glob = new Glob(config.SearchPattern);
+                var glob = new Glob(config.Glob);
                 var files = _fileUtil.GetFiles(_directory, glob);
 
                 if (!versionsPerProfile.ContainsKey(config.Profile))
@@ -119,7 +120,7 @@ namespace Bumpy
 
                     foreach (var line in content.Lines)
                     {
-                        var success = VersionFunctions.TryParseVersionInText(line, config.RegularExpression, out var version, out var marker);
+                        var success = VersionFunctions.TryParseVersionInText(line, config.Regex, out var version, out var marker);
 
                         if (success)
                         {
@@ -147,7 +148,7 @@ namespace Bumpy
 
         public void CommandNew()
         {
-            var configFile = new FileInfo(Path.Combine(_directory.FullName, BumpyConfiguration.ConfigFile));
+            var configFile = new FileInfo(Path.Combine(_directory.FullName, BumpyConfigEntry.ConfigFile));
             var created = _fileUtil.CreateConfigFile(configFile);
 
             if (created)
@@ -171,7 +172,7 @@ namespace Bumpy
             builder.AppendLine("  list");
             builder.AppendLine("    Lists all versions");
             builder.AppendLine("  new");
-            builder.AppendLine($"    Creates a '{BumpyConfiguration.ConfigFile}' file if it does not exist");
+            builder.AppendLine($"    Creates a '{BumpyConfigEntry.ConfigFile}' file if it does not exist");
             builder.AppendLine("  increment <one-based index number> (e.g. 'bumpy increment 3')");
             builder.AppendLine("    Increments the specified component of each version");
             builder.AppendLine("  incrementonly <one-based index number> (e.g. 'bumpy incrementonly 3')");
@@ -209,7 +210,7 @@ namespace Bumpy
 
             foreach (var config in configEntries)
             {
-                var glob = new Glob(config.SearchPattern);
+                var glob = new Glob(config.Glob);
                 var files = _fileUtil.GetFiles(_directory, glob);
 
                 foreach (var file in files)
@@ -224,7 +225,7 @@ namespace Bumpy
                     foreach (var line in content.Lines)
                     {
                         var newLine = line;
-                        var success = VersionFunctions.TryParseVersionInText(line, config.RegularExpression, out var oldVersion, out var marker);
+                        var success = VersionFunctions.TryParseVersionInText(line, config.Regex, out var oldVersion, out var marker);
 
                         if (success)
                         {
@@ -234,7 +235,7 @@ namespace Bumpy
                             if (!newVersion.Equals(oldVersion))
                             {
                                 newLine = line.Replace(oldVersion.ToString(), newVersion.ToString());
-                                VersionFunctions.EnsureExpectedVersion(newLine, config.RegularExpression, newVersion);
+                                VersionFunctions.EnsureExpectedVersion(newLine, config.Regex, newVersion);
                                 dirty = true;
                             }
 

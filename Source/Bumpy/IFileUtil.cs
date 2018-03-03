@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using Bumpy.Config;
 
 namespace Bumpy
 {
@@ -14,6 +15,6 @@ namespace Bumpy
 
         bool CreateConfigFile(FileInfo configFile);
 
-        IEnumerable<BumpyConfiguration> ReadConfigFile(FileInfo configFile, string profile);
+        IEnumerable<BumpyConfigEntry> ReadConfigFile(FileInfo configFile, string profile);
     }
 }

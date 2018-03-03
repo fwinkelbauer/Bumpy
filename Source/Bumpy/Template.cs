@@ -16,19 +16,13 @@ namespace Bumpy
 
         private Template(string regularExpression, Encoding encoding)
         {
-            RegularExpression = regularExpression;
+            Regex = regularExpression;
             Encoding = encoding;
         }
 
-        public string RegularExpression
-        {
-            get;
-        }
+        public string Regex { get; }
 
-        public Encoding Encoding
-        {
-            get;
-        }
+        public Encoding Encoding { get; }
 
         public static bool TryFindTemplate(string text, out Template template)
         {

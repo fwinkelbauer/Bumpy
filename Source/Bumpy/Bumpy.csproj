@@ -44,13 +44,16 @@
     <Reference Include="System.Data" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BumpyConfiguration.cs" />
+    <Compile Include="Config\BumpyConfigEntry.cs" />
     <Compile Include="BumpyVersion.cs" />
     <Compile Include="CommandArguments.cs" />
     <Compile Include="CommandRunner.cs" />
     <Compile Include="Commands.cs" />
     <Compile Include="CommandParser.cs" />
     <Compile Include="CommandType.cs" />
+    <Compile Include="Config\ConfigIO.cs" />
+    <Compile Include="Config\LegacyConfigIO.cs" />
+    <Compile Include="Config\PostProcessor.cs" />
     <Compile Include="FileContent.cs" />
     <Compile Include="FileInfoExtensions.cs" />
     <Compile Include="FileUtil.cs" />
