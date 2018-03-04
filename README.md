@@ -243,19 +243,22 @@ bumpy increment 1 -n
 
 ## Configuration
 
-Bumpy's configuration is based on the presence of a `.bumpyconfig` file in the current working directory. This file dictates the behaviour of Bumpy using a pair of glob patterns and regular expressions, e.g:
+Bumpy's configuration is based on the presence of a `.bumpyconfig` YAML file in the current working directory. This file dictates the behaviour of Bumpy using a pair of glob patterns and regular expressions, e.g:
 
-```
-# Usage: <file glob pattern> = <regular expression>
-
+```yaml
 # Example: Search for all .nuspec files in the NuSpec directory
-NuSpec\**\*.nuspec = <version>(?<version>\d+(\.\d+)+)
+- glob: NuSpec\**\*.nuspec
+  regex: <version>(?<version>\d+(\.\d+)+)
 
 # Example: The default read/write encoding is UTF-8 without BOM, but you can change this behaviour (e.g. UTF-8 with BOM)
-AssemblyInfo.cs | UTF-8 = (?<version>\d+\.\d+\.\d+\.\d+)
+- glob: AssemblyInfo.cs
+  encoding: UTF-8
+  regex: (?<version>\d+\.\d+\.\d+\.\d+)
 
 # Example: Encodings can also be defined through code pages. This can be handy for Visual Studio C++ projects
-MyProject.rc | 1200 = \d+\.\d+\.\d+\.\d+
+- glob: MyProject.rc
+  encoding: 1200
+  regex: \d+\.\d+\.\d+\.\d+
 ```
 
 For each line of a specific file (found through a glob pattern) Bumpy uses the provided regular expression to extract the named capture group `?<version>`.
@@ -269,9 +272,9 @@ These groups can contain versions in different formats. Bumpy can currently hand
 
 Lines in a `.bumpyconfig` file can be organized using profiles ("groups"):
 
-```
-[my_profile]
-*.txt = ...
+```yaml
+- glob: "*.txt"
+  profile: my_profile
 ```
 
 Most of Bumpy's commands can be applied to a certain profile by specifing the profile name, e.g. `bumpy list -p my_profile`. This feature can be useful if you need to target a specific set of files in isolation (e.g. a `AssemblyInfo.cs` file in C# can only deal with versions of the format `1.0.0.0`, while a `.nuspec` file could contain textual elements such as `1.0.0-beta`).
@@ -286,8 +289,9 @@ MyProject.nuspec (6): 1.0.0
 
 This behaviour can be changed using the named capture group `?<marker>`. A `.bumpyconfig` like this:
 
-```
-*.nuspec = <(?<marker>version)>(?<version>\d+(\.\d+)+)
+```yaml
+- glob: *.nuspec
+  regex: <(?<marker>version)>(?<version>\d+(\.\d+)+)
 ```
 
 Would change the output of `bumpy list` to something like this:
@@ -300,14 +304,16 @@ MyProject.nuspec (version): 1.0.0
 
 Templates can be used to simplify a `.bumpyconfig` file for known file types. Currently `.nuspec`, `AssemblyInfo.cs` and `.csproj` files are supported.
 
-```
-# These glob patterns will inherit prredefined encodings and basic regular expressions:
-[nuspec]
-*.nuspec
-MyDotNetCoreProject/MyDotNetCoreProject.csproj
+```yaml
+# These glob patterns will inherit predefined encodings and basic regular expressions:
+- glob: "*.nuspec"
+  profile: nuspec
 
-[assembly]
-MyDotNetFrameworkProject/**/AssemblyInfo.cs
+- glob: MyDotNetCoreProject/MyDotNetCoreProject.csproj
+  profile: nuspec
+
+- glob: MyDotNetFrameworkProject/**/AssemblyInfo.cs
+  profile: assembly
 ```
 
 ## Trivia

@@ -17,7 +17,7 @@ namespace Bumpy.Config
             builder.AppendLine("  profile: assembly");
             builder.AppendLine();
             builder.AppendLine("- glob: \"**\\*.nuspec\"");
-            builder.AppendLine("  profile: nuget");
+            builder.AppendLine("  profile: nuspec");
 
             return builder.ToString();
         }
