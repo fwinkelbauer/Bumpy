@@ -1,0 +1,9 @@
+- glob: Bumpy\Properties\AssemblyInfo.cs
+  profile: assembly
+
+- glob: NuSpec\**\*.nuspec
+  profile: nuspec
+
+- glob: build.cake
+  profile: nuspec
+  regex: (?<marker>githubReleaseVersion) = "(?<version>.*)"

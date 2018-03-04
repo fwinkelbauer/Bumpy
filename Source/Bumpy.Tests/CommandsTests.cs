@@ -170,7 +170,7 @@ namespace Bumpy.Tests
             fileUtil = fileUtil ?? Substitute.For<IFileUtil>();
             writeLine = writeLine ?? (l => { });
 
-            return new Commands(fileUtil, new FileInfo(".bumpyconfig"), new DirectoryInfo("."), noOperation, writeLine);
+            return new Commands(fileUtil, new FileInfo("bumpy.yaml"), new DirectoryInfo("."), noOperation, writeLine);
         }
     }
 }

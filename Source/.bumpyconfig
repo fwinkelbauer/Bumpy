@@ -1,6 +1,0 @@
-[assembly]
-Bumpy\Properties\AssemblyInfo.cs
-
-[nuspec]
-NuSpec\**\*.nuspec
-build.cake = (?<marker>githubReleaseVersion) = "(?<version>.*)"

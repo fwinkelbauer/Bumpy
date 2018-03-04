@@ -65,13 +65,14 @@ namespace Bumpy
             {
                 return ConfigIO.ReadConfigFile(configFile.OpenText());
             }
-            catch (ConfigException e)
+            catch (FileNotFoundException)
             {
+                var legacyConfigFile = new FileInfo(Path.Combine(configFile.Directory.FullName, BumpyConfigEntry.LegacyConfigFile));
+
                 // TODO fw When should I remove this?
-                Console.WriteLine($"Could not parse file: '{configFile}'");
-                Console.WriteLine("YAML parser error: " + e.Message);
-                Console.WriteLine("Trying legacy configuration parser instead");
-                return LegacyConfigIO.ReadConfigFile(File.ReadLines(configFile.FullName));
+                Console.WriteLine($"Could not find configuration file: '{configFile}'");
+                Console.WriteLine($"Searching for legacy configuration file: '{legacyConfigFile}'");
+                return LegacyConfigIO.ReadConfigFile(File.ReadLines(legacyConfigFile.FullName));
             }
         }
     }

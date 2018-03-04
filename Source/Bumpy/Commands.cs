@@ -192,7 +192,7 @@ namespace Bumpy
             builder.AppendLine("  -d <directory>");
             builder.AppendLine("    Run a command in a specific folder (the working directory is used by default)");
             builder.AppendLine("  -c <config file path>");
-            builder.AppendLine("    Alternative name/path of a configuration file (default: './.bumpyconfig')");
+            builder.AppendLine($"    Alternative name/path of a configuration file (default: './{BumpyConfigEntry.ConfigFile}')");
             builder.AppendLine("  -n");
             builder.AppendLine("    No operation: The specified command (e.g. increment) will not perform file changes");
 
