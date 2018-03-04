@@ -25,7 +25,13 @@ namespace Bumpy.Config
         {
             if (Template.TryFindTemplate(entry.Glob, out var template))
             {
-                return new BumpyConfigEntry(entry.Glob, entry.Profile, template.Encoding, template.Regex);
+                return new BumpyConfigEntry
+                {
+                    Glob = entry.Glob,
+                    Profile = entry.Profile,
+                    Encoding = template.Encoding,
+                    Regex = template.Regex
+                };
             }
 
             // TODO

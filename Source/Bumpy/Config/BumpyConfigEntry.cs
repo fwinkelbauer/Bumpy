@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using YamlDotNet.Serialization;
 
 namespace Bumpy.Config
 {
@@ -7,20 +8,24 @@ namespace Bumpy.Config
         public const string ConfigFile = ".bumpyconfig";
         public const string DefaultProfile = "";
 
-        public BumpyConfigEntry(string glob, string profile, Encoding encoding, string regex)
+        public BumpyConfigEntry()
         {
-            Glob = glob;
-            Profile = profile;
-            Encoding = encoding;
-            Regex = regex;
+            Glob = string.Empty;
+            Profile = DefaultProfile;
+            Encoding = new UTF8Encoding(false);
+            Regex = string.Empty;
         }
 
-        public string Glob { get; }
+        [YamlMember(Alias = "glob")]
+        public string Glob { get; set; }
 
-        public string Profile { get; }
+        [YamlMember(Alias = "profile")]
+        public string Profile { get; set; }
 
-        public Encoding Encoding { get; }
+        [YamlMember(Alias = "encoding")]
+        public Encoding Encoding { get; set; }
 
-        public string Regex { get; }
+        [YamlMember(Alias = "regex")]
+        public string Regex { get; set; }
     }
 }

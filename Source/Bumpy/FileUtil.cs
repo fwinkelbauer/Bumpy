@@ -41,7 +41,7 @@ namespace Bumpy
 
         public IEnumerable<BumpyConfigEntry> ReadConfigFile(FileInfo configFile, string profile)
         {
-            var configEntries = LegacyConfigIO.ReadConfigFile(File.ReadLines(configFile.FullName));
+            var configEntries = ReadConfigFile(configFile);
 
             if (!profile.Equals(BumpyConfigEntry.DefaultProfile))
             {
@@ -53,7 +53,22 @@ namespace Bumpy
                 }
             }
 
-            return configEntries.Select(c => PostProcessor.Process(c));
+            return configEntries
+                .Select(c => PostProcessor.Process(c))
+                .OrderBy(c => c.Profile);
+        }
+
+        private IEnumerable<BumpyConfigEntry> ReadConfigFile(FileInfo configFile)
+        {
+            try
+            {
+                return ConfigIO.ReadConfigFile(configFile.OpenText());
+            }
+            catch (Exception)
+            {
+                // TODO fw log this
+                return LegacyConfigIO.ReadConfigFile(File.ReadLines(configFile.FullName));
+            }
         }
     }
 }

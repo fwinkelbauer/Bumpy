@@ -50,7 +50,11 @@ namespace Bumpy.Config
                 if (mainSplit.Length == 1)
                 {
                     // Try to find template later
-                    yield return new BumpyConfigEntry(mainSplit[0], profile, null, null);
+                    yield return new BumpyConfigEntry
+                    {
+                        Glob = mainSplit[0],
+                        Profile = profile
+                    };
                     continue;
                 }
 
@@ -74,7 +78,13 @@ namespace Bumpy.Config
                 var searchPattern = leftSplit[0].Trim();
                 var regularExpression = string.Join(EqualsPattern, mainSplit, 1, mainSplit.Length - 1).Trim();
 
-                yield return new BumpyConfigEntry(searchPattern, profile, encoding, regularExpression);
+                yield return new BumpyConfigEntry
+                {
+                    Glob = searchPattern,
+                    Profile = profile,
+                    Encoding = encoding,
+                    Regex = regularExpression
+                };
             }
         }
     }

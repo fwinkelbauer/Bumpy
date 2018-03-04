@@ -149,11 +149,11 @@ namespace Bumpy.Tests
         {
             fileUtil.ReadConfigFile(Arg.Any<FileInfo>(), Arg.Any<string>()).Returns(new[]
             {
-                new BumpyConfigEntry(
-                    "*.txt",
-                    string.Empty,
-                    new UTF8Encoding(false),
-                    @"(?<version>\d+\.\d+\.\d+)")
+                new BumpyConfigEntry
+                {
+                    Glob = "*.txt",
+                    Regex = @"(?<version>\d+\.\d+\.\d+)"
+                }
             });
 
             fileUtil.GetFiles(Arg.Any<DirectoryInfo>(), Arg.Any<Glob>()).Returns(new[]
