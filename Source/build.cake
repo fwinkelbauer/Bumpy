@@ -17,7 +17,6 @@ Task("Clean")
 {
     CleanArtifacts();
     CleanDirectories($"Bumpy*/bin/{configuration}");
-    CleanDirectory("TestResults");
 });
 
 Task("Restore")

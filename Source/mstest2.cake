@@ -5,7 +5,7 @@ void MSTest2_VS2017(string assemblyPattern)
 
 void MSTest2_VS2017(IEnumerable<FilePath> assemblyPaths)
 {
-    VSTest(assemblyPaths, FixToolPath(new VSTestSettings { Logger = "trx", TestAdapterPath = "." }));
+    VSTest(assemblyPaths, FixToolPath(new VSTestSettings { TestAdapterPath = "." }));
 }
 
 // https://github.com/cake-build/cake/issues/1522
