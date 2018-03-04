@@ -54,6 +54,7 @@
     <Compile Include="Commands.cs" />
     <Compile Include="CommandParser.cs" />
     <Compile Include="CommandType.cs" />
+    <Compile Include="Config\ConfigException.cs" />
     <Compile Include="Config\ConfigIO.cs" />
     <Compile Include="Config\LegacyConfigIO.cs" />
     <Compile Include="Config\PostProcessor.cs" />

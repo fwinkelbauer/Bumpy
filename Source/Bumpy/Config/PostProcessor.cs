@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Bumpy.Config
+﻿namespace Bumpy.Config
 {
     // TODO test
     internal static class PostProcessor
@@ -9,8 +7,7 @@ namespace Bumpy.Config
         {
             if (string.IsNullOrWhiteSpace(entry.Glob))
             {
-                // TODO
-                throw new Exception("Glob");
+                throw new ConfigException("Glob cannot be empty");
             }
 
             if (string.IsNullOrWhiteSpace(entry.Regex))
@@ -34,8 +31,7 @@ namespace Bumpy.Config
                 };
             }
 
-            // TODO
-            throw new Exception();
+            throw new ConfigException($"Could not find a template for glob '{entry.Glob}'");
         }
     }
 }

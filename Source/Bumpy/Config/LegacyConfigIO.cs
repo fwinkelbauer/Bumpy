@@ -34,7 +34,7 @@ namespace Bumpy.Config
 
                     if (profile.Length == 0)
                     {
-                        throw new InvalidDataException("A profile name cannot be empty");
+                        throw new ConfigException("A profile name cannot be empty");
                     }
 
                     continue;

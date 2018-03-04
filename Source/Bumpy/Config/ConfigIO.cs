@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using YamlDotNet.Core;
 using YamlDotNet.Serialization;
 
 namespace Bumpy.Config
@@ -23,9 +24,16 @@ namespace Bumpy.Config
 
         public static IEnumerable<BumpyConfigEntry> ReadConfigFile(TextReader reader)
         {
-            var deserializer = new Deserializer();
+            try
+            {
+                var deserializer = new Deserializer();
 
-            return deserializer.Deserialize<List<BumpyConfigEntry>>(reader);
+                return deserializer.Deserialize<List<BumpyConfigEntry>>(reader);
+            }
+            catch (YamlException e)
+            {
+                throw new ConfigException(e.Message, e);
+            }
         }
     }
 }

@@ -13,7 +13,8 @@ namespace Bumpy
 
         public IEnumerable<FileInfo> GetFiles(DirectoryInfo directory, Glob glob)
         {
-            return directory.EnumerateFiles(AllFilesPattern, SearchOption.AllDirectories)
+            return directory
+                .EnumerateFiles(AllFilesPattern, SearchOption.AllDirectories)
                 .Where(f => glob.IsMatch(f.ToRelativePath(directory)));
         }
 
@@ -64,9 +65,12 @@ namespace Bumpy
             {
                 return ConfigIO.ReadConfigFile(configFile.OpenText());
             }
-            catch (Exception)
+            catch (ConfigException e)
             {
-                // TODO fw log this
+                // TODO fw When should I remove this?
+                Console.WriteLine($"Could not parse file: '{configFile}'");
+                Console.WriteLine("YAML parser error: " + e.Message);
+                Console.WriteLine("Trying legacy configuration parser instead");
                 return LegacyConfigIO.ReadConfigFile(File.ReadLines(configFile.FullName));
             }
         }
