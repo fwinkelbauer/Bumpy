@@ -69,7 +69,7 @@ Task("Publish")
         IsPrerelease = false
     };
 
-    var files = GetFiles($"{ArtifactsDirectory}/**/*.nupkg");
+    var files = new[] { GetChocolateyArtifact("Bumpy.Portable"), GetNuGetArtifact("Bumpy") };
     var assets = files.Select(f => new OctokitAsset(f, "application/zip"));
 
     PublishGitHubReleaseWithArtifacts(settings, assets);

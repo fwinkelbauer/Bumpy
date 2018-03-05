@@ -19,10 +19,14 @@ void StoreBuildArtifacts(string projectName, IEnumerable<FilePath> filePaths)
     CopyFiles(filePaths, dir, true);
 }
 
+FilePath GetChocolateyArtifact(string packageId)
+{
+    return GetFiles($"{ArtifactsDirectory}/Chocolatey/{packageId}/*.nupkg").First();
+}
+
 void PublishChocolateyArtifact(string packageId, string pushSource)
 {
-    var files = GetFiles($"{ArtifactsDirectory}/Chocolatey/{packageId}/*.nupkg");
-    ChocolateyPush(files, new ChocolateyPushSettings { Source = pushSource });
+    ChocolateyPush(GetChocolateyArtifact(packageId), new ChocolateyPushSettings { Source = pushSource });
 }
 
 void StoreChocolateyArtifact(FilePath nuspecPath)
@@ -32,9 +36,14 @@ void StoreChocolateyArtifact(FilePath nuspecPath)
     ChocolateyPack(nuspecPath, new ChocolateyPackSettings { OutputDirectory = dir });
 }
 
+FilePath GetNuGetArtifact(string packageId)
+{
+    return GetFiles($"{ArtifactsDirectory}/NuGet/{packageId}/*.nupkg").First();
+}
+
 void PublishNuGetArtifact(string packageId, string pushSource)
 {
-    var files = GetFiles($"{ArtifactsDirectory}/NuGet/{packageId}/*.nupkg");
+    var files = GetNuGetArtifact(packageId);
     NuGetPush(files, new NuGetPushSettings { Source = pushSource });
 }
 
