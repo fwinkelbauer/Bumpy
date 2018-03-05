@@ -202,6 +202,7 @@ namespace Bumpy
         private void WriteTransformation(string profile, Func<BumpyVersion, BumpyVersion> transformFunction)
         {
             var configEntries = _fileUtil.ReadConfigFile(_configFile, profile);
+            var currentProfile = BumpyConfigEntry.DefaultProfile;
 
             if (_noOperation)
             {
@@ -210,6 +211,12 @@ namespace Bumpy
 
             foreach (var config in configEntries)
             {
+                if (!currentProfile.Equals(config.Profile))
+                {
+                    currentProfile = config.Profile;
+                    _writeLine($"[{config.Profile}]");
+                }
+
                 var glob = new Glob(config.Glob);
                 var files = _fileUtil.GetFiles(_directory, glob);
 
