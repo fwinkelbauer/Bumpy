@@ -47,6 +47,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Config\BumpyConfig.cs" />
     <Compile Include="Config\BumpyConfigEntry.cs" />
     <Compile Include="BumpyVersion.cs" />
     <Compile Include="CommandArguments.cs" />

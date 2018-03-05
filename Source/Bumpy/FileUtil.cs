@@ -63,7 +63,7 @@ namespace Bumpy
         {
             try
             {
-                return ConfigIO.ReadConfigFile(configFile.OpenText());
+                return ConfigIO.ReadConfigFile(configFile.OpenText()).Queries;
             }
             catch (FileNotFoundException)
             {

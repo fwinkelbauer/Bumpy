@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using System.Text;
 using YamlDotNet.Core;
 using YamlDotNet.Serialization;
@@ -14,6 +13,7 @@ namespace Bumpy.Config
             var builder = new StringBuilder();
             builder.AppendLine("# Bumpy configuration file");
             builder.AppendLine();
+            builder.AppendLine("queries:");
             builder.AppendLine("# Example configuration for .NET Framework projects:");
             builder.AppendLine("- glob: AssemblyInfo.cs");
             builder.AppendLine("  profile: assembly");
@@ -28,13 +28,13 @@ namespace Bumpy.Config
             return builder.ToString();
         }
 
-        public static IEnumerable<BumpyConfigEntry> ReadConfigFile(TextReader reader)
+        public static BumpyConfig ReadConfigFile(TextReader reader)
         {
             try
             {
                 var deserializer = new Deserializer();
 
-                return deserializer.Deserialize<List<BumpyConfigEntry>>(reader);
+                return deserializer.Deserialize<BumpyConfig>(reader);
             }
             catch (YamlException e)
             {

@@ -1,3 +1,4 @@
+queries:
 - glob: Bumpy\Properties\AssemblyInfo.cs
   profile: assembly
 

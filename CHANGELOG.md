@@ -8,7 +8,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ### Changed
 
-- **Breaking Change:** The format of a `.bumpyconfig` file. The old format is still supported, but this might change in the future
+- **Breaking Change:** The default configuration file to `bumpy.yaml`. The old format `.bumpyconfig` is still supported, but a warning is printed
 
 ## 0.10.0 - 2018-02-26
 

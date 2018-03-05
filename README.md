@@ -246,6 +246,7 @@ bumpy increment 1 -n
 Bumpy's configuration is based on the presence of a `bumpy.yaml` file in the current working directory. This file dictates the behaviour of Bumpy using a pair of glob patterns and regular expressions, e.g:
 
 ```yaml
+queries:
 # Example: Search for all .nuspec files in the NuSpec directory
 - glob: NuSpec\**\*.nuspec
   regex: <version>(?<version>\d+(\.\d+)+)
@@ -273,6 +274,7 @@ These groups can contain versions in different formats. Bumpy can currently hand
 Lines in a `bumpy.yaml` file can be organized using profiles ("groups"):
 
 ```yaml
+queries:
 - glob: "*.txt"
   profile: my_profile
 ```
@@ -290,6 +292,7 @@ MyProject.nuspec (6): 1.0.0
 This behaviour can be changed using the named capture group `?<marker>`. A `bumpy.yaml` like this:
 
 ```yaml
+queries:
 - glob: *.nuspec
   regex: <(?<marker>version)>(?<version>\d+(\.\d+)+)
 ```
@@ -305,6 +308,7 @@ MyProject.nuspec (version): 1.0.0
 Templates can be used to simplify a `bumpy.yaml` file for known file types. Currently `.nuspec`, `AssemblyInfo.cs` and `.csproj` files are supported.
 
 ```yaml
+queries:
 # These glob patterns will inherit predefined encodings and basic regular expressions:
 - glob: "*.nuspec"
   profile: nuspec
