@@ -67,7 +67,7 @@ namespace Bumpy
             }
             catch (FileNotFoundException)
             {
-                var legacyConfigFile = new FileInfo(Path.Combine(configFile.Directory.FullName, BumpyConfigEntry.LegacyConfigFile));
+                var legacyConfigFile = new FileInfo(Path.Combine(configFile.Directory.FullName, BumpyConfig.LegacyConfigFile));
 
                 // TODO fw When should I remove this?
                 Console.WriteLine($"Could not find configuration file: '{configFile}'");

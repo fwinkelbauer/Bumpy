@@ -24,7 +24,7 @@ namespace Bumpy
             _formattedNumber = "-1";
             _text = string.Empty;
             _workingDirectory = new DirectoryInfo(".");
-            _configFile = new FileInfo(BumpyConfigEntry.ConfigFile);
+            _configFile = new FileInfo(BumpyConfig.ConfigFile);
             _noOperation = false;
             _profile = BumpyConfigEntry.DefaultProfile;
         }

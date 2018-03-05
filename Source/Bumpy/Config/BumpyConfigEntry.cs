@@ -5,8 +5,6 @@ namespace Bumpy.Config
 {
     public class BumpyConfigEntry
     {
-        public const string ConfigFile = "bumpy.yaml";
-        public const string LegacyConfigFile = ".bumpyconfig";
         public const string DefaultProfile = "";
 
         public BumpyConfigEntry()
