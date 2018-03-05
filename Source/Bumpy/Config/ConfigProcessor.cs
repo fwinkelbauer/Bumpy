@@ -1,7 +1,6 @@
 ﻿namespace Bumpy.Config
 {
-    // TODO test
-    internal static class PostProcessor
+    public static class ConfigProcessor
     {
         public static BumpyConfigEntry Process(BumpyConfigEntry entry)
         {

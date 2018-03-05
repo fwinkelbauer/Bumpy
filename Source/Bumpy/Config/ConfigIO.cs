@@ -5,7 +5,6 @@ using YamlDotNet.Serialization;
 
 namespace Bumpy.Config
 {
-    // TODO tests
     public static class ConfigIO
     {
         public static string NewConfigFile()

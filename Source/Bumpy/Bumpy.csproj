@@ -58,7 +58,7 @@
     <Compile Include="Config\ConfigException.cs" />
     <Compile Include="Config\ConfigIO.cs" />
     <Compile Include="Config\LegacyConfigIO.cs" />
-    <Compile Include="Config\PostProcessor.cs" />
+    <Compile Include="Config\ConfigProcessor.cs" />
     <Compile Include="FileContent.cs" />
     <Compile Include="FileInfoExtensions.cs" />
     <Compile Include="FileUtil.cs" />

@@ -55,7 +55,7 @@ namespace Bumpy
             }
 
             return configEntries
-                .Select(c => PostProcessor.Process(c))
+                .Select(c => ConfigProcessor.Process(c))
                 .OrderBy(c => c.Profile);
         }
 

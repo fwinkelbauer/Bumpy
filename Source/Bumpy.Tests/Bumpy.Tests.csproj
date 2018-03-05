@@ -67,6 +67,8 @@
     <Compile Include="BumpyVersionTests.cs" />
     <Compile Include="CommandParserTests.cs" />
     <Compile Include="CommandsTests.cs" />
+    <Compile Include="Config\ConfigIOTests.cs" />
+    <Compile Include="Config\ConfigProcessorTests.cs" />
     <Compile Include="FileInfoExtensionTests.cs" />
     <Compile Include="GlobTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
