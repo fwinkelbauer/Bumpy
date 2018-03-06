@@ -62,18 +62,17 @@ namespace Bumpy
 
         private IEnumerable<BumpyConfigEntry> ReadConfigFile(FileInfo configFile)
         {
+            var lines = File.ReadLines(configFile.FullName);
             try
             {
-                return ConfigIO.ReadConfigFile(configFile.OpenText()).Queries;
+                return ConfigIO.ReadConfigFile(lines).Queries;
             }
-            catch (FileNotFoundException)
+            catch (ConfigException e)
             {
-                var legacyConfigFile = new FileInfo(Path.Combine(configFile.Directory.FullName, BumpyConfig.LegacyConfigFile));
-
                 // TODO fw When should I remove this?
-                Console.WriteLine($"Could not find configuration file: '{configFile}'");
-                Console.WriteLine($"Searching for legacy configuration file: '{legacyConfigFile}'");
-                return LegacyConfigIO.ReadConfigFile(File.ReadLines(legacyConfigFile.FullName));
+                Console.WriteLine($"Error: '{e.Message}'");
+                Console.WriteLine($"Trying legacy configuration format (prior to Bumpy 0.11.0)");
+                return LegacyConfigIO.ReadConfigFile(lines);
             }
         }
     }

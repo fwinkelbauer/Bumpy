@@ -1,0 +1,6 @@
+[Bumpy\Properties\AssemblyInfo.cs | assembly]
+
+[NuSpec\**\*.nuspec | nuspec]
+
+[build.cake | nuspec]
+regex = (?<marker>githubReleaseVersion) = "(?<version>.*)"

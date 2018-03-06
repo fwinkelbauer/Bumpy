@@ -1,11 +1,11 @@
 # Bumpy
 
-Bumpy is a tool to manipulate version information across multiple files found in the current working directory using a `bumpy.yaml` file which consists of [glob patterns](https://en.wikipedia.org/wiki/Glob_(programming)) and regular expressions.
+Bumpy is a tool to manipulate version information across multiple files found in the current working directory using a `.bumpyconfig` file which consists of [glob patterns](https://en.wikipedia.org/wiki/Glob_(programming)) and regular expressions.
 I am using Bumpy to handle C# projects, but the tool can be configured for any set of files.
 
 NuGet and Chocolatey packages can be found [here](https://www.nuget.org/packages/Bumpy/) and [here](https://chocolatey.org/packages/bumpy.portable). A Cake Addin is provided [here](https://www.nuget.org/packages/Cake.Bumpy/).
 
-**Note:** As Bumpy's behaviour is heavily influenced by your `bumpy.yaml` file, make sure that your files are kept under version control so that you can easily verify Bumpy's results.
+**Note:** As Bumpy's behaviour is heavily influenced by your `.bumpyconfig` file, make sure that your files are kept under version control so that you can easily verify Bumpy's results.
 
 ## Why?
 
@@ -22,7 +22,7 @@ Using Bumpy in a .NET project is rather easy:
 - Make sure that the `<version>` XML element exists in the `*.csproj` file (.NET Standard or .NET Core)
 - Type `bumpy new` in the Package Manager Console in Visual Studio
 
-Afterwards you will find a `bumpy.yaml` file in your solution. Type `bumpy list` to see an output similar to this:
+Afterwards you will find a `.bumpyconfig` file in your solution. Type `bumpy list` to see an output similar to this:
 
 ```
 [assembly]
@@ -52,7 +52,7 @@ Bumpy is a command line tool:
 bumpy <command> <arguments> <options>
 ```
 
-Have a look at the file `Source\bumpy.yaml` to see how the following examples were created using this repository:
+Have a look at the file `Source\.bumpyconfig` to see how the following examples were created using this repository:
 
 ### List
 
@@ -79,7 +79,7 @@ NuSpec\NuGet\Bumpy.nuspec (6): 0.8.0
 bumpy new
 ```
 
-Creates a `bumpy.yaml` file if it does not exist.
+Creates a `.bumpyconfig` file if it does not exist.
 
 ### Increment
 
@@ -248,7 +248,7 @@ bumpy write 1.15.0-beta -p nuspec
 bumpy list -d ..\some_other_project
 
 # Using this command Bumpy will only run in the specified folder (configuration loading + execution)
-bumpy list -d D:\my_project -c D:\my_project\bumpy.yaml
+bumpy list -d D:\my_project -c D:\my_project\.bumpyconfig
 
 # Bumpy will show a preview of the increment command (without changing a file on disk)
 bumpy increment 1 -n
@@ -256,23 +256,22 @@ bumpy increment 1 -n
 
 ## Configuration
 
-Bumpy's configuration is based on the presence of a `bumpy.yaml` file in the current working directory. This file dictates the behaviour of Bumpy using a pair of glob patterns and regular expressions, e.g:
+Bumpy's configuration is based on the presence of a `.bumpyconfig` file in the current working directory. This file dictates the behaviour of Bumpy using a pair of glob patterns and regular expressions, e.g:
 
-```yaml
-queries:
+```
 # Example: Search for all .nuspec files in the NuSpec directory
-- glob: NuSpec\**\*.nuspec
-  regex: <version>(?<version>\d+(\.\d+)+)
+[NuSpec\**\*.nuspec]
+regex = <version>(?<version>\d+(\.\d+)+)
 
 # Example: The default read/write encoding is UTF-8 without BOM, but you can change this behaviour (e.g. UTF-8 with BOM)
-- glob: AssemblyInfo.cs
-  encoding: UTF-8
-  regex: (?<version>\d+\.\d+\.\d+\.\d+)
+[AssemblyInfo.cs]
+encoding = UTF-8
+regex = (?<version>\d+\.\d+\.\d+\.\d+)
 
 # Example: Encodings can also be defined through code pages. This can be handy for Visual Studio C++ projects
-- glob: MyProject.rc
-  encoding: 1200
-  regex: \d+\.\d+\.\d+\.\d+
+[MyProject.rc]
+encoding = 1200
+regex = \d+\.\d+\.\d+\.\d+
 ```
 
 For each line of a specific file (found through a glob pattern) Bumpy uses the provided regular expression to extract the named capture group `?<version>`.
@@ -291,10 +290,8 @@ Projects might contain different categories of versions. In a typical C# project
 
 These categories can be organized in profiles:
 
-```yaml
-queries:
-- glob: "*.my_glob"
-  profile: my_profile
+```
+[*.my_glob | my_profile]
 ```
 
 Most of Bumpy's commands can be applied to a certain profile by specifing the profile name, e.g. `bumpy list -p my_profile`.
@@ -307,12 +304,11 @@ Bumpy will per default print the line number for each version found in a file:
 MyProject.nuspec (6): 1.0.0
 ```
 
-This behaviour can be changed using the named capture group `?<marker>`. A `bumpy.yaml` like this:
+This behaviour can be changed using the named capture group `?<marker>`. A `.bumpyconfig` like this:
 
-```yaml
-queries:
-- glob: *.nuspec
-  regex: <(?<marker>version)>(?<version>\d+(\.\d+)+)
+```
+[*.nuspec]
+regex = <(?<marker>version)>(?<version>\d+(\.\d+)+)
 ```
 
 Would change the output of `bumpy list` to something like this:
@@ -323,19 +319,15 @@ MyProject.nuspec (version): 1.0.0
 
 ### Templates
 
-Templates can be used to simplify a `bumpy.yaml` file for known file types. Currently `.nuspec`, `AssemblyInfo.cs` and `.csproj` files are supported.
+Templates can be used to simplify a `.bumpyconfig` file for known file types. Currently `.nuspec`, `AssemblyInfo.cs` and `.csproj` files are supported.
 
-```yaml
-queries:
+```
 # These glob patterns will inherit predefined encodings and basic regular expressions:
-- glob: "*.nuspec"
-  profile: nuspec
+[*.nuspec | nuspec]
 
-- glob: MyDotNetCoreProject/MyDotNetCoreProject.csproj
-  profile: nuspec
+[MyDotNetCoreProject/MyDotNetCoreProject.csproj | nuspec]
 
-- glob: MyDotNetFrameworkProject/**/AssemblyInfo.cs
-  profile: assembly
+[MyDotNetFrameworkProject/**/AssemblyInfo.cs | assembly]
 ```
 
 ## Trivia

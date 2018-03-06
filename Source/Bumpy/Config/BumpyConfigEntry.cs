@@ -1,5 +1,4 @@
 ﻿using System.Text;
-using YamlDotNet.Serialization;
 
 namespace Bumpy.Config
 {
@@ -15,16 +14,12 @@ namespace Bumpy.Config
             Regex = string.Empty;
         }
 
-        [YamlMember(Alias = "glob")]
         public string Glob { get; set; }
 
-        [YamlMember(Alias = "profile")]
         public string Profile { get; set; }
 
-        [YamlMember(Alias = "encoding")]
         public Encoding Encoding { get; set; }
 
-        [YamlMember(Alias = "regex")]
         public string Regex { get; set; }
     }
 }
