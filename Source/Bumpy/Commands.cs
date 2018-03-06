@@ -142,7 +142,14 @@ namespace Bumpy
                     throw new InvalidDataException($"Found different versions{profileText} ({versions}).");
                 }
 
-                _writeLine($"{entry.Key}: {entry.Value.First()}");
+                if (string.IsNullOrWhiteSpace(entry.Key))
+                {
+                    _writeLine(entry.Value.First().ToString());
+                }
+                else
+                {
+                    _writeLine($"{entry.Key}: {entry.Value.First()}");
+                }
             }
         }
 

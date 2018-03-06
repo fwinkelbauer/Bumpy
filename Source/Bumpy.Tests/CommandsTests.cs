@@ -71,7 +71,7 @@ namespace Bumpy.Tests
 
             commands.CommandEnsure(string.Empty);
 
-            writeLine.Received().Invoke("Success");
+            writeLine.Received().Invoke("1.2.3");
         }
 
         [TestMethod]
