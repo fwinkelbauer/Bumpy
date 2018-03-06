@@ -207,19 +207,19 @@ bumpy ensure
 
 Checks that all versions in a profile are equal. This command can be used in a build pipeline to enforce consistency of version numbers.
 
-**Example:** `bumpy list`, `bumpy ensure`
+**Example:** `bumpy ensure`
+
+Success case:
 
 ```
-[assembly]
-Bumpy\Properties\AssemblyInfo.cs (16): 0.8.0.0
-Bumpy\Properties\AssemblyInfo.cs (17): 0.9.0.0
-[nuspec]
-NuSpec\Chocolatey\Bumpy.Portable.nuspec (6): 0.8.0
-NuSpec\NuGet\Bumpy.nuspec (6): 0.8.0
+assembly: 0.8.0.0
+nuspec: 0.8.0
 ```
 
+Error case:
+
 ```
-Error: Found different versions in profile 'assembly': 0.8.0.0, 0.9.0.0. See 'bumpy list' for more information
+Error: Found different versions in profile 'assembly': 0.8.0.0, 0.9.0.0.
 ```
 
 ### Help

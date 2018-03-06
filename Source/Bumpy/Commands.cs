@@ -139,11 +139,11 @@ namespace Bumpy
                     var profileText = string.IsNullOrEmpty(entry.Key) ? string.Empty : $" in profile '{entry.Key}'";
                     var versions = string.Join(", ", distinctVersions.Select(v => v.ToString()));
 
-                    throw new InvalidDataException($"Found different versions{profileText} ({versions}). See 'bumpy list'.");
+                    throw new InvalidDataException($"Found different versions{profileText} ({versions}).");
                 }
-            }
 
-            _writeLine("Success");
+                _writeLine($"{entry.Key}: {entry.Value.First()}");
+            }
         }
 
         public void CommandNew()

@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 - **Breaking Change:** The default configuration file to `bumpy.yaml`. The old format `.bumpyconfig` is still supported, but a warning is printed
 - Console output of all persisting commands (`increment`, `assign`, ...) to also display profiles
+- Console output of `ensure`. It will now print an overview of profiles with their version
 
 ## 0.10.0 - 2018-02-26
 

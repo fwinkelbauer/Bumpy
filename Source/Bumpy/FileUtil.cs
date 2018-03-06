@@ -54,6 +54,7 @@ namespace Bumpy
                 }
             }
 
+            // OrderBy is used to improve the formatting of all Bumpy commands
             return configEntries
                 .Select(c => ConfigProcessor.Process(c))
                 .OrderBy(c => c.Profile);
