@@ -22,9 +22,10 @@ Using Bumpy in a .NET project is rather easy:
 - Make sure that the `<version>` XML element exists in the `*.csproj` file (.NET Standard or .NET Core)
 - Type `bumpy new` in the Package Manager Console in Visual Studio
 
-Afterwards you will find a `bumpy.yaml` file in your solution. Type `bumpy list` to see the version of each project:
+Afterwards you will find a `bumpy.yaml` file in your solution. Type `bumpy list` to see an output similar to this:
 
 ```
+[assembly]
 ConsoleApp1\Properties\AssemblyInfo.cs (AssemblyVersion): 1.0.0.0
 ConsoleApp1\Properties\AssemblyInfo.cs (AssemblyFileVersion): 1.0.0.0
 UnitTestProject1\Properties\AssemblyInfo.cs (AssemblyVersion): 1.0.0.0
@@ -34,6 +35,7 @@ UnitTestProject1\Properties\AssemblyInfo.cs (AssemblyFileVersion): 1.0.0.0
 Now you can use Bumpy to change all versions in one operation, e.g. `bumpy increment 4`:
 
 ```
+[assembly]
 ConsoleApp1\Properties\AssemblyInfo.cs (AssemblyVersion): 1.0.0.0 -> 1.0.0.1
 ConsoleApp1\Properties\AssemblyInfo.cs (AssemblyFileVersion): 1.0.0.0 -> 1.0.0.1
 UnitTestProject1\Properties\AssemblyInfo.cs (AssemblyVersion): 1.0.0.0 -> 1.0.0.1
@@ -90,8 +92,10 @@ Increments the specified component of each version.
 **Example:** `bumpy increment 3`
 
 ```
+[assembly]
 Bumpy\Properties\AssemblyInfo.cs (16): 0.8.0.5 -> 0.8.1.0
 Bumpy\Properties\AssemblyInfo.cs (17): 0.8.0.5 -> 0.8.1.0
+[nuspec]
 NuSpec\Chocolatey\Bumpy.Portable.nuspec (6): 0.8.0 -> 0.8.1
 NuSpec\NuGet\Bumpy.nuspec (6): 0.8.0 -> 0.8.1
 ```
@@ -107,8 +111,10 @@ Increments the specified component of each version, without updating following c
 **Example:** `bumpy incrementonly 2`
 
 ```
+[assembly]
 Bumpy\Properties\AssemblyInfo.cs (16): 0.8.1.0 -> 0.9.1.0
 Bumpy\Properties\AssemblyInfo.cs (17): 0.8.1.0 -> 0.9.1.0
+[nuspec]
 NuSpec\Chocolatey\Bumpy.Portable.nuspec (6): 0.8.1 -> 0.9.1
 NuSpec\NuGet\Bumpy.nuspec (6): 0.8.1 -> 0.9.1
 ```
@@ -129,6 +135,7 @@ This command could be used to:
 **Example:** `bumpy write 1.0.0.0 -p assembly`
 
 ```
+[assembly]
 Bumpy\Properties\AssemblyInfo.cs (16): 0.9.1.0 -> 1.0.0.0
 Bumpy\Properties\AssemblyInfo.cs (17): 0.9.1.0 -> 1.0.0.0
 ```
@@ -136,6 +143,7 @@ Bumpy\Properties\AssemblyInfo.cs (17): 0.9.1.0 -> 1.0.0.0
 **Example:** `bumpy write 1.0.0 -p nuspec`
 
 ```
+[nuspec]
 NuSpec\Chocolatey\Bumpy.Portable.nuspec (6): 0.9.1 -> 1.0.0
 NuSpec\NuGet\Bumpy.nuspec (6): 0.9.1 -> 1.0.0
 ```
@@ -151,8 +159,10 @@ Replaces the specified component of a version with a new number. This command co
 **Example:** `bumpy assign 3 42`
 
 ```
+[assembly]
 Bumpy\Properties\AssemblyInfo.cs (16): 1.0.0.0 -> 1.0.42.0
 Bumpy\Properties\AssemblyInfo.cs (17): 1.0.0.0 -> 1.0.42.0
+[nuspec]
 NuSpec\Chocolatey\Bumpy.Portable.nuspec (6): 1.0.0 -> 1.0.42
 NuSpec\NuGet\Bumpy.nuspec (6): 1.0.0 -> 1.0.42
 ```
@@ -168,6 +178,7 @@ Replaces the suffix text of a version.
 **Example:** `bumpy label "-beta" -p nuspec`
 
 ```
+[nuspec]
 NuSpec\Chocolatey\Bumpy.Portable.nuspec (6): 0.8.0 -> 0.8.0-beta
 NuSpec\NuGet\Bumpy.nuspec (6): 0.8.0 -> 0.8.0-beta
 ```
@@ -175,6 +186,7 @@ NuSpec\NuGet\Bumpy.nuspec (6): 0.8.0 -> 0.8.0-beta
 Or:
 
 ```
+[nuspec]
 NuSpec\Chocolatey\Bumpy.Portable.nuspec (6): 0.8.0-alpha -> 0.8.0-beta
 NuSpec\NuGet\Bumpy.nuspec (6): 0.8.0-alpha -> 0.8.0-beta
 ```
@@ -182,6 +194,7 @@ NuSpec\NuGet\Bumpy.nuspec (6): 0.8.0-alpha -> 0.8.0-beta
 **Example:** `bumpy label "" -p nuspec`
 
 ```
+[nuspec]
 NuSpec\Chocolatey\Bumpy.Portable.nuspec (6): 0.8.0-beta -> 0.8.0
 NuSpec\NuGet\Bumpy.nuspec (6): 0.8.0-beta -> 0.8.0
 ```
@@ -271,15 +284,20 @@ These groups can contain versions in different formats. Bumpy can currently hand
 
 ### Profiles
 
-Lines in a `bumpy.yaml` file can be organized using profiles ("groups"):
+Projects might contain different categories of versions. In a typical C# project you might find two categories:
+
+- Assembly versions (e.g. `1.0.0.0`, found in `AssemblyInfo.cs` files)
+- Semantic versions (e.g. `1.0.0-beta` found in `*.nuspec` files)
+
+These categories can be organized in profiles:
 
 ```yaml
 queries:
-- glob: "*.txt"
+- glob: "*.my_glob"
   profile: my_profile
 ```
 
-Most of Bumpy's commands can be applied to a certain profile by specifing the profile name, e.g. `bumpy list -p my_profile`. This feature can be useful if you need to target a specific set of files in isolation (e.g. a `AssemblyInfo.cs` file in C# can only deal with versions of the format `1.0.0.0`, while a `.nuspec` file could contain textual elements such as `1.0.0-beta`).
+Most of Bumpy's commands can be applied to a certain profile by specifing the profile name, e.g. `bumpy list -p my_profile`.
 
 ### Marker
 
