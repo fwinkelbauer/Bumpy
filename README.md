@@ -207,16 +207,33 @@ bumpy ensure
 
 Checks that all versions in a profile are equal. This command can be used in a build pipeline to enforce consistency of version numbers.
 
-**Example:** `bumpy ensure`
+**Eample:** `bumpy list`
 
-Success case:
+```
+[assembly]
+Bumpy\Properties\AssemblyInfo.cs (16): 0.8.0.0
+Bumpy\Properties\AssemblyInfo.cs (17): 0.8.0.0
+[nuspec]
+NuSpec\Chocolatey\Bumpy.Portable.nuspec (6): 0.8.0
+NuSpec\NuGet\Bumpy.nuspec (6): 0.8.0
+```
+
+Followed by:
+
+`bumpy ensure`
+
+Gives us:
 
 ```
 assembly: 0.8.0.0
 nuspec: 0.8.0
 ```
 
-Error case:
+If we change one version in `AssemblyInfo.cs` to `0.9.0.0`:
+
+`bumpy ensure`
+
+Gives us:
 
 ```
 Error: Found different versions in profile 'assembly': 0.8.0.0, 0.9.0.0.
@@ -329,6 +346,11 @@ Templates can be used to simplify a `.bumpyconfig` file for known file types. Cu
 
 [MyDotNetFrameworkProject/**/AssemblyInfo.cs | assembly]
 ```
+
+### Best Practices
+
+- Commit your `.bumpyconfig` file in whatever source code management system that you are using
+- Use one profile per version type so that you can use `bumpy ensure` to enforce version consistency between files. Don't put a file containing `1.0.0.0` in the same profile as a file containing `1.0.0` or `1.0.0-rc2`
 
 ## Trivia
 

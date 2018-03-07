@@ -17,6 +17,8 @@ namespace Bumpy.Config
         {
             var builder = new StringBuilder();
             builder.AppendLine("# Bumpy configuration file");
+            builder.AppendLine();
+            builder.AppendLine("# Bumpy tries to use a default configuration for a file type if a section is empty");
             builder.AppendLine("[AssemblyInfo.cs | assembly]");
             builder.AppendLine();
             builder.AppendLine("[*.nuspec | nuspec]");
