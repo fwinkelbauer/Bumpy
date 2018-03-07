@@ -9,7 +9,7 @@ namespace Bumpy.Tests.Config
         [TestMethod]
         public void Process_GlobCannotBeEmpty()
         {
-            Assert.ThrowsException<ConfigException>(() => ConfigProcessor.Process(new BumpyConfigEntry { }));
+            Assert.ThrowsException<ConfigException>(() => ConfigProcessor.Process(new BumpyConfigEntry()));
             Assert.ThrowsException<ConfigException>(() => ConfigProcessor.Process(new BumpyConfigEntry { Glob = string.Empty }));
             Assert.ThrowsException<ConfigException>(() => ConfigProcessor.Process(new BumpyConfigEntry { Glob = null }));
             Assert.ThrowsException<ConfigException>(() => ConfigProcessor.Process(new BumpyConfigEntry { Glob = " " }));

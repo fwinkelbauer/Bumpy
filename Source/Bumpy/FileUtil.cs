@@ -46,7 +46,7 @@ namespace Bumpy
 
             if (!profile.Equals(BumpyConfigEntry.DefaultProfile))
             {
-                configEntries = configEntries.Where(c => c.Profile == profile).ToArray();
+                configEntries = configEntries.Where(c => c.Profile == profile).ToList();
 
                 if (!configEntries.Any())
                 {
@@ -56,13 +56,14 @@ namespace Bumpy
 
             // OrderBy is used to improve the formatting of all Bumpy commands
             return configEntries
-                .Select(c => ConfigProcessor.Process(c))
+                .Select(ConfigProcessor.Process)
                 .OrderBy(c => c.Profile);
         }
 
         private IEnumerable<BumpyConfigEntry> ReadConfigFile(FileInfo configFile)
         {
-            var lines = File.ReadLines(configFile.FullName);
+            var lines = File.ReadLines(configFile.FullName).ToList();
+
             try
             {
                 return ConfigIO.ReadConfigFile(lines).Queries;
@@ -71,7 +72,7 @@ namespace Bumpy
             {
                 // TODO fw When should I remove this?
                 Console.WriteLine($"Error: '{e.Message}'");
-                Console.WriteLine($"Trying legacy configuration format (prior to Bumpy 0.11.0)");
+                Console.WriteLine("Trying legacy configuration format (prior to Bumpy 0.11.0)");
                 return LegacyConfigIO.ReadConfigFile(lines);
             }
         }

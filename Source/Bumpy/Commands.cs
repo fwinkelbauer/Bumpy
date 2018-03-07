@@ -120,7 +120,7 @@ namespace Bumpy
 
                     foreach (var line in content.Lines)
                     {
-                        var success = VersionFunctions.TryParseVersionInText(line, config.Regex, out var version, out var marker);
+                        var success = VersionFunctions.TryParseVersionInText(line, config.Regex, out var version, out _);
 
                         if (success)
                         {
@@ -132,9 +132,9 @@ namespace Bumpy
 
             foreach (KeyValuePair<string, List<BumpyVersion>> entry in versionsPerProfile)
             {
-                var distinctVersions = entry.Value.Distinct();
+                var distinctVersions = entry.Value.Distinct().ToList();
 
-                if (distinctVersions.Count() > 1)
+                if (distinctVersions.Count > 1)
                 {
                     var profileText = string.IsNullOrEmpty(entry.Key) ? string.Empty : $" in profile '{entry.Key}'";
                     var versions = string.Join(", ", distinctVersions.Select(v => v.ToString()));

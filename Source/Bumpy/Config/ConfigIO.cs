@@ -82,11 +82,7 @@ namespace Bumpy.Config
                 var isComment = line.StartsWith(CommentPattern, StringComparison.Ordinal) || string.IsNullOrWhiteSpace(line);
                 var isSection = line.StartsWith(SectionStartPattern, StringComparison.Ordinal) && line.EndsWith(SectionEndPattern, StringComparison.Ordinal);
 
-                if (isComment)
-                {
-                    continue;
-                }
-                else if (isSection)
+                if (isSection)
                 {
                     currentSection = line.Substring(1, line.Length - 2).Trim();
 
@@ -95,7 +91,7 @@ namespace Bumpy.Config
                         iniContent.Add(currentSection, new Dictionary<string, string>());
                     }
                 }
-                else
+                else if (!isComment)
                 {
                     var lineSplit = line.Split(EqualsPattern.ToCharArray(), 2);
 
