@@ -194,7 +194,7 @@ bumpy ensure
 
 Checks that all versions in a profile are equal. This command can be used in a build pipeline to enforce consistency of version numbers.
 
-**Eample:** `bumpy list`, `bumpy ensure`
+**Example:** `bumpy list`, `bumpy ensure`
 
 ```
 [assembly]
