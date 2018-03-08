@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## Unreleased
 
+## 0.11.0 - 2018-03-08
+
 ### Changed
 
 - **Breaking Change:** The configuration file format in `.bumpyconfig`. The old format is still supported, but a legacy warning is printed

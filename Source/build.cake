@@ -8,7 +8,7 @@
 var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Release");
 var githubReleaseToken = EnvironmentVariable("GITHUB_RELEASE_TOKEN");
-var githubReleaseVersion = "0.10.0";
+var githubReleaseVersion = "0.11.0";
 
 ArtifactsDirectory = "../Artifacts";
 
