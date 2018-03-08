@@ -11,7 +11,7 @@ NuGet and Chocolatey packages can be found [here](https://www.nuget.org/packages
 
 Most of the build systems that I have seen or worked with in the past create a workflow in which they utilize a single source
 (e.g. a file called `version.txt`, or a tool such as [GitVersion](https://github.com/GitTools/GitVersion)) to inject version information into a set of files (`AssemblyInfo.cs`, `*.csproj`, `*.nuspec`, `*.xml`, ...).
-These files  might contain "blank versions" (`0.0.0`, `0.0.0.0`) which are only ever changed in memory while a build is active. I prefer to persist all file changes so that I can track the history in any source control management system.
+These files might contain "blank versions" (`0.0.0`, `0.0.0.0`) which are only ever changed in memory while a build is active. I prefer to persist all file changes so that I can track the history in any source control management system.
 Bumpy was born because I wanted a simple tool that I can use to update version information across several files in one operation.
 
 ## Getting Started
@@ -288,7 +288,7 @@ regex = (?<version>\d+\.\d+\.\d+\.\d+)
 # Example: Encodings can also be defined through code pages. This can be handy for Visual Studio C++ projects
 [MyProject.rc]
 encoding = 1200
-regex = \d+\.\d+\.\d+\.\d+
+regex = (?<version>\d+\.\d+\.\d+\.\d+)
 ```
 
 For each line of a specific file (found through a glob pattern) Bumpy uses the provided regular expression to extract the named capture group `?<version>`.
