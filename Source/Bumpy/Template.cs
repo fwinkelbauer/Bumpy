@@ -11,7 +11,8 @@ namespace Bumpy
         {
             { ".csproj", new Template(@"<(?<marker>[Vv]ersion)>(?<version>\d+\.\d+\.\d+.*)<\/[Vv]ersion>", new UTF8Encoding(false)) },
             { ".nuspec", new Template(@"<(?<marker>[Vv]ersion)>(?<version>\d+\.\d+\.\d+.*)<\/[Vv]ersion>", new UTF8Encoding(false)) },
-            { "AssemblyInfo.cs", new Template(@"(?<marker>Assembly(File)?Version).*(?<version>\d+\.\d+\.\d+\.\d+)", new UTF8Encoding(true)) }
+            { "AssemblyInfo.cs", new Template(@"(?<marker>Assembly(File)?Version).*(?<version>\d+\.\d+\.\d+\.\d+)", new UTF8Encoding(true)) },
+            { ".cs", new Template("(?<tag>(FILEVERSION|PRODUCTVERSION|FileVersion|ProductVersion))[\", ]*(?<version>\\d+[\\.,]\\d+[\\.,]\\d+[\\.,]\\d+)", Encoding.GetEncoding(1200)) }
         };
 
         private Template(string regularExpression, Encoding encoding)
