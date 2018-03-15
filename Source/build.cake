@@ -7,74 +7,77 @@
 
 var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Release");
-var githubReleaseToken = EnvironmentVariable("GITHUB_RELEASE_TOKEN");
-var githubReleaseVersion = "0.11.0";
+var version = "0.11.0";
 
-ArtifactsDirectory = "../Artifacts";
+RepositoryHome = "..";
 
-Task("Clean")
-    .Does(() =>
+var octokitSettings = new OctokitSettings
+{
+    Owner = "fwinkelbauer",
+    Repository = "Bumpy",
+    Token = EnvironmentVariable("GITHUB_RELEASE_TOKEN"),
+    GitTag = version,
+    TextBody = "More information about this release can be found in the [changelog](https://github.com/fwinkelbauer/Bumpy/blob/master/CHANGELOG.md)",
+    IsDraft = true,
+    IsPrerelease = false
+};
+
+Task("Clean").Does(() =>
 {
     CleanArtifacts();
     CleanDirectories($"Bumpy*/bin/{configuration}");
 });
 
-Task("Restore")
-    .IsDependentOn("Clean")
-    .Does(() =>
+Task("Restore").Does(() =>
 {
     NuGetRestore("Bumpy.sln");
 });
 
-Task("Build")
-    .IsDependentOn("Restore")
-    .Does(() =>
+Task("Build").Does(() =>
 {
     MSBuild("Bumpy.sln", new MSBuildSettings { Configuration = configuration, WarningsAsError = true });
     StoreBuildArtifacts("Bumpy", $"Bumpy/bin/{configuration}/**/*");
 });
 
-Task("Test")
-    .IsDependentOn("Build")
-    .Does(() =>
+Task("Test").Does(() =>
 {
     MSTest2_VS2017($"*.Tests/bin/{configuration}/*.Tests.dll");
 });
 
-Task("Pack")
-    .IsDependentOn("Test")
-    .Does(() =>
+Task("CreatePackages").Does(() =>
 {
-    StoreChocolateyArtifact("NuSpec/Chocolatey/Bumpy.Portable.nuspec");
-    StoreNuGetArtifact("NuSpec/NuGet/Bumpy.nuspec");
+    PackChocolateyArtifacts("NuSpec/Chocolatey/**/*.nuspec");
+    PackNuGetArtifacts("NuSpec/NuGet/**/*.nuspec");
 });
 
-Task("Publish")
-    .IsDependentOn("Pack")
-    .Does(() =>
+Task("PushPackages").Does(() =>
 {
     BumpyEnsure();
-    EnsureChangelog("../CHANGELOG.md", githubReleaseVersion);
+    EnsureChangelog("../CHANGELOG.md", version);
+
     PublishChocolateyArtifact("Bumpy.Portable", "https://push.chocolatey.org/");
     PublishNuGetArtifact("Bumpy", "https://www.nuget.org/api/v2/package");
 
-    var settings = new OctokitSettings
-    {
-        Owner = "fwinkelbauer",
-        Repository = "Bumpy",
-        Token = githubReleaseToken,
-        GitTag = githubReleaseVersion,
-        TextBody = "More information about this release can be found in the [changelog](https://github.com/fwinkelbauer/Bumpy/blob/master/CHANGELOG.md)",
-        IsDraft = true,
-        IsPrerelease = false
-    };
-
-    var files = new[] { GetChocolateyArtifact("Bumpy.Portable"), GetNuGetArtifact("Bumpy") };
-    var assets = files.Select(f => new OctokitAsset(f, "application/zip"));
-
-    PublishGitHubReleaseWithArtifacts(settings, assets);
+    var mime = "application/zip";
+    PublishGitHubReleaseWithArtifacts(
+        octokitSettings,
+        new OctokitAsset(GetChocolateyArtifact("Bumpy.Portable"), mime),
+        new OctokitAsset(GetNuGetArtifact("Bumpy"), mime));
 });
 
-Task("Default").IsDependentOn("Pack").Does(() => { });
+Task("Default")
+    .IsDependentOn("Clean")
+    .IsDependentOn("Restore")
+    .IsDependentOn("Build")
+    .IsDependentOn("Test")
+    .IsDependentOn("CreatePackages");
+
+Task("Publish")
+    .IsDependentOn("Clean")
+    .IsDependentOn("Restore")
+    .IsDependentOn("Build")
+    .IsDependentOn("Test")
+    .IsDependentOn("CreatePackages")
+    .IsDependentOn("PushPackages");
 
 RunTarget(target);

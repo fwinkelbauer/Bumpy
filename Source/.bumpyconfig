@@ -3,4 +3,4 @@
 [NuSpec\**\*.nuspec | nuspec]
 
 [build.cake | nuspec]
-regex = (?<marker>githubReleaseVersion) = "(?<version>.*)"
+regex = var (?<marker>version) = "(?<version>.*)"

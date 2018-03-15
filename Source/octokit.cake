@@ -23,7 +23,7 @@ public class OctokitAsset
     public string ContentType { get; }
 }
 
-public void PublishGitHubReleaseWithArtifacts(OctokitSettings settings, IEnumerable<OctokitAsset> assets)
+public void PublishGitHubReleaseWithArtifacts(OctokitSettings settings, params OctokitAsset[] assets)
 {
     var client = new Octokit.GitHubClient(new Octokit.ProductHeaderValue(settings.Repository))
     {

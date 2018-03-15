@@ -1,8 +1,8 @@
-public DirectoryPath ArtifactsDirectory = "Artifacts";
+public DirectoryPath RepositoryHome = ".";
 
 void CleanArtifacts()
 {
-    CleanDirectory($"{ArtifactsDirectory}");
+    CleanDirectory($"{RepositoryHome}/Artifacts");
 }
 
 void StoreBuildArtifacts(string projectName, string filePattern)
@@ -12,16 +12,16 @@ void StoreBuildArtifacts(string projectName, string filePattern)
 
 void StoreBuildArtifacts(string projectName, IEnumerable<FilePath> filePaths)
 {
-    var dir = $"{ArtifactsDirectory}/Build/{projectName}";
-    EnsureDirectoryExists(dir);
+    var dir = $"{RepositoryHome}/Artifacts/Build/{projectName}";
 
     Information("Copying artifacts to {0}", dir);
+    EnsureDirectoryExists(dir);
     CopyFiles(filePaths, dir, true);
 }
 
 FilePath GetChocolateyArtifact(string packageId)
 {
-    return GetFiles($"{ArtifactsDirectory}/Chocolatey/{packageId}/*.nupkg").First();
+    return GetFiles($"{RepositoryHome}/Artifacts/Chocolatey/{packageId}/*.nupkg").First();
 }
 
 void PublishChocolateyArtifact(string packageId, string pushSource)
@@ -29,27 +29,46 @@ void PublishChocolateyArtifact(string packageId, string pushSource)
     ChocolateyPush(GetChocolateyArtifact(packageId), new ChocolateyPushSettings { Source = pushSource });
 }
 
-void StoreChocolateyArtifact(FilePath nuspecPath)
+void PackChocolateyArtifacts(string nuspecPathPattern)
 {
-    var dir = $"{ArtifactsDirectory}/Chocolatey/{nuspecPath.GetFilenameWithoutExtension()}";
+    foreach (var nuspecPath in GetFiles(nuspecPathPattern))
+    {
+        PackChocolateyArtifact(nuspecPath);
+    }
+}
+
+void PackChocolateyArtifact(FilePath nuspecPath)
+{
+    var dir = $"{RepositoryHome}/Artifacts/Chocolatey/{nuspecPath.GetFilenameWithoutExtension()}";
+
     EnsureDirectoryExists(dir);
     ChocolateyPack(nuspecPath, new ChocolateyPackSettings { OutputDirectory = dir });
 }
 
 FilePath GetNuGetArtifact(string packageId)
 {
-    return GetFiles($"{ArtifactsDirectory}/NuGet/{packageId}/*.nupkg").First();
+    return GetFiles($"{RepositoryHome}/Artifacts/NuGet/{packageId}/*.nupkg").First();
 }
 
 void PublishNuGetArtifact(string packageId, string pushSource)
 {
     var files = GetNuGetArtifact(packageId);
+
     NuGetPush(files, new NuGetPushSettings { Source = pushSource });
 }
 
-void StoreNuGetArtifact(FilePath nuspecPath)
+void PackNuGetArtifacts(string nuspecPathPattern)
 {
-    var dir = $"{ArtifactsDirectory}/NuGet/{nuspecPath.GetFilenameWithoutExtension()}";
+    foreach (var nuspecPath in GetFiles(nuspecPathPattern))
+    {
+        PackNuGetArtifact(nuspecPath);
+    }
+}
+
+void PackNuGetArtifact(FilePath nuspecPath)
+{
+    var dir = $"{RepositoryHome}/Artifacts/NuGet/{nuspecPath.GetFilenameWithoutExtension()}";
+
     EnsureDirectoryExists(dir);
     NuGetPack(nuspecPath, new NuGetPackSettings { OutputDirectory = dir });
 }
