@@ -5,7 +5,7 @@ I am using Bumpy to handle C# projects, but the tool can be configured for any s
 
 NuGet and Chocolatey packages can be found [here](https://www.nuget.org/packages/Bumpy/) and [here](https://chocolatey.org/packages/bumpy.portable). A Cake Addin is provided [here](https://www.nuget.org/packages/Cake.Bumpy/).
 
-**Note:** As Bumpy's behaviour is heavily influenced by your `.bumpyconfig` file, make sure that your files are kept under version control so that you can easily verify Bumpy's results.
+**Note:** As Bumpy's behavior is heavily influenced by your `.bumpyconfig` file, make sure that your files are kept under version control so that you can easily verify Bumpy's results.
 
 ## Getting Started
 
@@ -266,14 +266,14 @@ bumpy increment 1 -n
 
 ## Configuration
 
-Bumpy's configuration is based on the presence of a `.bumpyconfig` file in the current working directory. This file dictates the behaviour of Bumpy using a pair of glob patterns and regular expressions, e.g:
+Bumpy's configuration is based on the presence of a `.bumpyconfig` file in the current working directory. This file dictates the behavior of Bumpy using a pair of glob patterns and regular expressions, e.g:
 
 ```
 # Example: Search for all .nuspec files in the NuSpec directory
 [NuSpec\**\*.nuspec]
 regex = <version>(?<version>\d+(\.\d+)+)
 
-# Example: The default read/write encoding is UTF-8 without BOM, but you can change this behaviour (e.g. UTF-8 with BOM)
+# Example: The default read/write encoding is UTF-8 without BOM, but you can change this behavior (e.g. UTF-8 with BOM)
 [AssemblyInfo.cs]
 encoding = UTF-8
 regex = (?<version>\d+\.\d+\.\d+\.\d+)
@@ -304,7 +304,7 @@ These categories can be organized in profiles:
 [*.my_glob | my_profile]
 ```
 
-Most of Bumpy's commands can be applied to a certain profile by specifing the profile name, e.g. `bumpy list -p my_profile`.
+Most of Bumpy's commands can be applied to a certain profile by specifying the profile name, e.g. `bumpy list -p my_profile`.
 
 ### Marker
 
@@ -314,7 +314,7 @@ Bumpy will per default print the line number for each version found in a file:
 MyProject.nuspec (6): 1.0.0
 ```
 
-This behaviour can be changed using the named capture group `?<marker>`. A `.bumpyconfig` like this:
+This behavior can be changed using the named capture group `?<marker>`. A `.bumpyconfig` like this:
 
 ```
 [*.nuspec]
