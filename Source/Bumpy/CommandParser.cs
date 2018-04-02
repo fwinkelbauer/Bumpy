@@ -22,7 +22,7 @@ namespace Bumpy
             _arguments = new BumpyArguments();
         }
 
-        public CommandArguments Parse(string[] args)
+        public CommandArguments ParseArguments(string[] args)
         {
             try
             {

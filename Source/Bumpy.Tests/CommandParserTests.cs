@@ -8,7 +8,7 @@ namespace Bumpy.Tests
     public class CommandParserTests
     {
         [TestMethod]
-        public void Parse_Help()
+        public void ParseArguments_Help()
         {
             var arguments = Parse("help");
 
@@ -16,7 +16,7 @@ namespace Bumpy.Tests
         }
 
         [TestMethod]
-        public void Parse_New()
+        public void ParseArguments_New()
         {
             var arguments = Parse("new");
 
@@ -24,7 +24,7 @@ namespace Bumpy.Tests
         }
 
         [TestMethod]
-        public void Parse_List()
+        public void ParseArguments_List()
         {
             var arguments = Parse("list");
 
@@ -32,7 +32,7 @@ namespace Bumpy.Tests
         }
 
         [TestMethod]
-        public void Parse_Increment()
+        public void ParseArguments_Increment()
         {
             var arguments = Parse("increment 3");
 
@@ -41,7 +41,7 @@ namespace Bumpy.Tests
         }
 
         [TestMethod]
-        public void Parse_IncrementOnly()
+        public void ParseArguments_IncrementOnly()
         {
             var arguments = Parse("incrementonly 3");
 
@@ -50,7 +50,7 @@ namespace Bumpy.Tests
         }
 
         [TestMethod]
-        public void Parse_Assign()
+        public void ParseArguments_Assign()
         {
             var arguments = Parse("assign 2 007");
 
@@ -62,7 +62,7 @@ namespace Bumpy.Tests
         [TestMethod]
         [DataRow("label -beta", "-beta")]
         [DataRow("label ", "")]
-        public void Parse_Label(string args, string expectedLabel)
+        public void ParseArguments_Label(string args, string expectedLabel)
         {
             var arguments = Parse(args);
 
@@ -71,7 +71,7 @@ namespace Bumpy.Tests
         }
 
         [TestMethod]
-        public void Parse_Write()
+        public void ParseArguments_Write()
         {
             var arguments = Parse("write 1.0.0");
 
@@ -80,7 +80,7 @@ namespace Bumpy.Tests
         }
 
         [TestMethod]
-        public void Parse_Ensure()
+        public void ParseArguments_Ensure()
         {
             var arguments = Parse("ensure");
 
@@ -88,7 +88,7 @@ namespace Bumpy.Tests
         }
 
         [TestMethod]
-        public void Parse_DefaultOptions()
+        public void ParseArguments_DefaultOptions()
         {
             var arguments = Parse("list");
 
@@ -98,7 +98,7 @@ namespace Bumpy.Tests
         }
 
         [TestMethod]
-        public void Parse_CustomOptions()
+        public void ParseArguments_CustomOptions()
         {
             var arguments = Parse("list -p bar -c foo.config -d foodir");
 
@@ -108,7 +108,7 @@ namespace Bumpy.Tests
         }
 
         [TestMethod]
-        public void Parse_Errors()
+        public void ParseArguments_Errors()
         {
             Assert.ThrowsException<ParserException>(() => Parse("randomcommand"));
             Assert.ThrowsException<ParserException>(() => Parse("increment"));
@@ -127,7 +127,7 @@ namespace Bumpy.Tests
         {
             var parser = new CommandParser();
 
-            return parser.Parse(args.Split(' '));
+            return parser.ParseArguments(args.Split(' '));
         }
     }
 }

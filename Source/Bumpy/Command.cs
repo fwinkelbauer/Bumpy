@@ -7,12 +7,12 @@ using Bumpy.Config;
 
 namespace Bumpy
 {
-    public sealed class Commands
+    public sealed class Command
     {
         private readonly IFileUtil _fileUtil;
         private readonly Action<string> _writeLine;
 
-        public Commands(IFileUtil fileUtil, Action<string> writeLine)
+        public Command(IFileUtil fileUtil, Action<string> writeLine)
         {
             _fileUtil = fileUtil;
             _writeLine = writeLine;
@@ -80,7 +80,7 @@ namespace Bumpy
 
         public void Increment(int position, BumpyArguments arguments)
         {
-            WriteTransformation(version => VersionFunctions.Increment(version, position, true), arguments);
+            ApplyTransformation(version => VersionFunctions.Increment(version, position, true), arguments);
         }
 
         public void IncrementOnly(int position)
@@ -90,7 +90,7 @@ namespace Bumpy
 
         public void IncrementOnly(int position, BumpyArguments arguments)
         {
-            WriteTransformation(version => VersionFunctions.Increment(version, position, false), arguments);
+            ApplyTransformation(version => VersionFunctions.Increment(version, position, false), arguments);
         }
 
         public void Assign(int position, string formattedNumber)
@@ -100,7 +100,7 @@ namespace Bumpy
 
         public void Assign(int position, string formattedNumber, BumpyArguments arguments)
         {
-            WriteTransformation(version => VersionFunctions.Assign(version, position, formattedNumber), arguments);
+            ApplyTransformation(version => VersionFunctions.Assign(version, position, formattedNumber), arguments);
         }
 
         public void Write(string versionText)
@@ -110,7 +110,7 @@ namespace Bumpy
 
         public void Write(string versionText, BumpyArguments arguments)
         {
-            WriteTransformation(version => VersionFunctions.ParseVersion(versionText), arguments);
+            ApplyTransformation(version => VersionFunctions.ParseVersion(versionText), arguments);
         }
 
         public void Label(string versionLabel)
@@ -120,7 +120,7 @@ namespace Bumpy
 
         public void Label(string versionLabel, BumpyArguments arguments)
         {
-            WriteTransformation(version => VersionFunctions.Label(version, versionLabel), arguments);
+            ApplyTransformation(version => VersionFunctions.Label(version, versionLabel), arguments);
         }
 
         public void Ensure()
@@ -235,7 +235,7 @@ namespace Bumpy
             _writeLine(builder.ToString());
         }
 
-        private void WriteTransformation(Func<BumpyVersion, BumpyVersion> transformFunction, BumpyArguments arguments)
+        public void ApplyTransformation(Func<BumpyVersion, BumpyVersion> transformFunction, BumpyArguments arguments)
         {
             var configEntries = _fileUtil.ReadConfigFile(arguments.ConfigFile, arguments.Profile);
             var currentProfile = BumpyConfigEntry.DefaultProfile;
