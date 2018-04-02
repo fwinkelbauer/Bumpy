@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## Unreleased
 
+### Added
+
+- The `ApplyTransformation` (the underlying method that is used by most Bumpy commands) is now exposed as a public method
+
 ## 0.11.0 - 2018-03-08
 
 ### Changed
