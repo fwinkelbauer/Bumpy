@@ -13,79 +13,79 @@ namespace Bumpy.Tests
     public class CommandsTests
     {
         [TestMethod]
-        public void CommandNew_CreatesFile()
+        public void New_CreatesFile()
         {
             var fileUtil = Substitute.For<IFileUtil>();
             var commands = CreateCommands(fileUtil);
 
-            commands.CommandNew();
+            commands.New();
 
             fileUtil.Received().CreateConfigFile(Arg.Any<FileInfo>());
         }
 
         [TestMethod]
-        public void CommandHelp_WritesOutput()
+        public void Help_WritesOutput()
         {
             var writeLine = Substitute.For<Action<string>>();
             var commands = CreateCommands(writeLine: writeLine);
 
-            commands.CommandHelp();
+            commands.Help();
 
             writeLine.Received().Invoke(Arg.Any<string>());
         }
 
         [TestMethod]
-        public void CommandList_NoVersion()
+        public void List_NoVersion()
         {
             var fileUtil = Substitute.For<IFileUtil>();
             PrepareFileUtilSubstitute(fileUtil, new[] { "no", "version", "here" });
             var writeLine = Substitute.For<Action<string>>();
             var commands = CreateCommands(fileUtil, writeLine);
 
-            commands.CommandList(string.Empty);
+            commands.List();
 
             writeLine.Received().Invoke(@"foo.txt: no version found");
         }
 
         [TestMethod]
-        public void CommandList_PrintVersions()
+        public void List_PrintVersions()
         {
             var fileUtil = Substitute.For<IFileUtil>();
             PrepareFileUtilSubstitute(fileUtil, new[] { "some", "version", "here", "1.2.3", "foobar 0.25.0" });
             var writeLine = Substitute.For<Action<string>>();
             var commands = CreateCommands(fileUtil, writeLine);
 
-            commands.CommandList(string.Empty);
+            commands.List();
 
             writeLine.Received().Invoke(@"foo.txt (4): 1.2.3");
             writeLine.Received().Invoke(@"foo.txt (5): 0.25.0");
         }
 
         [TestMethod]
-        public void CommandEnsure_Success()
+        public void Ensure_Success()
         {
             var fileUtil = Substitute.For<IFileUtil>();
             PrepareFileUtilSubstitute(fileUtil, new[] { "1.2.3", "1.2.3" });
             var writeLine = Substitute.For<Action<string>>();
             var commands = CreateCommands(fileUtil, writeLine);
 
-            commands.CommandEnsure(string.Empty);
+            commands.Ensure();
 
             writeLine.Received().Invoke("1.2.3");
         }
 
         [TestMethod]
-        public void CommandEnsure_Error()
+        public void Ensure_Error()
         {
             var fileUtil = Substitute.For<IFileUtil>();
             PrepareFileUtilSubstitute(fileUtil, new[] { "1.2.3", "1.2.4" });
             var commands = CreateCommands(fileUtil);
 
-            Assert.ThrowsException<InvalidDataException>(() => commands.CommandEnsure(string.Empty));
+            Assert.ThrowsException<InvalidDataException>(() => commands.Ensure());
         }
 
         [TestMethod]
-        public void CommandIncrement_NoVersion()
+        public void Increment_NoVersion()
         {
             var lines = new[] { "no", "version", "here" };
             var fileUtil = Substitute.For<IFileUtil>();
@@ -93,21 +93,21 @@ namespace Bumpy.Tests
             var writeLine = Substitute.For<Action<string>>();
             var commands = CreateCommands(fileUtil, writeLine);
 
-            commands.CommandIncrement(string.Empty, 2);
+            commands.Increment(2);
 
             fileUtil.DidNotReceive().WriteFileContent(Arg.Any<FileContent>());
             writeLine.Received().Invoke(@"foo.txt: no version found");
         }
 
         [TestMethod]
-        public void CommandIncrement_IncrementVersions()
+        public void Increment_IncrementVersions()
         {
             var fileUtil = Substitute.For<IFileUtil>();
             PrepareFileUtilSubstitute(fileUtil, new[] { "some", "version", "here", "1.2.3", "foobar 0.25.0" });
             var writeLine = Substitute.For<Action<string>>();
             var commands = CreateCommands(fileUtil, writeLine);
 
-            commands.CommandIncrement(string.Empty, 2);
+            commands.Increment(2);
 
             var newLines = new[] { "some", "version", "here", "1.3.0", "foobar 0.26.0" };
             fileUtil.Received().WriteFileContent(Arg.Is<FileContent>(f => f.Lines.SequenceEqual(newLines)));
@@ -116,14 +116,14 @@ namespace Bumpy.Tests
         }
 
         [TestMethod]
-        public void CommandIncrement_IncrementVersionsNoFileWrite()
+        public void Increment_IncrementVersionsNoFileWrite()
         {
             var fileUtil = Substitute.For<IFileUtil>();
             PrepareFileUtilSubstitute(fileUtil, new[] { "some", "version", "here", "1.2.3", "foobar 0.25.0" });
             var writeLine = Substitute.For<Action<string>>();
-            var commands = CreateCommands(fileUtil, writeLine, true);
+            var commands = CreateCommands(fileUtil, writeLine);
 
-            commands.CommandIncrement(string.Empty, 2);
+            commands.Increment(2, new BumpyArguments { NoOperation = true });
 
             fileUtil.DidNotReceive().WriteFileContent(Arg.Any<FileContent>());
             writeLine.Received().Invoke(@"foo.txt (4): 1.2.3 -> 1.3.0");
@@ -131,7 +131,7 @@ namespace Bumpy.Tests
         }
 
         [TestMethod]
-        public void CommandAssign_NoWrite()
+        public void Assign_NoWrite()
         {
             var lines = new[] { "1.0.42" };
             var fileUtil = Substitute.For<IFileUtil>();
@@ -139,7 +139,7 @@ namespace Bumpy.Tests
             var writeLine = Substitute.For<Action<string>>();
             var commands = CreateCommands(fileUtil, writeLine);
 
-            commands.CommandAssign(string.Empty, 3, "42");
+            commands.Assign(3, "42");
 
             fileUtil.DidNotReceive().WriteFileContent(Arg.Any<FileContent>());
             writeLine.Received().Invoke(@"foo.txt (1): 1.0.42 -> 1.0.42");
@@ -165,12 +165,12 @@ namespace Bumpy.Tests
                 new FileContent(new FileInfo("foo.txt"), lines, new UTF8Encoding(false)));
         }
 
-        private Commands CreateCommands(IFileUtil fileUtil = null, Action<string> writeLine = null, bool noOperation = false)
+        private Commands CreateCommands(IFileUtil fileUtil = null, Action<string> writeLine = null)
         {
             fileUtil = fileUtil ?? Substitute.For<IFileUtil>();
             writeLine = writeLine ?? (l => { });
 
-            return new Commands(fileUtil, new FileInfo(BumpyConfig.ConfigFile), new DirectoryInfo("."), noOperation, writeLine);
+            return new Commands(fileUtil, writeLine);
         }
     }
 }

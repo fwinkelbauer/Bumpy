@@ -17,43 +17,43 @@ namespace Bumpy
 
         public void Execute()
         {
-            var commands = new Commands(_fileUtil, _arguments.ConfigFile, _arguments.WorkingDirectory, _arguments.NoOperation, _writeLine);
+            var commands = new Commands(_fileUtil, _writeLine);
 
             if (_arguments.CmdType == CommandType.List)
             {
-                commands.CommandList(_arguments.Profile);
+                commands.List(_arguments.Arguments);
             }
             else if (_arguments.CmdType == CommandType.New)
             {
-                commands.CommandNew();
+                commands.New();
             }
             else if (_arguments.CmdType == CommandType.Increment)
             {
-                commands.CommandIncrement(_arguments.Profile, _arguments.Position);
+                commands.Increment(_arguments.Position, _arguments.Arguments);
             }
             else if (_arguments.CmdType == CommandType.IncrementOnly)
             {
-                commands.CommandIncrementOnly(_arguments.Profile, _arguments.Position);
+                commands.IncrementOnly(_arguments.Position, _arguments.Arguments);
             }
             else if (_arguments.CmdType == CommandType.Write)
             {
-                commands.CommandWrite(_arguments.Profile, _arguments.Text);
+                commands.Write(_arguments.Text, _arguments.Arguments);
             }
             else if (_arguments.CmdType == CommandType.Assign)
             {
-                commands.CommandAssign(_arguments.Profile, _arguments.Position, _arguments.FormattedNumber);
+                commands.Assign(_arguments.Position, _arguments.FormattedNumber, _arguments.Arguments);
             }
             else if (_arguments.CmdType == CommandType.Label)
             {
-                commands.CommandLabel(_arguments.Profile, _arguments.Text);
+                commands.Label(_arguments.Text, _arguments.Arguments);
             }
             else if (_arguments.CmdType == CommandType.Ensure)
             {
-                commands.CommandEnsure(_arguments.Profile);
+                commands.Ensure(_arguments.Arguments);
             }
             else if (_arguments.CmdType == CommandType.Help)
             {
-                commands.CommandHelp();
+                commands.Help();
             }
             else
             {

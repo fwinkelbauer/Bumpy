@@ -10,23 +10,22 @@ namespace Bumpy
     public sealed class Commands
     {
         private readonly IFileUtil _fileUtil;
-        private readonly FileInfo _configFile;
-        private readonly DirectoryInfo _directory;
-        private readonly bool _noOperation;
         private readonly Action<string> _writeLine;
 
-        public Commands(IFileUtil fileUtil, FileInfo configurationFile, DirectoryInfo directory, bool noOperation, Action<string> writeLine)
+        public Commands(IFileUtil fileUtil, Action<string> writeLine)
         {
             _fileUtil = fileUtil;
-            _configFile = configurationFile;
-            _directory = directory;
-            _noOperation = noOperation;
             _writeLine = writeLine;
         }
 
-        public void CommandList(string profile)
+        public void List()
         {
-            var configEntries = _fileUtil.ReadConfigFile(_configFile, profile);
+            List(new BumpyArguments());
+        }
+
+        public void List(BumpyArguments arguments)
+        {
+            var configEntries = _fileUtil.ReadConfigFile(arguments.ConfigFile, arguments.Profile);
             var currentProfile = BumpyConfigEntry.DefaultProfile;
 
             foreach (var config in configEntries)
@@ -38,7 +37,7 @@ namespace Bumpy
                 }
 
                 var glob = new Glob(config.Glob);
-                var files = _fileUtil.GetFiles(_directory, glob);
+                var files = _fileUtil.GetFiles(arguments.WorkingDirectory, glob);
 
                 foreach (var file in files)
                 {
@@ -60,7 +59,7 @@ namespace Bumpy
                                 marker = lineNumber.ToString();
                             }
 
-                            _writeLine($"{content.File.ToRelativePath(_directory)} ({marker}): {version}");
+                            _writeLine($"{content.File.ToRelativePath(arguments.WorkingDirectory)} ({marker}): {version}");
                         }
 
                         lineNumber++;
@@ -68,46 +67,76 @@ namespace Bumpy
 
                     if (!versionFound)
                     {
-                        _writeLine($"{content.File.ToRelativePath(_directory)}: no version found");
+                        _writeLine($"{content.File.ToRelativePath(arguments.WorkingDirectory)}: no version found");
                     }
                 }
             }
         }
 
-        public void CommandIncrement(string profile, int position)
+        public void Increment(int position)
         {
-            WriteTransformation(profile, version => VersionFunctions.Increment(version, position, true));
+            Increment(position, new BumpyArguments());
         }
 
-        public void CommandIncrementOnly(string profile, int position)
+        public void Increment(int position, BumpyArguments arguments)
         {
-            WriteTransformation(profile, version => VersionFunctions.Increment(version, position, false));
+            WriteTransformation(version => VersionFunctions.Increment(version, position, true), arguments);
         }
 
-        public void CommandAssign(string profile, int position, string formattedNumber)
+        public void IncrementOnly(int position)
         {
-            WriteTransformation(profile, version => VersionFunctions.Assign(version, position, formattedNumber));
+            IncrementOnly(position, new BumpyArguments());
         }
 
-        public void CommandWrite(string profile, string versionText)
+        public void IncrementOnly(int position, BumpyArguments arguments)
         {
-            WriteTransformation(profile, version => VersionFunctions.ParseVersion(versionText));
+            WriteTransformation(version => VersionFunctions.Increment(version, position, false), arguments);
         }
 
-        public void CommandLabel(string profile, string versionLabel)
+        public void Assign(int position, string formattedNumber)
         {
-            WriteTransformation(profile, version => VersionFunctions.Label(version, versionLabel));
+            Assign(position, formattedNumber, new BumpyArguments());
         }
 
-        public void CommandEnsure(string profile)
+        public void Assign(int position, string formattedNumber, BumpyArguments arguments)
         {
-            var configEntries = _fileUtil.ReadConfigFile(_configFile, profile);
+            WriteTransformation(version => VersionFunctions.Assign(version, position, formattedNumber), arguments);
+        }
+
+        public void Write(string versionText)
+        {
+            Write(versionText, new BumpyArguments());
+        }
+
+        public void Write(string versionText, BumpyArguments arguments)
+        {
+            WriteTransformation(version => VersionFunctions.ParseVersion(versionText), arguments);
+        }
+
+        public void Label(string versionLabel)
+        {
+            Label(versionLabel, new BumpyArguments());
+        }
+
+        public void Label(string versionLabel, BumpyArguments arguments)
+        {
+            WriteTransformation(version => VersionFunctions.Label(version, versionLabel), arguments);
+        }
+
+        public void Ensure()
+        {
+            Ensure(new BumpyArguments());
+        }
+
+        public void Ensure(BumpyArguments arguments)
+        {
+            var configEntries = _fileUtil.ReadConfigFile(arguments.ConfigFile, arguments.Profile);
             var versionsPerProfile = new Dictionary<string, List<BumpyVersion>>();
 
             foreach (var config in configEntries)
             {
                 var glob = new Glob(config.Glob);
-                var files = _fileUtil.GetFiles(_directory, glob);
+                var files = _fileUtil.GetFiles(arguments.WorkingDirectory, glob);
 
                 if (!versionsPerProfile.ContainsKey(config.Profile))
                 {
@@ -153,9 +182,9 @@ namespace Bumpy
             }
         }
 
-        public void CommandNew()
+        public void New()
         {
-            var configFile = new FileInfo(Path.Combine(_directory.FullName, BumpyConfig.ConfigFile));
+            var configFile = new FileInfo(BumpyConfig.ConfigFile);
             var created = _fileUtil.CreateConfigFile(configFile);
 
             if (created)
@@ -168,7 +197,7 @@ namespace Bumpy
             }
         }
 
-        public void CommandHelp()
+        public void Help()
         {
             var builder = new StringBuilder();
             builder.AppendLine("A tool to maintain version information accross multiple files found in the current working directory");
@@ -206,12 +235,12 @@ namespace Bumpy
             _writeLine(builder.ToString());
         }
 
-        private void WriteTransformation(string profile, Func<BumpyVersion, BumpyVersion> transformFunction)
+        private void WriteTransformation(Func<BumpyVersion, BumpyVersion> transformFunction, BumpyArguments arguments)
         {
-            var configEntries = _fileUtil.ReadConfigFile(_configFile, profile);
+            var configEntries = _fileUtil.ReadConfigFile(arguments.ConfigFile, arguments.Profile);
             var currentProfile = BumpyConfigEntry.DefaultProfile;
 
-            if (_noOperation)
+            if (arguments.NoOperation)
             {
                 _writeLine("(NO-OP MODE: Will not persist changes to disk)");
             }
@@ -225,7 +254,7 @@ namespace Bumpy
                 }
 
                 var glob = new Glob(config.Glob);
-                var files = _fileUtil.GetFiles(_directory, glob);
+                var files = _fileUtil.GetFiles(arguments.WorkingDirectory, glob);
 
                 foreach (var file in files)
                 {
@@ -258,10 +287,10 @@ namespace Bumpy
                                 marker = lineNumber.ToString();
                             }
 
-                            _writeLine($"{file.ToRelativePath(_directory)} ({marker}): {oldVersion} -> {newVersion}");
+                            _writeLine($"{file.ToRelativePath(arguments.WorkingDirectory)} ({marker}): {oldVersion} -> {newVersion}");
                         }
 
-                        if (!_noOperation)
+                        if (!arguments.NoOperation)
                         {
                             newLines.Add(newLine);
                         }
@@ -271,9 +300,9 @@ namespace Bumpy
 
                     if (!versionFound)
                     {
-                        _writeLine($"{content.File.ToRelativePath(_directory)}: no version found");
+                        _writeLine($"{content.File.ToRelativePath(arguments.WorkingDirectory)}: no version found");
                     }
-                    else if (dirty && !_noOperation)
+                    else if (dirty && !arguments.NoOperation)
                     {
                         var newContent = new FileContent(file, newLines, content.Encoding);
                         _fileUtil.WriteFileContent(newContent);

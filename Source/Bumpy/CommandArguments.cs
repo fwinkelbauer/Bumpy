@@ -1,19 +1,14 @@
-﻿using System.IO;
-
-namespace Bumpy
+﻿namespace Bumpy
 {
     public sealed class CommandArguments
     {
-        public CommandArguments(CommandType cmdType, int position, string formattedNumber, string text, DirectoryInfo workingDirectory, FileInfo configFile, bool noOperation, string profile)
+        public CommandArguments(CommandType cmdType, int position, string formattedNumber, string text, BumpyArguments arguments)
         {
             CmdType = cmdType;
             Position = position;
             FormattedNumber = formattedNumber;
             Text = text;
-            WorkingDirectory = workingDirectory;
-            ConfigFile = configFile;
-            NoOperation = noOperation;
-            Profile = profile;
+            Arguments = arguments;
         }
 
         public CommandType CmdType { get; }
@@ -24,12 +19,6 @@ namespace Bumpy
 
         public string Text { get; }
 
-        public DirectoryInfo WorkingDirectory { get; }
-
-        public FileInfo ConfigFile { get; }
-
-        public bool NoOperation { get; }
-
-        public string Profile { get; }
+        public BumpyArguments Arguments { get; }
     }
 }

@@ -92,9 +92,9 @@ namespace Bumpy.Tests
         {
             var arguments = Parse("list");
 
-            Assert.AreEqual(string.Empty, arguments.Profile);
-            Assert.AreEqual(new FileInfo(BumpyConfig.ConfigFile).FullName, arguments.ConfigFile.FullName);
-            Assert.AreEqual(new DirectoryInfo(".").FullName, arguments.WorkingDirectory.FullName);
+            Assert.AreEqual(string.Empty, arguments.Arguments.Profile);
+            Assert.AreEqual(new FileInfo(BumpyConfig.ConfigFile).FullName, arguments.Arguments.ConfigFile.FullName);
+            Assert.AreEqual(new DirectoryInfo(".").FullName, arguments.Arguments.WorkingDirectory.FullName);
         }
 
         [TestMethod]
@@ -102,9 +102,9 @@ namespace Bumpy.Tests
         {
             var arguments = Parse("list -p bar -c foo.config -d foodir");
 
-            Assert.AreEqual("bar", arguments.Profile);
-            Assert.AreEqual(new FileInfo("foo.config").FullName, arguments.ConfigFile.FullName);
-            Assert.AreEqual(new DirectoryInfo("foodir").FullName, arguments.WorkingDirectory.FullName);
+            Assert.AreEqual("bar", arguments.Arguments.Profile);
+            Assert.AreEqual(new FileInfo("foo.config").FullName, arguments.Arguments.ConfigFile.FullName);
+            Assert.AreEqual(new DirectoryInfo("foodir").FullName, arguments.Arguments.WorkingDirectory.FullName);
         }
 
         [TestMethod]

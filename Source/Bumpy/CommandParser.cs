@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Bumpy.Config;
 
 namespace Bumpy
 {
@@ -12,10 +11,7 @@ namespace Bumpy
         private int _position;
         private string _formattedNumber;
         private string _text;
-        private DirectoryInfo _workingDirectory;
-        private FileInfo _configFile;
-        private bool _noOperation;
-        private string _profile;
+        private BumpyArguments _arguments;
 
         public CommandParser()
         {
@@ -23,10 +19,7 @@ namespace Bumpy
             _position = -1;
             _formattedNumber = "-1";
             _text = string.Empty;
-            _workingDirectory = new DirectoryInfo(".");
-            _configFile = new FileInfo(BumpyConfig.ConfigFile);
-            _noOperation = false;
-            _profile = BumpyConfigEntry.DefaultProfile;
+            _arguments = new BumpyArguments();
         }
 
         public CommandArguments Parse(string[] args)
@@ -44,7 +37,7 @@ namespace Bumpy
                 throw new ParserException("Invalid arguments. See 'bumpy help'.", e);
             }
 
-            return new CommandArguments(_commandType, _position, _formattedNumber, _text, _workingDirectory, _configFile, _noOperation, _profile);
+            return new CommandArguments(_commandType, _position, _formattedNumber, _text, _arguments);
         }
 
         private void ParseCommand(Queue<string> args)
@@ -105,19 +98,19 @@ namespace Bumpy
 
             if (option.Equals("-p"))
             {
-                _profile = args.Dequeue();
+                _arguments.Profile = args.Dequeue();
             }
             else if (option.Equals("-d"))
             {
-                _workingDirectory = new DirectoryInfo(args.Dequeue());
+                _arguments.WorkingDirectory = new DirectoryInfo(args.Dequeue());
             }
             else if (option.Equals("-c"))
             {
-                _configFile = new FileInfo(args.Dequeue());
+                _arguments.ConfigFile = new FileInfo(args.Dequeue());
             }
             else if (option.Equals("-n"))
             {
-                _noOperation = true;
+                _arguments.NoOperation = true;
             }
             else
             {
