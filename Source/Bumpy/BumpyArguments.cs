@@ -9,7 +9,7 @@ namespace Bumpy
 
         public DirectoryInfo WorkingDirectory { get; set; } = new DirectoryInfo(".");
 
-        public bool NoOperation { get; set; } = false;
+        public bool NoOperation { get; set; }
 
         public string Profile { get; set; } = BumpyConfigEntry.DefaultProfile;
     }
