@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace Bumpy
@@ -83,8 +85,16 @@ namespace Bumpy
             }
 
             var formattedNumbers = textNumbers.Split(numberDelimiter);
+            var numbers = new List<int>(formattedNumbers.Length);
+            var digits = new List<int>(formattedNumbers.Length);
 
-            return new BumpyVersion(formattedNumbers, labelGroup.Value, numberDelimiter);
+            foreach (var formattedNum in formattedNumbers)
+            {
+                numbers.Add(Convert.ToInt32(formattedNum));
+                digits.Add(formattedNum.Length);
+            }
+
+            return new BumpyVersion(numbers, digits, labelGroup.Value, numberDelimiter);
         }
 
         public static bool TryParseVersionInText(string text, string regexPattern, out BumpyVersion version, out string marker)

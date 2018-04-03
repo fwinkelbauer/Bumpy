@@ -23,8 +23,10 @@ namespace Bumpy.Tests
         [TestMethod]
         public void Constructor_ValidateInput()
         {
-            Assert.ThrowsException<ArgumentException>(() => new BumpyVersion(new string[] { }, string.Empty, '.'));
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() => new BumpyVersion(new[] { "2", "1", "-3" }, string.Empty, '.'));
+            Assert.ThrowsException<ArgumentException>(() => new BumpyVersion(new int[] { }, new int[] { }, string.Empty, '.'));
+            Assert.ThrowsException<ArgumentException>(() => new BumpyVersion(new int[] { 2, 3 }, new int[] { 1 }, string.Empty, '.'));
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => new BumpyVersion(new int[] { 2, -3 }, new int[] { 1, 1 }, string.Empty, '.'));
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => new BumpyVersion(new int[] { 2, 3 }, new int[] { 1, -1 }, string.Empty, '.'));
         }
 
         [DataTestMethod]

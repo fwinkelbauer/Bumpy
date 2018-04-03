@@ -9,32 +9,28 @@ namespace Bumpy
         private readonly List<int> _numbers;
         private readonly List<int> _digits;
 
-        public BumpyVersion(string[] formattedNumbers, string label, char numberDelimiter)
-        {
-            _numbers = formattedNumbers.Select(fn => Convert.ToInt32(fn)).ToList();
-            _digits = new List<int>(_numbers.Count);
-            Label = label;
-            NumberDelimiter = numberDelimiter;
-
-            if (_numbers.Count == 0)
-            {
-                throw new ArgumentException("Parameter must at least contain one element", nameof(formattedNumbers));
-            }
-
-            for (int i = 0; i < _numbers.Count; i++)
-            {
-                _numbers[i].ThrowIfOutOfRange(n => n < 0, nameof(formattedNumbers), "Elements cannot be negative");
-
-                _digits.Add(formattedNumbers[i].Length);
-            }
-        }
-
-        internal BumpyVersion(IEnumerable<int> numbers, IEnumerable<int> digits, string label, char numberDelimiter)
+        public BumpyVersion(IEnumerable<int> numbers, IEnumerable<int> digits, string label, char numberDelimiter)
         {
             _numbers = numbers.ToList();
             _digits = digits.ToList();
             Label = label;
             NumberDelimiter = numberDelimiter;
+
+            if (_numbers.Count == 0)
+            {
+                throw new ArgumentException("Parameter must at least contain one element", nameof(numbers));
+            }
+
+            if (_numbers.Count != _digits.Count)
+            {
+                throw new ArgumentException($"Length mismatch found in collections {nameof(numbers)} and {nameof(digits)}");
+            }
+
+            for (int i = 0; i < _numbers.Count; i++)
+            {
+                _numbers[i].ThrowIfOutOfRange(n => n < 0, nameof(numbers), "Elements cannot be negative");
+                _digits[i].ThrowIfOutOfRange(n => n < 0, nameof(digits), "Elements cannot be negative");
+            }
         }
 
         public IList<int> Numbers => new List<int>(_numbers);
