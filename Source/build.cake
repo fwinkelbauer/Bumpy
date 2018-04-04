@@ -1,7 +1,7 @@
 #load "artifact.cake"
 #load "changelog.cake"
 #load "mstest2.cake"
-#load "octokit.cake"
+#load "github.cake"
 
 #addin Cake.Bumpy
 
@@ -11,7 +11,7 @@ var version = "0.11.0";
 
 RepositoryHome = "..";
 
-var octokitSettings = new OctokitSettings
+var gitHubSettings = new GitHubSettings
 {
     Owner = "fwinkelbauer",
     Repository = "Bumpy",
@@ -61,9 +61,9 @@ Task("PushPackages").Does(() =>
 
     var mime = "application/zip";
     PublishGitHubReleaseWithArtifacts(
-        octokitSettings,
-        new OctokitAsset(GetChocolateyArtifact("Bumpy.Portable"), mime),
-        new OctokitAsset(GetNuGetArtifact("Bumpy"), mime));
+        gitHubSettings,
+        new GitHubAsset(GetChocolateyArtifact("Bumpy.Portable"), mime),
+        new GitHubAsset(GetNuGetArtifact("Bumpy"), mime));
 });
 
 Task("Default")
