@@ -18,6 +18,12 @@ namespace Bumpy
             _writeLine = writeLine;
         }
 
+        // This factory method can be used by direct consumers of Bumpy.Core
+        public static Command Default()
+        {
+            return new Command(new FileUtil(), Console.WriteLine);
+        }
+
         public void List()
         {
             List(new BumpyArguments());
