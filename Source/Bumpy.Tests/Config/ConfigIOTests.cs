@@ -13,7 +13,7 @@ namespace Bumpy.Tests.Config
         public void ReadConfigFile_ParseDefaultConfig()
         {
             // We also make sure that the default "new" template is valid
-            var entries = ReadConfig(ConfigIO.NewConfigFile()).Queries.ToList();
+            var entries = ReadConfig(ConfigIO.NewConfigFile()).ToList();
 
             Assert.AreEqual(3, entries.Count);
 
@@ -38,7 +38,7 @@ encoding = utf-8
 [*.rc]
 encoding = 1200
 ";
-            var entries = ReadConfig(configText).Queries.ToList();
+            var entries = ReadConfig(configText).ToList();
 
             Assert.AreEqual(2, entries.Count);
 
@@ -70,7 +70,7 @@ unknown_key = some value
             Assert.ThrowsException<ConfigException>(() => ReadConfig(configText));
         }
 
-        private BumpyConfig ReadConfig(string configText)
+        private IEnumerable<BumpyConfigEntry> ReadConfig(string configText)
         {
             return ConfigIO.ReadConfigFile(GetLines(configText));
         }

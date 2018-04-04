@@ -66,7 +66,7 @@ namespace Bumpy
 
             try
             {
-                return ConfigIO.ReadConfigFile(lines).Queries;
+                return ConfigIO.ReadConfigFile(lines);
             }
             catch (ConfigException e)
             {

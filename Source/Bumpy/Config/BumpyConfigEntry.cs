@@ -4,6 +4,7 @@ namespace Bumpy.Config
 {
     public class BumpyConfigEntry
     {
+        public const string DefaultConfigFile = ".bumpyconfig";
         public const string DefaultProfile = "";
 
         public BumpyConfigEntry()

@@ -28,7 +28,7 @@ namespace Bumpy.Config
             return builder.ToString();
         }
 
-        public static BumpyConfig ReadConfigFile(IEnumerable<string> lines)
+        public static IEnumerable<BumpyConfigEntry> ReadConfigFile(IEnumerable<string> lines)
         {
             var iniContent = ReadIniContent(lines.ToList());
             var configEntries = new List<BumpyConfigEntry>();
@@ -68,7 +68,7 @@ namespace Bumpy.Config
                 configEntries.Add(configEntry);
             }
 
-            return new BumpyConfig { Queries = configEntries };
+            return configEntries;
         }
 
         private static Dictionary<string, Dictionary<string, string>> ReadIniContent(IList<string> lines)

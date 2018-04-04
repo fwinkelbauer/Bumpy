@@ -93,7 +93,7 @@ namespace Bumpy.Tests
             var arguments = Parse("list");
 
             Assert.AreEqual(string.Empty, arguments.Arguments.Profile);
-            Assert.AreEqual(new FileInfo(BumpyConfig.ConfigFile).FullName, arguments.Arguments.ConfigFile.FullName);
+            Assert.AreEqual(new FileInfo(BumpyConfigEntry.DefaultConfigFile).FullName, arguments.Arguments.ConfigFile.FullName);
             Assert.AreEqual(new DirectoryInfo(".").FullName, arguments.Arguments.WorkingDirectory.FullName);
         }
 

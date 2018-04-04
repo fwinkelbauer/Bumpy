@@ -5,7 +5,7 @@ namespace Bumpy
 {
     public sealed class BumpyArguments
     {
-        public FileInfo ConfigFile { get; set; } = new FileInfo(BumpyConfig.ConfigFile);
+        public FileInfo ConfigFile { get; set; } = new FileInfo(BumpyConfigEntry.DefaultConfigFile);
 
         public DirectoryInfo WorkingDirectory { get; set; } = new DirectoryInfo(".");
 

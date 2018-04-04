@@ -190,7 +190,7 @@ namespace Bumpy
 
         public void New()
         {
-            var configFile = new FileInfo(BumpyConfig.ConfigFile);
+            var configFile = new FileInfo(BumpyConfigEntry.DefaultConfigFile);
             var created = _fileUtil.CreateConfigFile(configFile);
 
             if (created)
@@ -214,7 +214,7 @@ namespace Bumpy
             builder.AppendLine("  list");
             builder.AppendLine("    Lists all versions");
             builder.AppendLine("  new");
-            builder.AppendLine($"    Creates a '{BumpyConfig.ConfigFile}' file if it does not exist");
+            builder.AppendLine($"    Creates a '{BumpyConfigEntry.DefaultConfigFile}' file if it does not exist");
             builder.AppendLine("  increment <one-based index number> (e.g. 'bumpy increment 3')");
             builder.AppendLine("    Increments the specified component of each version");
             builder.AppendLine("  incrementonly <one-based index number> (e.g. 'bumpy incrementonly 3')");
@@ -234,7 +234,7 @@ namespace Bumpy
             builder.AppendLine("  -d <directory>");
             builder.AppendLine("    Run a command in a specific folder (the working directory is used by default)");
             builder.AppendLine("  -c <config file path>");
-            builder.AppendLine($"    Alternative name/path of a configuration file (default: '{BumpyConfig.ConfigFile}')");
+            builder.AppendLine($"    Alternative name/path of a configuration file (default: '{BumpyConfigEntry.DefaultConfigFile}')");
             builder.AppendLine("  -n");
             builder.AppendLine("    No operation: The specified command (e.g. increment) will not perform file changes");
 
