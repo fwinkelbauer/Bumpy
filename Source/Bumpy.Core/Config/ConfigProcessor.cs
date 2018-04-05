@@ -1,7 +1,17 @@
-﻿namespace Bumpy.Config
+﻿namespace Bumpy.Core.Config
 {
+    /// <summary>
+    /// A postprocessor used to validate and enrich instances of
+    /// <see cref="BumpyConfigEntry"/>
+    /// </summary>
     public static class ConfigProcessor
     {
+        /// <summary>
+        /// Validates instances of <see cref="BumpyConfigEntry"/>. Will also enrich an instance
+        /// with additional data.
+        /// </summary>
+        /// <param name="entry">The object to validate and enrich</param>
+        /// <returns>The given object or a new enriched object</returns>
         public static BumpyConfigEntry Process(BumpyConfigEntry entry)
         {
             if (string.IsNullOrWhiteSpace(entry.Glob))

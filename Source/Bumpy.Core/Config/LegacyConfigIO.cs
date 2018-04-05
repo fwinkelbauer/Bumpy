@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Bumpy.Config
+namespace Bumpy.Core.Config
 {
+    /// <summary>
+    /// The legacy configuration handler used in prior versions of Bumpy.
+    /// </summary>
     internal static class LegacyConfigIO
     {
         private const string CommentPattern = "#";
@@ -14,6 +17,11 @@ namespace Bumpy.Config
         private const char MainSplit = '=';
         private const char EncodingSplit = '|';
 
+        /// <summary>
+        /// Parses the content of a legacy configuration file into a set of objects.
+        /// </summary>
+        /// <param name="lines">The content of a legacy configuration file</param>
+        /// <returns>The parsed objects containing the configuration</returns>
         public static IEnumerable<BumpyConfigEntry> ReadConfigFile(IEnumerable<string> lines)
         {
             var profile = string.Empty;

@@ -6,11 +6,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{CD9AE6DD-C13A-448A-8092-37B4EFAAB431}</ProjectGuid>
+    <ProjectGuid>{F0BDA27C-22CF-4A88-A045-D389F4C4C477}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Bumpy.Tests</RootNamespace>
-    <AssemblyName>Bumpy.Tests</AssemblyName>
+    <RootNamespace>Bumpy.Core.Tests</RootNamespace>
+    <AssemblyName>Bumpy.Core.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>
@@ -38,8 +38,18 @@
     <CodeAnalysisRuleSet>..\Bumpy.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Castle.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <HintPath>..\packages\Castle.Core.4.2.0\lib\net45\Castle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="NSubstitute, Version=3.1.0.0, Culture=neutral, PublicKeyToken=92dd2e9066daa5ca, processorArchitecture=MSIL">
+      <HintPath>..\packages\NSubstitute.3.1.0\lib\net46\NSubstitute.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.1.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.3.0\lib\portable-net45+win8+wp8+wpa81\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -61,8 +71,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CommandParserTests.cs" />
+    <Compile Include="BumpyVersionTests.cs" />
+    <Compile Include="CommandTests.cs" />
+    <Compile Include="Config\ConfigIOTests.cs" />
+    <Compile Include="Config\ConfigProcessorTests.cs" />
+    <Compile Include="FileInfoExtensionTests.cs" />
+    <Compile Include="GlobTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="VersionFunctionsTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -76,10 +92,6 @@
     <ProjectReference Include="..\Bumpy.Core\Bumpy.Core.csproj">
       <Project>{03a499c5-3d23-48e0-9892-aacea22620aa}</Project>
       <Name>Bumpy.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Bumpy\Bumpy.csproj">
-      <Project>{2115a19d-9ab9-4abc-8816-b9c49298e04e}</Project>
-      <Name>Bumpy</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,15 +1,15 @@
 ﻿using System.Reflection;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyTitle("Bumpy.Tests")]
+[assembly: AssemblyTitle("Bumpy.Core.Tests")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Bumpy.Tests")]
+[assembly: AssemblyProduct("Bumpy.Core.Tests")]
 [assembly: AssemblyCopyright("Copyright © fwinkelbauer 2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
-[assembly: Guid("cd9ae6dd-c13a-448a-8092-37b4efaab431")]
+[assembly: Guid("f0bda27c-22cf-4a88-a045-d389f4c4c477")]
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]

@@ -1,33 +1,32 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Bumpy.Config;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Bumpy.Core.Config;
+using Xunit;
 
-namespace Bumpy.Tests.Config
+namespace Bumpy.Core.Tests.Config
 {
-    [TestClass]
     public class ConfigIOTests
     {
-        [TestMethod]
+        [Fact]
         public void ReadConfigFile_ParseDefaultConfig()
         {
             // We also make sure that the default "new" template is valid
             var entries = ReadConfig(ConfigIO.NewConfigFile()).ToList();
 
-            Assert.AreEqual(3, entries.Count);
+            Assert.Equal(3, entries.Count);
 
-            Assert.AreEqual("AssemblyInfo.cs", entries[0].Glob);
-            Assert.AreEqual("assembly", entries[0].Profile);
+            Assert.Equal("AssemblyInfo.cs", entries[0].Glob);
+            Assert.Equal("assembly", entries[0].Profile);
 
-            Assert.AreEqual("*.nuspec", entries[1].Glob);
-            Assert.AreEqual("nuspec", entries[1].Profile);
+            Assert.Equal("*.nuspec", entries[1].Glob);
+            Assert.Equal("nuspec", entries[1].Profile);
 
-            Assert.AreEqual("*.csproj", entries[2].Glob);
-            Assert.AreEqual("nuspec", entries[2].Profile);
+            Assert.Equal("*.csproj", entries[2].Glob);
+            Assert.Equal("nuspec", entries[2].Profile);
         }
 
-        [TestMethod]
+        [Fact]
         public void ReadConfigFile_ParseCompleteEntry()
         {
             string configText = @"
@@ -40,34 +39,34 @@ encoding = 1200
 ";
             var entries = ReadConfig(configText).ToList();
 
-            Assert.AreEqual(2, entries.Count);
+            Assert.Equal(2, entries.Count);
 
-            Assert.AreEqual("AssemblyInfo.cs", entries[0].Glob);
-            Assert.AreEqual("my_profile", entries[0].Profile);
-            Assert.AreEqual("Unicode (UTF-8)", entries[0].Encoding.EncodingName);
-            Assert.AreEqual("some regex", entries[0].Regex);
+            Assert.Equal("AssemblyInfo.cs", entries[0].Glob);
+            Assert.Equal("my_profile", entries[0].Profile);
+            Assert.Equal("Unicode (UTF-8)", entries[0].Encoding.EncodingName);
+            Assert.Equal("some regex", entries[0].Regex);
 
-            Assert.AreEqual(1200, entries[1].Encoding.CodePage);
+            Assert.Equal(1200, entries[1].Encoding.CodePage);
         }
 
-        [TestMethod]
+        [Fact]
         public void ReadConfigFile_InvalidSyntax()
         {
             string configText = @"
 [AssemblyInfo.cs | my_profile]
 regex
 ";
-            Assert.ThrowsException<ConfigException>(() => ReadConfig(configText));
+            Assert.Throws<ConfigException>(() => ReadConfig(configText));
         }
 
-        [TestMethod]
+        [Fact]
         public void ReadConfigFile_UnrecognizedElement()
         {
             string configText = @"
 [AssemblyInfo.cs | my_profile]
 unknown_key = some value
 ";
-            Assert.ThrowsException<ConfigException>(() => ReadConfig(configText));
+            Assert.Throws<ConfigException>(() => ReadConfig(configText));
         }
 
         private IEnumerable<BumpyConfigEntry> ReadConfig(string configText)

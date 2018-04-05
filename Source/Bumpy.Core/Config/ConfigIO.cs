@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Bumpy.Config
+namespace Bumpy.Core.Config
 {
+    /// <summary>
+    /// A class to load and create configuration files.
+    /// </summary>
     public static class ConfigIO
     {
         private const string CommentPattern = "#";
@@ -13,6 +16,10 @@ namespace Bumpy.Config
         private const string EqualsPattern = "=";
         private const string ProfileSplit = "|";
 
+        /// <summary>
+        /// Returns the content of a new configuration file.
+        /// </summary>
+        /// <returns>The content of a new configuration file.</returns>
         public static string NewConfigFile()
         {
             var builder = new StringBuilder();
@@ -28,6 +35,11 @@ namespace Bumpy.Config
             return builder.ToString();
         }
 
+        /// <summary>
+        /// Parses the content of a configuration file into a set of objects.
+        /// </summary>
+        /// <param name="lines">The content of a configuration file</param>
+        /// <returns>The parsed objects containing the configuration</returns>
         public static IEnumerable<BumpyConfigEntry> ReadConfigFile(IEnumerable<string> lines)
         {
             var iniContent = ReadIniContent(lines.ToList());

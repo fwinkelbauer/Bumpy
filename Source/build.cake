@@ -1,7 +1,8 @@
 #load "artifact.cake"
 #load "changelog.cake"
-#load "mstest2.cake"
 #load "github.cake"
+
+#tool "xunit.runner.console"
 
 #addin Cake.Bumpy
 
@@ -26,7 +27,6 @@ Task("Clean").Does(() =>
 {
     CleanArtifacts();
     CleanDirectories($"Bumpy*/bin/{configuration}");
-    CleanDirectory("TestResults");
 });
 
 Task("Restore").Does(() =>
@@ -42,7 +42,7 @@ Task("Build").Does(() =>
 
 Task("Test").Does(() =>
 {
-    MSTest2_VS2017($"*.Tests/bin/{configuration}/*.Tests.dll");
+    XUnit2($"*.Tests/bin/{configuration}/*.Tests.dll");
 });
 
 Task("CreatePackages").Does(() =>

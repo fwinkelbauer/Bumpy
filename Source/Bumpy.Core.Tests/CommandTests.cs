@@ -3,16 +3,15 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using Bumpy.Config;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Bumpy.Core.Config;
 using NSubstitute;
+using Xunit;
 
-namespace Bumpy.Tests
+namespace Bumpy.Core.Tests
 {
-    [TestClass]
     public class CommandTests
     {
-        [TestMethod]
+        [Fact]
         public void New_CreatesFile()
         {
             var fileUtil = Substitute.For<IFileUtil>();
@@ -23,7 +22,7 @@ namespace Bumpy.Tests
             fileUtil.Received().CreateConfigFile(Arg.Any<FileInfo>());
         }
 
-        [TestMethod]
+        [Fact]
         public void Help_WritesOutput()
         {
             var writeLine = Substitute.For<Action<string>>();
@@ -34,7 +33,7 @@ namespace Bumpy.Tests
             writeLine.Received().Invoke(Arg.Any<string>());
         }
 
-        [TestMethod]
+        [Fact]
         public void List_NoVersion()
         {
             var fileUtil = Substitute.For<IFileUtil>();
@@ -47,7 +46,7 @@ namespace Bumpy.Tests
             writeLine.Received().Invoke(@"foo.txt: no version found");
         }
 
-        [TestMethod]
+        [Fact]
         public void List_PrintVersions()
         {
             var fileUtil = Substitute.For<IFileUtil>();
@@ -61,7 +60,7 @@ namespace Bumpy.Tests
             writeLine.Received().Invoke(@"foo.txt (5): 0.25.0");
         }
 
-        [TestMethod]
+        [Fact]
         public void Ensure_Success()
         {
             var fileUtil = Substitute.For<IFileUtil>();
@@ -74,17 +73,17 @@ namespace Bumpy.Tests
             writeLine.Received().Invoke("1.2.3");
         }
 
-        [TestMethod]
+        [Fact]
         public void Ensure_Error()
         {
             var fileUtil = Substitute.For<IFileUtil>();
             PrepareFileUtilSubstitute(fileUtil, new[] { "1.2.3", "1.2.4" });
             var command = CreateCommand(fileUtil);
 
-            Assert.ThrowsException<InvalidDataException>(() => command.Ensure());
+            Assert.Throws<InvalidDataException>(() => command.Ensure());
         }
 
-        [TestMethod]
+        [Fact]
         public void Increment_NoVersion()
         {
             var lines = new[] { "no", "version", "here" };
@@ -99,7 +98,7 @@ namespace Bumpy.Tests
             writeLine.Received().Invoke(@"foo.txt: no version found");
         }
 
-        [TestMethod]
+        [Fact]
         public void Increment_IncrementVersions()
         {
             var fileUtil = Substitute.For<IFileUtil>();
@@ -115,7 +114,7 @@ namespace Bumpy.Tests
             writeLine.Received().Invoke(@"foo.txt (5): 0.25.0 -> 0.26.0");
         }
 
-        [TestMethod]
+        [Fact]
         public void Increment_IncrementVersionsNoFileWrite()
         {
             var fileUtil = Substitute.For<IFileUtil>();
@@ -130,7 +129,7 @@ namespace Bumpy.Tests
             writeLine.Received().Invoke(@"foo.txt (5): 0.25.0 -> 0.26.0");
         }
 
-        [TestMethod]
+        [Fact]
         public void Assign_NoWrite()
         {
             var lines = new[] { "1.0.42" };
