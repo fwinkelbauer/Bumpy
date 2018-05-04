@@ -27,6 +27,7 @@ Task("Clean").Does(() =>
 {
     CleanArtifacts();
     CleanDirectories($"Bumpy*/bin/{configuration}");
+    CleanDirectories($"Bumpy*/obj/{configuration}");
 });
 
 Task("Restore").Does(() =>
