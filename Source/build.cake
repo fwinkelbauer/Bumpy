@@ -2,9 +2,9 @@
 #load "changelog.cake"
 #load "github.cake"
 
-#tool "xunit.runner.console"
+#tool nuget:?package=xunit.runner.console&version=2.3.1
 
-#addin Cake.Bumpy
+#addin nuget:?package=Cake.Bumpy&version=0.8.0
 
 var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Release");

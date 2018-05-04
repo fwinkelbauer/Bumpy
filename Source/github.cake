@@ -1,4 +1,4 @@
-#addin nuget:?package=octokit
+#addin nuget:?package=Octokit&version=0.29.0
 
 public class GitHubSettings
 {
