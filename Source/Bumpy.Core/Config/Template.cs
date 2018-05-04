@@ -3,8 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Bumpy.Config
+namespace Bumpy.Core.Config
 {
+    /// <summary>
+    /// A template is used to provide default parameters for a
+    /// <see cref="BumpyConfigEntry"/> instance for known file types.
+    /// </summary>
     internal sealed class Template
     {
         private static readonly Dictionary<string, Template> Templates = new Dictionary<string, Template>()
@@ -21,10 +25,22 @@ namespace Bumpy.Config
             Encoding = encoding;
         }
 
+        /// <summary>
+        /// Gets the regular expression.
+        /// </summary>
         public string Regex { get; }
 
+        /// <summary>
+        /// Gets the encoding.
+        /// </summary>
         public Encoding Encoding { get; }
 
+        /// <summary>
+        /// Tries to find a template based on the input text.
+        /// </summary>
+        /// <param name="text">The given text</param>
+        /// <param name="template">A template if one is registered for the given text</param>
+        /// <returns>True if a template was found, else false</returns>
         public static bool TryFindTemplate(string text, out Template template)
         {
             var matches = Templates.Where(t => text.EndsWith(t.Key, StringComparison.OrdinalIgnoreCase)).ToList();

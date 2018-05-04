@@ -1,6 +1,6 @@
 #addin nuget:?package=octokit
 
-public class OctokitSettings
+public class GitHubSettings
 {
     public string Owner { get; set; }
     public string Repository { get; set; }
@@ -11,9 +11,9 @@ public class OctokitSettings
     public bool IsPrerelease { get; set; }
 }
 
-public class OctokitAsset
+public class GitHubAsset
 {
-    public OctokitAsset(FilePath artifact, string contentType)
+    public GitHubAsset(FilePath artifact, string contentType)
     {
         Artifact = artifact;
         ContentType = contentType;
@@ -23,7 +23,7 @@ public class OctokitAsset
     public string ContentType { get; }
 }
 
-public void PublishGitHubReleaseWithArtifacts(OctokitSettings settings, params OctokitAsset[] assets)
+public void PublishGitHubReleaseWithArtifacts(GitHubSettings settings, params GitHubAsset[] assets)
 {
     var client = new Octokit.GitHubClient(new Octokit.ProductHeaderValue(settings.Repository))
     {

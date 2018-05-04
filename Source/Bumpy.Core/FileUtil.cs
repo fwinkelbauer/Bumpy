@@ -3,14 +3,18 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using Bumpy.Config;
+using Bumpy.Core.Config;
 
-namespace Bumpy
+namespace Bumpy.Core
 {
+    /// <summary>
+    /// An interface implementation which uses the file system.
+    /// </summary>
     public sealed class FileUtil : IFileUtil
     {
         private const string AllFilesPattern = "*";
 
+        /// <inheritdoc/>
         public IEnumerable<FileInfo> GetFiles(DirectoryInfo directory, Glob glob)
         {
             return directory
@@ -18,16 +22,19 @@ namespace Bumpy
                 .Where(f => glob.IsMatch(f.ToRelativePath(directory)));
         }
 
+        /// <inheritdoc/>
         public FileContent ReadFileContent(FileInfo file, Encoding encoding)
         {
             return new FileContent(file, File.ReadLines(file.FullName, encoding), encoding);
         }
 
+        /// <inheritdoc/>
         public void WriteFileContent(FileContent fileContent)
         {
             File.WriteAllLines(fileContent.File.FullName, fileContent.Lines, fileContent.Encoding);
         }
 
+        /// <inheritdoc/>
         public bool CreateConfigFile(FileInfo configFile)
         {
             if (configFile.Exists)
@@ -40,6 +47,7 @@ namespace Bumpy
             return true;
         }
 
+        /// <inheritdoc/>
         public IEnumerable<BumpyConfigEntry> ReadConfigFile(FileInfo configFile, string profile)
         {
             var configEntries = ReadConfigFile(configFile);
@@ -66,11 +74,13 @@ namespace Bumpy
 
             try
             {
-                return ConfigIO.ReadConfigFile(lines).Queries;
+                return ConfigIO.ReadConfigFile(lines);
             }
             catch (ConfigException e)
             {
                 // TODO fw When should I remove this?
+                // If this is kept for a long period (e.g. using a legacy flag) consider a
+                // decorator pattern for `ConfigIO`
                 Console.WriteLine($"Error: '{e.Message}'");
                 Console.WriteLine("Trying legacy configuration format (prior to Bumpy 0.11.0)");
                 return LegacyConfigIO.ReadConfigFile(lines);

@@ -10,6 +10,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 - The `ApplyTransformation` (the underlying method that is used by most Bumpy commands) is now exposed as a public method
 
+### Changed
+
+- Project structure:
+  - **Bumpy.Core** contains all basic features
+  - **Bumpy** gives access to Bumpy.Core through a command line interface
+
 ## 0.11.0 - 2018-03-08
 
 ### Changed

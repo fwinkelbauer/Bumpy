@@ -8,7 +8,7 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>Bumpy</RootNamespace>
     <AssemblyName>Bumpy</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <TargetFrameworkProfile />
@@ -44,30 +44,13 @@
     <Reference Include="System.Data" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BumpyArguments.cs" />
-    <Compile Include="Config\BumpyConfig.cs" />
-    <Compile Include="Config\BumpyConfigEntry.cs" />
-    <Compile Include="BumpyVersion.cs" />
     <Compile Include="CommandArguments.cs" />
     <Compile Include="CommandRunner.cs" />
-    <Compile Include="Command.cs" />
     <Compile Include="CommandParser.cs" />
     <Compile Include="CommandType.cs" />
-    <Compile Include="Config\ConfigException.cs" />
-    <Compile Include="Config\ConfigIO.cs" />
-    <Compile Include="Config\LegacyConfigIO.cs" />
-    <Compile Include="Config\ConfigProcessor.cs" />
-    <Compile Include="FileContent.cs" />
-    <Compile Include="FileInfoExtensions.cs" />
-    <Compile Include="FileUtil.cs" />
-    <Compile Include="Glob.cs" />
-    <Compile Include="IFileUtil.cs" />
     <Compile Include="ParserException.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Config\Template.cs" />
-    <Compile Include="ValidationExtensions.cs" />
-    <Compile Include="VersionFunctions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -76,6 +59,12 @@
   <ItemGroup>
     <Analyzer Include="..\packages\StyleCop.Analyzers.1.0.2\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
     <Analyzer Include="..\packages\StyleCop.Analyzers.1.0.2\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Bumpy.Core\Bumpy.Core.csproj">
+      <Project>{03a499c5-3d23-48e0-9892-aacea22620aa}</Project>
+      <Name>Bumpy.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

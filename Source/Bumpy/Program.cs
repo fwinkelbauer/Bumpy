@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using Bumpy.Core;
 
 namespace Bumpy
 {

@@ -1,7 +1,8 @@
 #load "artifact.cake"
 #load "changelog.cake"
-#load "mstest2.cake"
-#load "octokit.cake"
+#load "github.cake"
+
+#tool "xunit.runner.console"
 
 #addin Cake.Bumpy
 
@@ -11,7 +12,7 @@ var version = "0.11.0";
 
 RepositoryHome = "..";
 
-var octokitSettings = new OctokitSettings
+var gitHubSettings = new GitHubSettings
 {
     Owner = "fwinkelbauer",
     Repository = "Bumpy",
@@ -26,7 +27,6 @@ Task("Clean").Does(() =>
 {
     CleanArtifacts();
     CleanDirectories($"Bumpy*/bin/{configuration}");
-    CleanDirectory("TestResults");
 });
 
 Task("Restore").Does(() =>
@@ -42,7 +42,7 @@ Task("Build").Does(() =>
 
 Task("Test").Does(() =>
 {
-    MSTest2_VS2017($"*.Tests/bin/{configuration}/*.Tests.dll");
+    XUnit2($"*.Tests/bin/{configuration}/*.Tests.dll");
 });
 
 Task("CreatePackages").Does(() =>
@@ -61,9 +61,9 @@ Task("PushPackages").Does(() =>
 
     var mime = "application/zip";
     PublishGitHubReleaseWithArtifacts(
-        octokitSettings,
-        new OctokitAsset(GetChocolateyArtifact("Bumpy.Portable"), mime),
-        new OctokitAsset(GetNuGetArtifact("Bumpy"), mime));
+        gitHubSettings,
+        new GitHubAsset(GetChocolateyArtifact("Bumpy.Portable"), mime),
+        new GitHubAsset(GetNuGetArtifact("Bumpy"), mime));
 });
 
 Task("Default")

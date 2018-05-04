@@ -1,4 +1,6 @@
-﻿namespace Bumpy
+﻿using Bumpy.Core;
+
+namespace Bumpy
 {
     public sealed class CommandArguments
     {

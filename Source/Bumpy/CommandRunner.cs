@@ -1,4 +1,7 @@
-﻿namespace Bumpy
+﻿using System;
+using Bumpy.Core;
+
+namespace Bumpy
 {
     public sealed class CommandRunner
     {
@@ -53,7 +56,7 @@
             {
                 // This Exception is only thrown if we forget to extend
                 // the 'Execute' method after introducing new commands.
-                throw new ParserException("Could not execute command");
+                throw new NotImplementedException("Could not execute command");
             }
         }
     }
