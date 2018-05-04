@@ -4,16 +4,16 @@
 
 - Windows
 - Visual Studio 2017
-- .NET Framework
+- .NET Framework 4.6.1
 - Chocolatey
-  - Bumpy `choco install bumpy.portable`
+- NuGet
 
 ## Setup to Publish a Release
 
 - Register Chocolatey/NuGet API keys using `choco setApikey` and `nuget setApikey`
-- Create the environment variable `GITHUB_RELEASE_TOKEN`
+- Register a GitHub token using the environment variable `GITHUB_RELEASE_TOKEN`
 
 ## Run a Build
 
-- **Build:** `.\build.ps1`
-- **Publish:** `.\build.ps1 -target publish`
+- **Build artifacts:** `.\build.ps1`
+- **Publish artifacts:** `.\build.ps1 -target publish`
