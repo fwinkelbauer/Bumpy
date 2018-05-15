@@ -36,8 +36,7 @@ namespace Bumpy.Core.Tests
         [Fact]
         public void List_NoVersion()
         {
-            var fileUtil = Substitute.For<IFileUtil>();
-            PrepareFileUtilSubstitute(fileUtil, new[] { "no", "version", "here" });
+            var fileUtil = CreateFileUtil(new[] { "no", "version", "here" });
             var writeLine = Substitute.For<Action<string>>();
             var command = CreateCommand(fileUtil, writeLine);
 
@@ -49,8 +48,7 @@ namespace Bumpy.Core.Tests
         [Fact]
         public void List_PrintVersions()
         {
-            var fileUtil = Substitute.For<IFileUtil>();
-            PrepareFileUtilSubstitute(fileUtil, new[] { "some", "version", "here", "1.2.3", "foobar 0.25.0" });
+            var fileUtil = CreateFileUtil(new[] { "some", "version", "here", "1.2.3", "foobar 0.25.0" });
             var writeLine = Substitute.For<Action<string>>();
             var command = CreateCommand(fileUtil, writeLine);
 
@@ -63,8 +61,7 @@ namespace Bumpy.Core.Tests
         [Fact]
         public void Ensure_Success()
         {
-            var fileUtil = Substitute.For<IFileUtil>();
-            PrepareFileUtilSubstitute(fileUtil, new[] { "1.2.3", "1.2.3" });
+            var fileUtil = CreateFileUtil(new[] { "1.2.3", "1.2.3" });
             var writeLine = Substitute.For<Action<string>>();
             var command = CreateCommand(fileUtil, writeLine);
 
@@ -76,8 +73,7 @@ namespace Bumpy.Core.Tests
         [Fact]
         public void Ensure_Error()
         {
-            var fileUtil = Substitute.For<IFileUtil>();
-            PrepareFileUtilSubstitute(fileUtil, new[] { "1.2.3", "1.2.4" });
+            var fileUtil = CreateFileUtil(new[] { "1.2.3", "1.2.4" });
             var command = CreateCommand(fileUtil);
 
             Assert.Throws<InvalidDataException>(() => command.Ensure());
@@ -87,8 +83,7 @@ namespace Bumpy.Core.Tests
         public void Increment_NoVersion()
         {
             var lines = new[] { "no", "version", "here" };
-            var fileUtil = Substitute.For<IFileUtil>();
-            PrepareFileUtilSubstitute(fileUtil, lines);
+            var fileUtil = CreateFileUtil(lines);
             var writeLine = Substitute.For<Action<string>>();
             var command = CreateCommand(fileUtil, writeLine);
 
@@ -101,8 +96,7 @@ namespace Bumpy.Core.Tests
         [Fact]
         public void Increment_IncrementVersions()
         {
-            var fileUtil = Substitute.For<IFileUtil>();
-            PrepareFileUtilSubstitute(fileUtil, new[] { "some", "version", "here", "1.2.3", "foobar 0.25.0" });
+            var fileUtil = CreateFileUtil(new[] { "some", "version", "here", "1.2.3", "foobar 0.25.0" });
             var writeLine = Substitute.For<Action<string>>();
             var command = CreateCommand(fileUtil, writeLine);
 
@@ -117,8 +111,7 @@ namespace Bumpy.Core.Tests
         [Fact]
         public void Increment_IncrementVersionsNoFileWrite()
         {
-            var fileUtil = Substitute.For<IFileUtil>();
-            PrepareFileUtilSubstitute(fileUtil, new[] { "some", "version", "here", "1.2.3", "foobar 0.25.0" });
+            var fileUtil = CreateFileUtil(new[] { "some", "version", "here", "1.2.3", "foobar 0.25.0" });
             var writeLine = Substitute.For<Action<string>>();
             var command = CreateCommand(fileUtil, writeLine);
 
@@ -133,8 +126,7 @@ namespace Bumpy.Core.Tests
         public void Assign_NoWrite()
         {
             var lines = new[] { "1.0.42" };
-            var fileUtil = Substitute.For<IFileUtil>();
-            PrepareFileUtilSubstitute(fileUtil, lines);
+            var fileUtil = CreateFileUtil(lines);
             var writeLine = Substitute.For<Action<string>>();
             var command = CreateCommand(fileUtil, writeLine);
 
@@ -144,8 +136,10 @@ namespace Bumpy.Core.Tests
             writeLine.Received().Invoke(@"foo.txt (1): 1.0.42 -> 1.0.42");
         }
 
-        private void PrepareFileUtilSubstitute(IFileUtil fileUtil, IEnumerable<string> lines)
+        private IFileUtil CreateFileUtil(IEnumerable<string> lines)
         {
+            var fileUtil = Substitute.For<IFileUtil>();
+
             fileUtil.ReadConfigFile(Arg.Any<FileInfo>(), Arg.Any<string>()).Returns(new[]
             {
                 new BumpyConfigEntry
@@ -162,6 +156,8 @@ namespace Bumpy.Core.Tests
 
             fileUtil.ReadFileContent(Arg.Any<FileInfo>(), Arg.Any<Encoding>()).Returns(
                 new FileContent(new FileInfo("foo.txt"), lines, new UTF8Encoding(false)));
+
+            return fileUtil;
         }
 
         private Command CreateCommand(IFileUtil fileUtil = null, Action<string> writeLine = null)
