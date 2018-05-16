@@ -102,7 +102,7 @@ namespace Bumpy.Core
         /// Increments the position in all versions by one.
         /// </summary>
         /// <param name="position">A one-based index</param>
-        /// /// <example>
+        /// <example>
         /// Increment(2):
         ///   1.2.3 -> 1.3.0
         /// </example>
@@ -116,7 +116,7 @@ namespace Bumpy.Core
         /// </summary>
         /// <param name="position">A one-based index</param>
         /// <param name="arguments">A custom set of arguments</param>
-        /// /// <example>
+        /// <example>
         /// Increment(2, new BumpyArguments { Profile = "custom" }):
         ///   1.2.3 -> 1.3.0
         /// </example>
@@ -143,7 +143,7 @@ namespace Bumpy.Core
         /// </summary>
         /// <param name="position">A one-based index</param>
         /// <param name="arguments">A custom set of arguments</param>
-        /// /// <example>
+        /// <example>
         /// IncrementOnly(2, new BumpyArguments { Profile = "custom" }):
         ///   1.2.3 -> 1.3.3
         /// </example>
