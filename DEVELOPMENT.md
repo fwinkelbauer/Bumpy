@@ -11,7 +11,7 @@
 ## Setup to Publish a Release
 
 - Register Chocolatey/NuGet API keys using `choco setApikey` and `nuget setApikey`
-- Register a GitHub token using the environment variable `GITHUB_RELEASE_TOKEN`
+- Register a [GitHub token](https://github.com/settings/tokens) using the environment variable `GITHUB_RELEASE_TOKEN`
 
 ## Run a Build
 
