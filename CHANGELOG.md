@@ -15,6 +15,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 - Project structure:
   - **Bumpy.Core** contains all basic features
   - **Bumpy** gives access to Bumpy.Core through a command line interface
+- Write errors to `stderr`
 
 ## 0.11.0 - 2018-03-08
 

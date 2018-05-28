@@ -18,7 +18,7 @@ namespace Bumpy
             }
             catch (Exception e)
             {
-                Console.WriteLine("Error: " + e.Message);
+                Console.Error.WriteLine($"Error: {e.Message}");
                 Environment.ExitCode = 1;
             }
 
