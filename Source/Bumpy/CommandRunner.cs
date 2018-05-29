@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Reflection;
 using System.Text;
 using Bumpy.Core;
 using Bumpy.Core.Config;
@@ -64,7 +66,11 @@ namespace Bumpy
 
         private void Help()
         {
+            var assembly = Assembly.GetExecutingAssembly();
+            var versionInfo = FileVersionInfo.GetVersionInfo(assembly.Location);
+
             var builder = new StringBuilder();
+            builder.AppendLine($"Bumpy v{versionInfo.FileVersion}");
             builder.AppendLine("A tool to maintain version information accross multiple files found in the current working directory");
             builder.AppendLine();
             builder.AppendLine("Commands:");

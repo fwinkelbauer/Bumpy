@@ -16,6 +16,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
   - **Bumpy.Core** contains all basic features
   - **Bumpy** gives access to Bumpy.Core through a command line interface
 - Write errors to `stderr`
+- Only show Bumpy's version when calling the `help` command
 
 ## 0.11.0 - 2018-03-08
 
