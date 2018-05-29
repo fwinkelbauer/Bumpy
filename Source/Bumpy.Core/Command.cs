@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using Bumpy.Core.Config;
 
 [assembly: CLSCompliant(true)]
@@ -325,47 +324,6 @@ namespace Bumpy.Core
             {
                 _writeLine($"File '{configFile}' already exists");
             }
-        }
-
-        /// <summary>
-        /// Prints a help text.
-        /// </summary>
-        public void Help()
-        {
-            var builder = new StringBuilder();
-            builder.AppendLine("A tool to maintain version information accross multiple files found in the current working directory");
-            builder.AppendLine();
-            builder.AppendLine("Commands:");
-            builder.AppendLine("  help");
-            builder.AppendLine("    View all commands and options");
-            builder.AppendLine("  list");
-            builder.AppendLine("    Lists all versions");
-            builder.AppendLine("  new");
-            builder.AppendLine($"    Creates a '{BumpyConfigEntry.DefaultConfigFile}' file if it does not exist");
-            builder.AppendLine("  increment <one-based index number> (e.g. 'bumpy increment 3')");
-            builder.AppendLine("    Increments the specified component of each version");
-            builder.AppendLine("  incrementonly <one-based index number> (e.g. 'bumpy incrementonly 3')");
-            builder.AppendLine("    Increments the specified component of each version, without updating following components");
-            builder.AppendLine("  write <version string>");
-            builder.AppendLine("    Overwrites a version with another version (e.g. 'bumpy write 1.0.0.0')");
-            builder.AppendLine("  assign <one-based index number> <version number> (e.g. 'bumpy assign 3 99')");
-            builder.AppendLine("    Replaces the specified component of a version with a new number");
-            builder.AppendLine("  label <suffix version text>");
-            builder.AppendLine("    Replaces the suffix text of a version (e.g. 'bumpy label \"-beta\"')");
-            builder.AppendLine("  ensure");
-            builder.AppendLine("    Checks that all versions in a profile are equal");
-            builder.AppendLine();
-            builder.AppendLine("Options: (only available for 'list', 'increment', 'incrementonly', 'write', 'assign', 'label' and 'ensure')");
-            builder.AppendLine("  -p <profile name>");
-            builder.AppendLine("    Limit a command to a profile");
-            builder.AppendLine("  -d <directory>");
-            builder.AppendLine("    Run a command in a specific folder (the working directory is used by default)");
-            builder.AppendLine("  -c <config file path>");
-            builder.AppendLine($"    Alternative name/path of a configuration file (default: '{BumpyConfigEntry.DefaultConfigFile}')");
-            builder.AppendLine("  -n");
-            builder.AppendLine("    No operation: The specified command (e.g. increment) will not perform file changes");
-
-            _writeLine(builder.ToString());
         }
 
         /// <summary>

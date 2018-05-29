@@ -23,17 +23,6 @@ namespace Bumpy.Core.Tests
         }
 
         [Fact]
-        public void Help_WritesOutput()
-        {
-            var writeLine = Substitute.For<Action<string>>();
-            var command = CreateCommand(writeLine: writeLine);
-
-            command.Help();
-
-            writeLine.Received().Invoke(Arg.Any<string>());
-        }
-
-        [Fact]
         public void List_NoVersion()
         {
             var fileUtil = CreateFileUtil(new[] { "no", "version", "here" });
