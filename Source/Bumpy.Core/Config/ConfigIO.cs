@@ -98,7 +98,11 @@ namespace Bumpy.Core.Config
                 {
                     currentSection = line.Substring(1, line.Length - 2).Trim();
 
-                    if (!iniContent.ContainsKey(currentSection))
+                    if (iniContent.ContainsKey(currentSection))
+                    {
+                        throw new ConfigException($"Encountered ambiguous configuration for element '{currentSection}'");
+                    }
+                    else
                     {
                         iniContent.Add(currentSection, new Dictionary<string, string>());
                     }
@@ -109,7 +113,7 @@ namespace Bumpy.Core.Config
 
                     if (lineSplit.Length != 2)
                     {
-                        throw new ConfigException($"Invalid syntax in line {i + 1}. Expected Format: 'key = value'");
+                        throw new ConfigException($"Invalid syntax in line {i + 1}. Expected format: 'key = value'");
                     }
 
                     var key = lineSplit[0].Trim();

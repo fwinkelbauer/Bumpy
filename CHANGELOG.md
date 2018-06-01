@@ -18,6 +18,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 - Write errors to `stderr`
 - Only show Bumpy's version when calling the `help` command
 
+### Fixed
+
+- [#39](https://github.com/fwinkelbauer/Bumpy/issues/39) A bug in the configuration parser. A section in `.bumpyconfig` must now be unique
+
 ## 0.11.0 - 2018-03-08
 
 ### Changed

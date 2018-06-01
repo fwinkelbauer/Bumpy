@@ -69,6 +69,17 @@ unknown_key = some value
             Assert.Throws<ConfigException>(() => ReadConfig(configText));
         }
 
+        [Fact]
+        public void ReadConfigFile_SameSectionTwice()
+        {
+            string configText = @"
+[AssemblyInfo.cs | some_profile]
+
+[AssemblyInfo.cs | some_profile]";
+
+            Assert.Throws<ConfigException>(() => ReadConfig(configText));
+        }
+
         private IEnumerable<BumpyConfigEntry> ReadConfig(string configText)
         {
             return ConfigIO.ReadConfigFile(GetLines(configText));
