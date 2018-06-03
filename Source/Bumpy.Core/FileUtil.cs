@@ -81,7 +81,7 @@ namespace Bumpy.Core
                 // TODO fw When should I remove this?
                 // If this is kept for a long period (e.g. using a legacy flag) consider a
                 // decorator pattern for `ConfigIO`
-                Console.WriteLine($"Error: '{e.Message}'");
+                Console.WriteLine($"Could not parse '{configFile.Name}'. Error: {e.Message}");
                 Console.WriteLine("Trying legacy configuration format (prior to Bumpy 0.11.0)");
                 return LegacyConfigIO.ReadConfigFile(lines);
             }
