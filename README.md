@@ -1,5 +1,7 @@
 # Bumpy
 
+**Deprecated:** I have stopped developing this package. Please have a look at other tools such as [Zero29](https://github.com/ploeh/ZeroToNine) or [GitVersion](https://github.com/GitTools/GitVersion)!
+
 Bumpy is a tool to manipulate version information across multiple files found in the current working directory using a `.bumpyconfig` file which consists of [glob patterns](https://en.wikipedia.org/wiki/Glob_(programming)) and regular expressions.
 I am using Bumpy to handle C# projects, but the tool can be configured for any set of files.
 
